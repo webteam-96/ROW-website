@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Club records digitised and approved">
+  <!-- Paper is already native to this site (the two folded planes), so the sheet
+       reuses that vocabulary: bowed edges and fine fold creases at detail weight,
+       ink #1d1c1c, outline 3 / detail 2, palette gradients, no drop shadow. -->
+  <defs>
+    <linearGradient id="eg-sheet" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#7af7f7"/>
+    </linearGradient>
+    <linearGradient id="eg-back" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff48d"/><stop offset="1" stop-color="#fd9140"/>
+    </linearGradient>
+    <linearGradient id="eg-fold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fd74fd"/><stop offset="1" stop-color="#b349f9"/>
+    </linearGradient>
+    <linearGradient id="eg-seal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7af7f7"/><stop offset="1" stop-color="#83f582"/>
+    </linearGradient>
+  </defs>
+
+  <style>
+    .out   { stroke:#1d1c1c; stroke-width:3; stroke-linejoin:round; stroke-linecap:round; }
+    .det   { stroke:#1d1c1c; stroke-width:2; stroke-linecap:round; fill:none; }
+    .stack { animation: lift 3.6s ease-in-out infinite; transform-origin:165px 205px; }
+    /* The tick's resting state is the finished stamp — fully drawn. Nothing
+       here depends on an animation frame to look correct. */
+    .tick  { stroke-dasharray:96; stroke-dashoffset:0; animation: draw 3.6s ease-in-out infinite; }
+    @keyframes lift { 0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-10px) rotate(-1.6deg)} }
+    @keyframes draw { 0%,18%{stroke-dashoffset:96} 40%,100%{stroke-dashoffset:0} }
+    @media (prefers-reduced-motion:reduce){ .stack,.tick{animation:none} .tick{stroke-dashoffset:0} }
+  </style>
+
+  <g class="stack">
+    <!-- sheet behind, peeking out of the stack -->
+    <g transform="rotate(-9 165 205)">
+      <path class="out" fill="url(#eg-back)"
+            d="M64 88 C64 78 72 71 84 71 C116 70 152 70 176 72 L228 124
+               C230 158 230 250 228 296 C227 308 219 315 206 316 C160 318 110 318 84 316
+               C71 315 64 308 64 296 Z"/>
+    </g>
+
+    <!-- front sheet, edges bowed like folded paper rather than ruled straight -->
+    <path class="out" fill="url(#eg-sheet)"
+          d="M86 104 C86 93 94 86 106 86 C138 85 172 85 196 87 L248 139
+             C250 174 250 262 248 306 C247 318 239 325 226 326 C180 328 132 328 106 326
+             C93 325 86 318 86 306 Z"/>
+    <!-- folded corner + its crease -->
+    <path class="out" fill="url(#eg-fold)" d="M196 87 C198 104 198 124 196 139 C212 141 234 141 248 139 Z"/>
+    <path class="det" d="M196 139 C214 145 232 148 248 148"/>
+    <!-- record lines at detail weight -->
+    <g class="det">
+      <path d="M112 190 C146 187 186 187 220 190"/>
+      <path d="M112 220 C146 217 186 217 220 220"/>
+      <path d="M112 250 C134 247 158 247 176 250"/>
+      <path d="M112 280 C138 277 168 277 194 280"/>
+    </g>
+  </g>
+
+  <!-- approval seal, clear of the sheet so it reads at small sizes -->
+  <g class="seal">
+    <path class="out" fill="url(#eg-seal)"
+          d="M286 234 C324 234 352 262 352 300 C352 338 324 366 286 366
+             C248 366 220 338 220 300 C220 262 248 234 286 234 Z"/>
+    <path fill="#ffffff" opacity=".34"
+          d="M240 272 C252 252 274 242 300 244 C276 250 256 260 240 272 Z"/>
+    <path class="out tick" fill="none" d="M254 302 C262 310 268 316 274 324 C288 306 302 288 318 274"/>
+  </g>
+</svg>

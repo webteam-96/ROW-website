@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="District hub connected to its member clubs">
+  <!-- Site illustration language: ink #1d1c1c, outline 3 / detail 2 on a 400
+       canvas, palette gradients, translucent white highlight, no drop shadow.
+       Circles are drawn as bowed paths rather than <circle> so they carry the
+       same hand-drawn wobble as the rest of the artwork. -->
+  <defs>
+    <linearGradient id="dm-hub" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fd5352"/><stop offset=".55" stop-color="#fd74fd"/><stop offset="1" stop-color="#b349f9"/>
+    </linearGradient>
+    <linearGradient id="dm-cyan" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7af7f7"/><stop offset="1" stop-color="#83f582"/>
+    </linearGradient>
+    <linearGradient id="dm-pink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fd74fd"/><stop offset="1" stop-color="#b349f9"/>
+    </linearGradient>
+    <linearGradient id="dm-warm" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff48d"/><stop offset="1" stop-color="#fd9140"/>
+    </linearGradient>
+  </defs>
+
+  <style>
+    .out   { stroke:#1d1c1c; stroke-width:3; stroke-linejoin:round; stroke-linecap:round; }
+    .det   { stroke:#1d1c1c; stroke-width:2; stroke-linecap:round; fill:none; }
+    .spoke { stroke-dasharray:7 13; animation: flow 2.6s linear infinite; }
+    .hub   { animation: beat 3s ease-in-out infinite; transform-origin:200px 200px; }
+    .n1{animation:bob 3s ease-in-out infinite} .n2{animation:bob 3s ease-in-out .35s infinite}
+    .n3{animation:bob 3s ease-in-out .7s infinite} .n4{animation:bob 3s ease-in-out 1.05s infinite}
+    @keyframes flow { to { stroke-dashoffset:-40 } }
+    @keyframes beat { 0%,100%{transform:scale(1)} 50%{transform:scale(1.04)} }
+    @keyframes bob  { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+    @media (prefers-reduced-motion:reduce){ .spoke,.hub,.n1,.n2,.n3,.n4{animation:none} }
+  </style>
+
+  <!-- spokes, drawn at detail weight with a slight bow so they are not rulered -->
+  <g class="det">
+    <path class="spoke" d="M200 200 C170 178 132 140 104 112"/>
+    <path class="spoke" d="M200 200 C230 178 268 140 296 112"/>
+    <path class="spoke" d="M200 200 C170 222 132 260 104 288"/>
+    <path class="spoke" d="M200 200 C230 222 268 260 296 288"/>
+  </g>
+
+  <!-- member club nodes -->
+  <g class="n1">
+    <path class="out" fill="url(#dm-pink)"
+          d="M98 70 C119 70 135 86 135 106 C135 127 119 143 98 143 C78 143 62 127 62 106 C62 86 78 70 98 70 Z"/>
+    <path fill="#ffffff" opacity=".34" d="M72 92 C79 80 91 74 104 75 C90 79 80 85 72 92 Z"/>
+  </g>
+  <g class="n2">
+    <path class="out" fill="url(#dm-warm)"
+          d="M302 70 C323 70 339 86 339 106 C339 127 323 143 302 143 C282 143 266 127 266 106 C266 86 282 70 302 70 Z"/>
+    <path fill="#ffffff" opacity=".38" d="M276 92 C283 80 295 74 308 75 C294 79 284 85 276 92 Z"/>
+  </g>
+  <g class="n3">
+    <path class="out" fill="url(#dm-warm)"
+          d="M98 258 C119 258 135 274 135 294 C135 315 119 331 98 331 C78 331 62 315 62 294 C62 274 78 258 98 258 Z"/>
+    <path fill="#ffffff" opacity=".38" d="M72 280 C79 268 91 262 104 263 C90 267 80 273 72 280 Z"/>
+  </g>
+  <g class="n4">
+    <path class="out" fill="url(#dm-cyan)"
+          d="M302 258 C323 258 339 274 339 294 C339 315 323 331 302 331 C282 331 266 315 266 294 C266 274 282 258 302 258 Z"/>
+    <path fill="#ffffff" opacity=".34" d="M276 280 C283 268 295 262 308 263 C294 267 284 273 276 280 Z"/>
+  </g>
+
+  <!-- district hub -->
+  <g class="hub">
+    <path class="out" fill="url(#dm-hub)"
+          d="M200 138 C235 138 262 165 262 200 C262 235 235 262 200 262 C165 262 138 235 138 200 C138 165 165 138 200 138 Z"/>
+    <path fill="#ffffff" opacity=".3" d="M158 176 C169 158 189 148 211 150 C188 156 170 165 158 176 Z"/>
+    <!-- cross at detail weight so the hub stays a drawing, not an icon -->
+    <path class="det" stroke-width="3" d="M200 172 C202 190 202 210 200 228 M172 200 C190 202 210 202 228 200"/>
+  </g>
+</svg>

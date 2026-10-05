@@ -1,0 +1,3 @@
+.webcheck/
+.playwright-cli/
+node_modules/
