@@ -51,91 +51,7 @@
   }
 
   /* ------------------------------------------------------------------------
-     2. Desktop mega menu (disclosure pattern) + sliding nav pill
-     ------------------------------------------------------------------------ */
-  const nav = $('.nav');
-  const pill = $('.nav__pill');
-  const triggers = $$('.nav__trigger');
-  let openBtn = null;
-  let openedAt = 0;
-  let hoverTimer = 0;
-  const panelOf = btn => document.getElementById(btn.getAttribute('aria-controls'));
-
-  function movePill(el) {
-    if (!pill || !el || !header) return;
-    const hr = header.getBoundingClientRect();
-    const r = el.getBoundingClientRect();
-    if (!pill.classList.contains('is-on')) {
-      pill.classList.add('is-fresh');       // appear in place, don't slide in from 0
-      requestAnimationFrame(() => requestAnimationFrame(() => pill.classList.remove('is-fresh')));
-    }
-    pill.style.setProperty('--px', `${r.left - hr.left}px`);
-    pill.style.setProperty('--pw', `${r.width}px`);
-    pill.classList.add('is-on');
-  }
-  function settlePill() {
-    if (!pill) return;
-    if (openBtn) movePill(openBtn);
-    else pill.classList.remove('is-on');
-  }
-  function openMega(btn) {
-    if (openBtn === btn) return;
-    if (openBtn) closeMega(false);
-    const panel = panelOf(btn);
-    if (!panel) return;
-    btn.setAttribute('aria-expanded', 'true');
-    panel.classList.add('is-open');
-    if (header) header.classList.add('has-mega');
-    openBtn = btn;
-    openedAt = performance.now();
-    movePill(btn);
-  }
-  function closeMega(returnFocus) {
-    if (!openBtn) return;
-    const btn = openBtn;
-    btn.setAttribute('aria-expanded', 'false');
-    const panel = panelOf(btn);
-    if (panel) panel.classList.remove('is-open');
-    if (header) header.classList.remove('has-mega');
-    openBtn = null;
-    if (returnFocus) btn.focus();
-  }
-
-  triggers.forEach(btn => {
-    const item = btn.closest('.nav__item');
-    btn.addEventListener('click', () => {
-      if (openBtn !== btn) openMega(btn);
-      else if (performance.now() - openedAt > 400) closeMega(false); // ignore the click that follows a hover-open
-    });
-    btn.addEventListener('pointerenter', () => movePill(btn));
-    btn.addEventListener('focus', () => movePill(btn));
-    if (!item) return;
-    item.addEventListener('pointerenter', e => {
-      if (e.pointerType !== 'mouse') return;
-      clearTimeout(hoverTimer);
-      hoverTimer = setTimeout(() => openMega(btn), openBtn ? 0 : 90);
-    });
-    item.addEventListener('pointerleave', e => {
-      if (e.pointerType !== 'mouse') return;
-      clearTimeout(hoverTimer);
-      hoverTimer = setTimeout(() => { if (openBtn === btn) { closeMega(false); settlePill(); } }, 240);
-    });
-  });
-  if (nav) {
-    nav.addEventListener('pointerleave', settlePill);
-    nav.addEventListener('focusout', e => {
-      if (!nav.contains(e.relatedTarget)) { closeMega(false); settlePill(); }
-    });
-  }
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && openBtn) { closeMega(true); settlePill(); }
-  });
-  document.addEventListener('pointerdown', e => {
-    if (openBtn && !e.target.closest('.nav')) { closeMega(false); settlePill(); }
-  });
-
-  /* ------------------------------------------------------------------------
-     3. Mobile menu: full screen, focus trap, Esc, scroll lock
+     2. Menu (burger at every width): full screen, focus trap, Esc, scroll lock
      ------------------------------------------------------------------------ */
   const burger = $('.burger');
   const mobileMenu = $('#mobile-menu');
@@ -182,11 +98,10 @@
       else if (e.shiftKey && active === first) { e.preventDefault(); last.focus(); }
       else if (!e.shiftKey && active === last) { e.preventDefault(); first.focus(); }
     });
-    media('(min-width: 1024px)').addEventListener('change', e => { if (e.matches) setMenu(false); });
   }
 
   /* ------------------------------------------------------------------------
-     4. In-page anchors: Lenis when active, native otherwise; focus follows
+     3. In-page anchors: Lenis when active, native otherwise; focus follows
      ------------------------------------------------------------------------ */
   function focusTarget(target) {
     const el = target.tagName === 'DETAILS' ? ($('summary', target) || target) : target;
@@ -211,15 +126,13 @@
     if (!target) return;
     e.preventDefault();
     if (menuOpen) setMenu(false);
-    closeMega(false);
-    settlePill();
     if (target.tagName === 'DETAILS') target.open = true;
     requestAnimationFrame(() => scrollToTarget(target));   // after the menu releases the scroll lock
     if (location.hash !== `#${id}`) history.pushState(null, '', `#${id}`);
   });
 
   /* ------------------------------------------------------------------------
-     5. FAQ: native <details>, URL hash follows the open question
+     4. FAQ: native <details>, URL hash follows the open question
      ------------------------------------------------------------------------ */
   const faqItems = $$('.faq__item');
   faqItems.forEach(d => d.addEventListener('toggle', () => {
@@ -273,9 +186,6 @@
     const hub = $('.wheel__hub');
     const phone = $('.phone');
     const list = $('.dir');
-    const cap = $('.hero__cap');
-    const countEl = $('[data-dir-count]');
-    const nounEl = $('[data-dir-noun]');
     const cards = $$('.wheel__card');
     const rows = $$('.dir__row');
     if (!hero || !stage || !frame || !rim || !hub || !phone || !list || !cards.length || rows.length < cards.length) return undefined;
@@ -288,7 +198,6 @@
     const rowOpacity = rows.map(() => -1);
     let geo = null;
     let ticking = false;
-    let lastCount = -1;
 
     stage.classList.add('is-live');
 
@@ -364,9 +273,7 @@
       const grow = inOut(smooth(0.02, 0.5, p));
       phone.style.opacity = smooth(0.02, 0.16, p).toFixed(3);
       phone.style.transform = `translate3d(${((cx - pcx) * (1 - grow)).toFixed(2)}px, ${((cy - pcy) * (1 - grow)).toFixed(2)}px, 0) scale(${lerp(0.2, 1, grow).toFixed(4)})`;
-      if (cap && wide) cap.style.opacity = smooth(0.8, 0.96, p).toFixed(3);
 
-      let landed = 0;
       for (let i = 0; i < N; i += 1) {
         const tg = targets[i];
         const a = appear[i].v;
@@ -390,12 +297,6 @@
           rowOpacity[tg.idx] = ro;
           tg.row.style.opacity = ro.toFixed(3);
         }
-        if (t > 0.97) landed += 1;
-      }
-      if (countEl && landed !== lastCount) {
-        lastCount = landed;
-        countEl.textContent = String(landed);
-        if (nounEl) nounEl.textContent = landed === 1 ? 'member' : 'members';
       }
     }
 
@@ -440,13 +341,10 @@
       unwatch();
       if (ticking) gsap.ticker.remove(tick);
       stage.classList.remove('is-live');
-      [frame, hub, phone, cap, ...cards, ...rows].forEach(el => {
-        if (!el) return;
+      [frame, hub, phone, ...cards, ...rows].forEach(el => {
         el.style.transform = '';
         el.style.opacity = '';
       });
-      if (countEl) countEl.textContent = String(N);
-      if (nounEl) nounEl.textContent = 'members';
     };
   }
 
@@ -464,7 +362,6 @@
     if (!section || !fig || !hand || !handWrap || !arc || !current || !nextFull) return undefined;
     const items = $$('.launchpad__item', fig);
     const ticks = items.map(item => $('.launchpad__tick', item));
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
 
     let lastKey = '';
     const setReadout = (month, label) => {
@@ -484,7 +381,7 @@
       gsap.set(arc, { opacity: 0 });
     }
     gsap.set(items, { '--done': 0 });
-    setReadout('Jan', 'Planning 2027–28');
+    setReadout('January', 'next year');
 
     // 1 July: the dial clicks and the rings swap
     const swap = gsap.timeline({ paused: true })
@@ -501,8 +398,8 @@
         const t = tl.time();
         if (t >= 6.05 && !swapped) { swapped = true; swap.play(); }
         else if (t < 5.95 && swapped) { swapped = false; swap.reverse(); }
-        if (t >= 6) setReadout('1 Jul', swapped ? 'Next year is current' : 'Changeover');
-        else setReadout(months[Math.min(5, Math.floor(t))], 'Planning 2027–28');
+        if (t >= 6) setReadout('1 July', 'changeover');
+        else setReadout('January', 'next year');
       },
       scrollTrigger: wide
         ? { trigger: section, start: 'top top', end: '+=160%', pin: true, scrub: lenisOn ? true : 0.5, anticipatePin: 1, refreshPriority: 1 }
@@ -512,7 +409,7 @@
     if (hasDraw) tl.to(arc, { drawSVG: '100%', duration: 6 }, 0);
     else tl.to(arc, { opacity: 1, duration: 6 }, 0);
     items.forEach((item, i) => {
-      const at = 0.6 + i * 0.9;
+      const at = 0.6 + i * 1.5;
       if (hasDraw && ticks[i]) tl.to(ticks[i], { drawSVG: '100%', duration: 0.3, ease: OUT }, at);
       tl.to(item, { '--done': 1, duration: 0.3 }, at + 0.15);   // tick draws, then the row tints
     });
@@ -521,7 +418,7 @@
     return () => {
       swap.kill();
       lastKey = '';
-      setReadout('1 Jul', 'Changeover');
+      setReadout('1 July', 'changeover');
     };
   }
 
@@ -639,7 +536,7 @@
     const news = all.map(r => $('.lv--new', r));
     const ticks = all.map(r => $('.ledger__ok path', r)).filter(Boolean);
     const okDots = all.map(r => $('.ledger__ok', r)).filter(Boolean);   // the mint disc shows only once its tick is earned
-    if (olds.includes(null) || news.includes(null)) return undefined;
+    if ([olds, news, all.map(r => $('.ledger__who', r)), all.map(r => $('.ledger__val', r))].some(list => list.includes(null))) return undefined;
 
     const reset = () => {
       gsap.set(news, { opacity: 0, yPercent: 0 });
@@ -658,7 +555,7 @@
     let pending = null;
     let started = false;
 
-    // after all four records are in step, quietly rewind both books for the next round
+    // after every record is in step, quietly rewind both books for the next round
     function rewind() {
       current = gsap.timeline({ onComplete: () => { pending = gsap.delayedCall(0.5, cycle); } })
         .to(news, { opacity: 0, duration: 0.4, ease: OUT })
@@ -674,7 +571,7 @@
       const box = books.getBoundingClientRect();
       const a = $('.ledger__val', src).getBoundingClientRect();
       const b = $('.ledger__val', dst).getBoundingClientRect();
-      token.textContent = $('.lv--new', src).textContent;
+      token.textContent = $('.ledger__who', src).textContent;   // the row's label: Members, Officers, Club details
       const tl = gsap.timeline({
         defaults: { immediateRender: false },
         onComplete: () => {
@@ -787,46 +684,29 @@
       const okPath = $('.qr__ok path', tile);
       const scan = $('.qr__scan', tile);
       const run = $('.qr__scanrun', tile);
-      const done = $('.qr__s--done', tile);
-      const waiting = $('.qr__s--wait', tile);
-      const before = $('.qr__n--a', tile);
-      const after = $('.qr__n--b', tile);
-      if (!ok || !scan || !run || !done || !waiting || !before || !after) return null;
+      if (!ok || !scan || !run) return null;
       const tl = loop()
         .to(ok, { opacity: 0, duration: 0.25 }, 0.3)
-        .to(done, { opacity: 0, duration: 0.2 }, '<')
-        .to(waiting, { opacity: 1, duration: 0.25 }, '<0.1')
-        .to(after, { opacity: 0, duration: 0.2 }, '<')
-        .to(before, { opacity: 1, duration: 0.2 }, '<')
         .to(scan, { opacity: 1, duration: 0.15 })
         .to(run, { yPercent: 100, duration: 0.9, ease: IN_OUT })
         .to(run, { yPercent: 0, duration: 0.7, ease: IN_OUT })
         .to(scan, { opacity: 0, duration: 0.15 })
         .to(ok, { opacity: 1, duration: 0.25 });
       if (okPath && hasDraw) tl.fromTo(okPath, { drawSVG: '0%' }, { drawSVG: '100%', duration: 0.4, ease: OUT }, '<');
-      tl.to(waiting, { opacity: 0, duration: 0.2 }, '<')
-        .to(done, { opacity: 1, duration: 0.25 }, '<0.1')
-        .to(before, { opacity: 0, yPercent: -50, duration: 0.25 }, '<')
-        .fromTo(after, { opacity: 0, yPercent: 50 }, { opacity: 1, yPercent: 0, duration: 0.3, ease: OUT }, '<');
       return tl.to({}, { duration: 1.6 });
     },
 
+    // lines land one by one and the total bar grows with each (no figures shown)
     dues(tile) {
       const lines = $$('.inv__lines li', tile);
       const sum = $('.inv__sum', tile);
       if (!lines.length || !sum) return null;
-      const total = { v: 0 };
-      const write = () => { sum.textContent = total.v.toFixed(2); };
       const tl = loop()
         .to(lines, { opacity: 0, duration: 0.2, stagger: 0.03 }, 0.3)
-        .to(sum, { opacity: 0, duration: 0.2 }, '<')
-        .call(() => { total.v = 0; write(); })
-        .to(sum, { opacity: 1, duration: 0.2 });
-      let running = 0;
-      lines.forEach(line => {
-        running += Number(line.dataset.amount) || 0;
+        .to(sum, { scaleX: 0, duration: 0.2 }, '<');
+      lines.forEach((line, i) => {
         tl.fromTo(line, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.35, ease: OUT }, '+=0.15')
-          .to(total, { v: running, duration: 0.45, ease: OUT, onUpdate: write }, '<');
+          .to(sum, { scaleX: (i + 1) / lines.length, duration: 0.45, ease: OUT }, '<');
       });
       return tl.to({}, { duration: 1.6 });
     },
@@ -835,24 +715,15 @@
       const bubble = $('.ch__bubble', tile);
       const t1 = $('.ch__t1', tile);
       const t2 = $('.ch__t2', tile);
-      const read = $('.ch__s--read', tile);
-      const sent = $('.ch__s--sent', tile);
-      const deliv = $('.ch__s--deliv', tile);
-      if (!bubble || !t1 || !t2 || !read || !sent || !deliv) return null;
+      if (!bubble || !t1 || !t2) return null;
       const grey = 'rgba(14, 23, 38, 0.38)';
       return loop()
         .to(bubble, { opacity: 0, y: 6, duration: 0.25 }, 0.3)
-        .to(read, { opacity: 0, duration: 0.2 }, '<')
         .set([t1, t2], { stroke: grey })
         .set(t2, { opacity: 0 })
         .to(bubble, { opacity: 1, y: 0, duration: 0.45, ease: OUT })
-        .to(sent, { opacity: 1, duration: 0.2 }, '<')
         .to(t2, { opacity: 1, duration: 0.2 }, '+=0.7')
-        .to(sent, { opacity: 0, duration: 0.15 }, '<')
-        .to(deliv, { opacity: 1, duration: 0.2 }, '<0.05')
         .to([t1, t2], { stroke: '#2550F5', duration: 0.3 }, '+=0.8')
-        .to(deliv, { opacity: 0, duration: 0.15 }, '<')
-        .to(read, { opacity: 1, duration: 0.2 }, '<0.05')
         .to({}, { duration: 1.6 });
     },
 
@@ -887,36 +758,19 @@
         .to({}, { duration: 1.8 });
     },
 
+    // the site flips through the doc's languages; the page skeleton blinks with each switch
     web(tile) {
       const lang = $('.wb__lang', tile);
-      const date = $('.wb__date', tile);
-      if (!lang || !date) return null;
-      const day = new Date(2027, 2, 11);
-      const locales = [
-        ['en-GB', 'en', 'English'], ['es-ES', 'es', 'Español'], ['fr-FR', 'fr', 'Français'], ['de-DE', 'de', 'Deutsch'],
-        ['it-IT', 'it', 'Italiano'], ['ja-JP', 'ja', '日本語'], ['ko-KR', 'ko', '한국어'], ['pt-PT', 'pt', 'Português'],
-      ];
-      const fallback = date.textContent;
-      const texts = locales.map(([loc]) => {
-        try {
-          return new Intl.DateTimeFormat(loc, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(day);
-        } catch (err) {
-          return fallback;
-        }
-      });
-      const show = i => {
-        const [, code, name] = locales[i];
-        lang.textContent = name;
-        lang.lang = code;
-        date.textContent = texts[i];
-        date.lang = code;
-      };
+      if (!lang) return null;
+      const names = ['English', 'Spanish', 'French', 'German', 'Italian', 'Japanese', 'Korean', 'Portuguese'];
+      const swap = [lang, ...$$('.wb__club, .wb__lines', tile)];
+      const show = i => { lang.textContent = names[i]; };
       show(0);
       const tl = loop(0.4);
-      for (let i = 1; i <= locales.length; i += 1) {
-        tl.to([lang, date], { opacity: 0, y: -4, duration: 0.18, ease: 'power1.in' }, i === 1 ? 0.6 : '+=0.9')
-          .call(show, [i % locales.length])
-          .fromTo([lang, date], { opacity: 0, y: 4 }, { opacity: 1, y: 0, duration: 0.28, ease: OUT });
+      for (let i = 1; i <= names.length; i += 1) {
+        tl.to(swap, { opacity: 0, y: -4, duration: 0.18, ease: 'power1.in' }, i === 1 ? 0.6 : '+=0.9')
+          .call(show, [i % names.length])
+          .fromTo(swap, { opacity: 0, y: 4 }, { opacity: 1, y: 0, duration: 0.28, ease: OUT });
       }
       return tl.to({}, { duration: 0.8 });
     },
@@ -959,7 +813,7 @@
     return () => offs.forEach(off => off());
   }
 
-  /* ---------- Languages: endonyms cycle in their own scripts ---------- */
+  /* ---------- Languages: the eight language names cycle ---------- */
   function languages() {
     const stage = $('.langs__stage');
     const words = $$('.langs__word');
@@ -1110,28 +964,23 @@
     return () => offs.forEach(off => off());
   }
 
-  /* ---------- Static ring (reduced motion): members the phone or Fig. 1 would cover step aside ---------- */
+  /* ---------- Static ring (reduced motion): members the phone would cover step aside ---------- */
   // CSS hides the usual five on wide screens; short wide screens (1280×720) also put cards under the
-  // phone's corners and under the caption, so measure instead of guessing.
+  // phone's corners, so measure instead of guessing.
   function staticRing() {
     const cards = $$('.wheel__card');
-    const blockers = [$('.phone'), $('.hero__cap')].filter(Boolean);
-    if (!cards.length || !blockers.length) return undefined;
-    const inkBox = el => {   // union of the text runs only ("Fig. 1" is display:block, so a plain range spans the whole box)
-      const rs = [...el.childNodes].flatMap(n => { const range = document.createRange(); range.selectNodeContents(n); return [...range.getClientRects()]; }).filter(r => r.width);
-      if (!rs.length) return el.getBoundingClientRect();
-      return { left: Math.min(...rs.map(r => r.left)), right: Math.max(...rs.map(r => r.right)), top: Math.min(...rs.map(r => r.top)), bottom: Math.max(...rs.map(r => r.bottom)) };
-    };
+    const phone = $('.phone');
+    if (!cards.length || !phone) return undefined;
     const fit = () => {
-      const boxes = blockers.map(b => (b.classList.contains('phone') ? b.getBoundingClientRect() : inkBox(b)));   // the caption is right-aligned: test its text, not its box
+      const b = phone.getBoundingClientRect();
       cards.forEach(card => {
         const r = card.getBoundingClientRect();
-        const hit = boxes.some(b => r.right > b.left && r.left < b.right && r.bottom > b.top && r.top < b.bottom);
+        const hit = r.right > b.left && r.left < b.right && r.bottom > b.top && r.top < b.bottom;
         card.style.visibility = hit ? 'hidden' : '';
       });
     };
     fit();
-    fontsReady(2000).then(fit);   // the caption can reflow once Inter Tight arrives
+    fontsReady(2000).then(fit);   // the hero copy can reflow once the fonts arrive, moving the wheel
     window.addEventListener('resize', fit);
     return () => {
       window.removeEventListener('resize', fit);

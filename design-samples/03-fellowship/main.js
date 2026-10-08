@@ -44,89 +44,7 @@
   window.addEventListener('scroll', syncHeader, { passive: true });
   syncHeader();
 
-  /* Mega menus (desktop) + sliding hover pill */
-  const headerInner = $('.header__inner');
-  const pill = $('[data-nav-pill]');
-  const navItems = $$('.nav__item');
-  let openItem = null;
-  let hoverTimer = 0;
-  let hoverOpenedAt = 0;
-
-  const movePill = (btn) => {
-    if (!pill || !headerInner || !btn) return;
-    const r = headerInner.getBoundingClientRect();
-    const b = btn.getBoundingClientRect();
-    pill.style.setProperty('--pl', `${b.left - r.left}px`);
-    pill.style.setProperty('--pr', `${r.right - b.right}px`);
-    pill.classList.add('is-on');
-  };
-  const hidePill = () => {
-    if (!pill) return;
-    if (openItem) movePill($('.nav__btn', openItem));
-    else pill.classList.remove('is-on');
-  };
-
-  function setMega(item, open) {
-    const btn = item && $('.nav__btn', item);
-    const panel = item && $('.mega', item);
-    if (!btn || !panel) return;
-    if ((btn.getAttribute('aria-expanded') === 'true') === open) return;
-    btn.setAttribute('aria-expanded', String(open));
-    if (open) {
-      if (openItem && openItem !== item) setMega(openItem, false);
-      openItem = item;
-      movePill(btn);
-      panel.classList.add('is-open');
-      if (animateUI()) {
-        gsap.fromTo(panel, { height: 0, autoAlpha: 0 },
-          { height: 'auto', autoAlpha: 1, duration: 0.32, ease: EASE_OUT, overwrite: true, clearProps: 'height' });
-        gsap.fromTo($$('.mega__link, .mega__card', panel), { y: 10, autoAlpha: 0 },
-          { y: 0, autoAlpha: 1, duration: 0.4, stagger: 0.03, ease: EASE_OUT, delay: 0.06, overwrite: true, clearProps: 'transform' });
-      }
-    } else {
-      if (openItem === item) openItem = null;
-      const done = () => {
-        panel.classList.remove('is-open');
-        if (gsap) gsap.set(panel, { clearProps: 'height,opacity,visibility' });
-      };
-      if (animateUI()) gsap.to(panel, { height: 0, autoAlpha: 0, duration: 0.22, ease: EASE_INOUT, overwrite: true, onComplete: done });
-      else done();
-    }
-  }
-  const closeMega = () => { if (openItem) setMega(openItem, false); hidePill(); };
-
-  navItems.forEach((item) => {
-    const btn = $('.nav__btn', item);
-    if (!btn) return;
-    btn.addEventListener('click', () => {
-      const isOpen = btn.getAttribute('aria-expanded') === 'true';
-      if (isOpen && Date.now() - hoverOpenedAt < 600) return; // hover just opened it; a click should not shut it
-      setMega(item, !isOpen);
-      if (isOpen) hidePill();
-    });
-    btn.addEventListener('pointerenter', () => movePill(btn));
-    btn.addEventListener('focus', () => movePill(btn));
-    item.addEventListener('pointerenter', (e) => {
-      if (e.pointerType !== 'mouse') return;
-      clearTimeout(hoverTimer);
-      hoverTimer = setTimeout(() => {
-        if (btn.getAttribute('aria-expanded') !== 'true') { hoverOpenedAt = Date.now(); setMega(item, true); }
-      }, openItem ? 0 : 90);
-    });
-    item.addEventListener('pointerleave', (e) => {
-      if (e.pointerType !== 'mouse') return;
-      clearTimeout(hoverTimer);
-      hoverTimer = setTimeout(() => { setMega(item, false); hidePill(); }, 220);
-    });
-    item.addEventListener('focusout', (e) => {
-      if (!item.contains(e.relatedTarget)) { setMega(item, false); hidePill(); }
-    });
-  });
-  const navList = $('[data-nav]');
-  if (navList) navList.addEventListener('pointerleave', hidePill);
-  doc.addEventListener('pointerdown', (e) => { if (openItem && !openItem.contains(e.target)) closeMega(); });
-
-  /* Full-screen menu (below 1024px): disclosure + focus trap + scroll lock */
+  /* Full-screen menu: disclosure + focus trap + scroll lock */
   const burger = $('[data-burger]');
   const menu = $('[data-menu]');
   let menuOpen = false;
@@ -139,8 +57,7 @@
     if (!burger || !menu || open === menuOpen) return;
     menuOpen = open;
     burger.setAttribute('aria-expanded', String(open));
-    const label = $('[data-burger-label]', burger);
-    if (label) label.textContent = open ? 'Close menu' : 'Open menu';
+    burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
     root.classList.toggle('menu-open', open);
     if (open) {
       if (window.lenis) window.lenis.stop();
@@ -151,7 +68,7 @@
           gsap.fromTo(menu, { clipPath: `circle(0px at ${at})` },
             { clipPath: `circle(150% at ${at})`, duration: 0.65, ease: EASE_INOUT, overwrite: true, clearProps: 'clipPath' });
           // opacity, not autoAlpha: visibility:hidden links cannot take the focus handed to the first one below
-          gsap.fromTo($$('.menu__label, .menu__link, .menu__ctas > *', menu), { y: 28, opacity: 0 },
+          gsap.fromTo($$('.menu__link, .menu__ctas > *', menu), { y: 28, opacity: 0 },
             { y: 0, opacity: 1, duration: 0.6, ease: SPRING, stagger: 0.035, delay: 0.12, overwrite: true, clearProps: 'transform' });
         } else {
           gsap.fromTo(menu, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.16, overwrite: true, clearProps: 'opacity,visibility' });
@@ -168,16 +85,10 @@
     }
   }
   if (burger) burger.addEventListener('click', () => setMenu(!menuOpen));
-  media('(min-width: 1024px)').addEventListener('change', (e) => { if (e.matches) setMenu(false, false); });
 
   doc.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-      if (menuOpen) { setMenu(false); return; }
-      if (openItem) {
-        const btn = $('.nav__btn', openItem);
-        closeMega();
-        if (btn) btn.focus();
-      }
+      if (menuOpen) setMenu(false);
       return;
     }
     if (e.key === 'Tab' && menuOpen) {
@@ -207,7 +118,6 @@
     if (!el) return;
     e.preventDefault();
     setMenu(false, false);
-    closeMega();
     if (el.matches('details')) el.open = true;
     goTo(el);
     if (location.hash !== a.hash) history.pushState(null, '', a.hash);
@@ -329,10 +239,8 @@
     }
 
     /* Hero intro: the H1 is never hidden (it is the LCP); everything around it arrives */
-    const kicker = $('.hero__kicker');
-    const intro = $$('.hero [data-intro]').filter((el) => el !== kicker);
+    const intro = $$('.hero [data-intro]');
     const heroTl = gsap.timeline({ defaults: { ease: EASE_OUT } });
-    if (kicker) heroTl.fromTo(kicker, { autoAlpha: 0, scale: 0.5 }, { autoAlpha: 1, scale: 1, duration: 0.7, ease: SPRING, clearProps: 'transform' }, 0.05);
     if (intro.length) heroTl.fromTo(intro, { autoAlpha: 0, y: 28 }, { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.08, clearProps: 'transform' }, 0.12);
     const heroUnderline = $('.hero .scribble path');
     if (heroUnderline && hasDraw) heroTl.fromTo(heroUnderline, drawFrom(), drawTo({ duration: 1, ease: EASE_INOUT }), 0.45);
@@ -448,11 +356,8 @@
     if (!N) return undefined;
     const STEP = 360 / N;
     const offs = [];
-    const members = avatars.map((el) => ({
-      el, name: el.dataset.name, role: el.dataset.role, club: el.dataset.club,
-      email: el.dataset.email, phone: el.dataset.phone, c: el.dataset.c, initials: el.textContent.trim(),
-    }));
-    const describe = (m) => `${m.name}, ${m.role}, ${m.club}. Email ${m.email}, phone ${m.phone}.`;
+    const members = avatars.map((el) => ({ el, email: el.dataset.email, wa: el.dataset.wa, c: el.dataset.c }));
+    const describe = (m) => `Email ${m.email}, WhatsApp ${m.wa}.`; // screen readers only: the phone mock is aria-hidden
 
     /* Geometry comes from CSS: --marker per layout; radius measured from the DOM */
     const M = parseFloat(getComputedStyle(visual).getPropertyValue('--marker')) || (side ? 180 : 270);
@@ -471,12 +376,12 @@
     const rotFor = (i, from = getRot()) => from + ((((M - i * STEP - from) % 360) + 540) % 360 - 180);
     const snapRot = (v) => M + Math.round((v - M) / STEP) * STEP;
 
-    /* Phone profile card */
+    /* Phone profile card: the avatar colour and the two privacy choices follow the marker */
     const prof = {
-      avatar: $('[data-p-avatar]'), name: $('[data-p-name]'), role: $('[data-p-role]'), club: $('[data-p-club]'),
-      email: $('[data-p-email]'), phone: $('[data-p-phone]'), actEmail: $('[data-p-act-email]'), actPhone: $('[data-p-act-phone]'),
+      avatar: $('[data-p-avatar]'), email: $('[data-p-email]'), wa: $('[data-p-wa]'),
+      actEmail: $('[data-p-act-email]'), actWa: $('[data-p-act-wa]'),
     };
-    const popTargets = [prof.name, prof.role && prof.role.parentElement, prof.email, prof.phone].filter(Boolean);
+    const popTargets = [$('[data-p-name]'), $('[data-p-meta]'), prof.email, prof.wa].filter(Boolean);
     const pin = $('[data-marker-pin]');
     const status = $('[data-wheel-status]');
     let active = -1;
@@ -488,14 +393,8 @@
       heroIndex = i;
       const m = members[i];
       members.forEach((mem, k) => mem.el.classList.toggle('is-active', k === i));
-      if (prof.avatar) { prof.avatar.dataset.c = m.c; prof.avatar.textContent = m.initials; }
-      if (prof.name) prof.name.textContent = m.name;
-      if (prof.role) prof.role.textContent = m.role;
-      if (prof.club) prof.club.textContent = m.club;
-      if (prof.email) { prof.email.dataset.state = m.email; prof.email.textContent = `Email ${m.email}`; }
-      if (prof.phone) { prof.phone.dataset.state = m.phone; prof.phone.textContent = `Phone ${m.phone}`; }
-      if (prof.actEmail) prof.actEmail.dataset.state = m.email;
-      if (prof.actPhone) prof.actPhone.dataset.state = m.phone;
+      if (prof.avatar) prof.avatar.dataset.c = m.c;
+      [[prof.email, m.email], [prof.actEmail, m.email], [prof.wa, m.wa], [prof.actWa, m.wa]].forEach(([el, state]) => { if (el) el.dataset.state = state; });
       wheel.setAttribute('aria-valuenow', String(i + 1));
       wheel.setAttribute('aria-valuetext', describe(m));
       if (motion && !first) {
@@ -546,7 +445,7 @@
     let userPaused = false;
     let heroVisible = false;
     let hovering = false;
-    let holding = false; // focus on the wheel or the search field
+    let holding = false; // focus on the wheel
     let dragging = false;
     const canIdle = () => motion && !userPaused && heroVisible && !doc.hidden && !hovering && !holding && !dragging;
     const killIdle = () => { if (idleCall) idleCall.kill(); idleCall = null; };
@@ -589,39 +488,14 @@
       spinTo(to, { speak: false }); // the slider's aria-valuetext is announced on its own
     });
 
-    /* Search members: the wheel spins to the first match */
-    const input = $('#member-search');
-    const hint = $('[data-search-hint]');
-    const norm = (s) => s.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase(); // accent-insensitive: Maria finds María
-    let searchTimer = 0;
-    listen(offs, input, 'input', () => {
-      clearTimeout(searchTimer);
-      searchTimer = setTimeout(() => {
-        const raw = input.value.trim();
-        const q = norm(raw);
-        if (!q) { if (hint) hint.textContent = ''; return; }
-        const i = members.findIndex((m) => norm(m.name).includes(q) || norm(m.club).includes(q));
-        if (i < 0) {
-          if (hint) hint.textContent = `No one called “${raw}” in this sample roster. Try “Kenji” or “Porto”.`;
-          return;
-        }
-        if (hint) hint.textContent = '';
-        interacted();
-        spinTo(i);
-      }, 250);
-    });
-    offs.push(() => clearTimeout(searchTimer));
-
-    /* Hold the idle spin while someone is looking at or typing into the widget */
+    /* Hold the idle spin while someone is looking at or using the widget */
     const holdZones = [wheel, $('.phone', visual)].filter(Boolean);
     holdZones.forEach((z) => {
       listen(offs, z, 'pointerenter', (e) => { if (e.pointerType === 'mouse') { hovering = true; killIdle(); } });
       listen(offs, z, 'pointerleave', (e) => { if (e.pointerType === 'mouse') { hovering = false; scheduleIdle(2.5); } });
     });
-    [wheel, input].filter(Boolean).forEach((el) => {
-      listen(offs, el, 'focus', () => { holding = true; killIdle(); });
-      listen(offs, el, 'blur', () => { holding = false; scheduleIdle(4); });
-    });
+    listen(offs, wheel, 'focus', () => { holding = true; killIdle(); });
+    listen(offs, wheel, 'blur', () => { holding = false; scheduleIdle(4); });
 
     /* Drag / flick with inertia, snapping to a member */
     const hasInertia = !!window.InertiaPlugin;
@@ -770,27 +644,23 @@
       return () => offs.forEach((off) => off());
     }
 
-    const DATA = {
-      in: [['Member', 'Kenji Sato · RC Osaka Bay', 'members'], ['Officer', 'President elect · Meera Iyer', 'officers'], ['Club details', 'RC Osaka Bay · Thursdays', 'club']],
-      out: [['New member', 'Ana Souza · RC Porto Ribeira', 'members'], ['Officer change', "Next year's secretary", 'officers'], ['Meeting moved', 'Thu 7:30 pm · Clubhouse', 'club']],
-    };
+    // [postcard label, the card row it lands on]
+    const ITEMS = [['Members', 'members'], ['Officers', 'officers'], ['Club details', 'club']];
     const pulse = (card, row) => {
       const li = $(`[data-row="${row}"]`, card);
       const state = li && $('.sync-card__state', li);
       if (!li || !state) return;
       gsap.timeline()
-        .call(() => { state.textContent = 'Updated'; })
         .fromTo(li, { backgroundColor: '#FFE1A1' }, { backgroundColor: COLORS.cream2, duration: 1.2, ease: 'power2.out' }, 0)
-        .fromTo(state, { scale: 0.6 }, { scale: 1, duration: 0.45, ease: SPRING }, 0)
-        .call(() => { state.textContent = 'In step'; }, null, 1.2);
+        .fromTo(state, { scale: 0.6 }, { scale: 1, duration: 0.45, ease: SPRING }, 0);
     };
     const flight = (pc, path, item, toCard) => gsap.timeline()
-      .call(() => { $('[data-pc-type]', pc).textContent = item[0]; $('[data-pc-text]', pc).textContent = item[1]; }, null, 0)
+      .call(() => { const type = $('[data-pc-type]', pc); if (type) type.textContent = item[0]; }, null, 0)
       .fromTo(pc, { autoAlpha: 0, scale: 0.5 }, { autoAlpha: 1, scale: 1, duration: 0.35, ease: SPRING }, 0)
       .to(pc, { motionPath: mp(path, 1), duration: 1.7, ease: 'power1.inOut' }, 0)
       .fromTo(pc, { rotation: -7 }, { rotation: 7, duration: 1.7, ease: 'sine.inOut' }, 0)
       .to(pc, { autoAlpha: 0, scale: 0.6, duration: 0.25, ease: 'power2.in' }, 1.5)
-      .call(() => pulse(toCard, item[2]), null, 1.6);
+      .call(() => pulse(toCard, item[1]), null, 1.6);
 
     let master = null;
     const build = () => {
@@ -799,8 +669,8 @@
       layoutArcs();
       master = gsap.timeline({ paused: true, repeat: -1 });
       for (let k = 0; k < 3; k += 1) {
-        master.add(flight(pcIn, arcIn, DATA.in[k], cardROW), k * 2.2);
-        master.add(flight(pcOut, arcOut, DATA.out[k], cardRI), k * 2.2 + 1.1);
+        master.add(flight(pcIn, arcIn, ITEMS[k], cardROW), k * 2.2);
+        master.add(flight(pcOut, arcOut, ITEMS[(k + 1) % 3], cardRI), k * 2.2 + 1.1);
       }
       if (wasRunning) master.play();
     };
@@ -825,16 +695,15 @@
     const items = $$('[data-launch-item]', stage);
     const monthEl = $('[data-dial-month]', dial);
     const capEl = $('[data-dial-caption]', dial);
-    const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', '1 Jul'];
     const SWAP_OUT = 262 / 168;
     const SWAP_IN = 168 / 262;
-    let shown = -1;
+    let shown = null;
     const setReadout = (angle) => {
-      const k = gsap.utils.clamp(0, 6, Math.floor((angle - 180) / 30 + 1e-6)); // the month the hand has reached
-      if (k === shown) return;
-      shown = k;
-      if (monthEl) monthEl.textContent = MONTHS[k];
-      if (capEl) capEl.textContent = k === 6 ? 'Changeover' : 'Planning next year';
+      const july = angle >= 360 - 1e-4; // the hand has reached 1 July
+      if (july === shown) return;
+      shown = july;
+      if (monthEl) monthEl.textContent = july ? '1 July' : 'Next year';
+      if (capEl) capEl.textContent = july ? 'Changeover' : 'from January';
     };
     // The hand and rings pivot on the dial centre through native SVG transforms written from plain numbers.
     // (GSAP transforms on these groups re-parse their matrix on every refresh; rotation 360 decomposes as 0 and
@@ -943,27 +812,24 @@
     inv(q) {
       const lines = q('line'); const [sum] = q('sum'); const [chip] = q('chip');
       if (!lines.length || !sum || !chip) return null;
-      const total = { v: 225.5 };
-      const write = () => { sum.textContent = `€${total.v.toFixed(2)}`; };
       return gsap.timeline({ paused: true, repeat: -1, repeatDelay: 0.3 })
         .set(lines, { autoAlpha: 0, x: -12 }).set(chip, { autoAlpha: 0, scale: 0.5, rotation: 5 })
         .to(lines, { autoAlpha: 1, x: 0, duration: 0.35, stagger: 0.22, ease: EASE_OUT }, 0.2)
-        .fromTo(total, { v: 0 }, { v: 225.5, duration: 1.1, ease: 'power2.out', onUpdate: write, onStart: write }, 0.3)
+        .fromTo(sum, { scaleX: 0 }, { scaleX: 1, duration: 1.1, ease: 'power2.out' }, 0.3)
         .to(chip, { autoAlpha: 1, scale: 1, rotation: 5, duration: 0.5, ease: 'back.out(2)' }, 1.5)
         .addLabel('done', 2.1)
         .to({}, { duration: 1.5 });
     },
     chat(q, tile) {
-      const [msg] = q('msg'); const [t2] = q('t2'); const [read] = q('read');
+      const [msg] = q('msg'); const [t2] = q('t2');
       const ticks = $$('.msg__ticks svg', tile);
-      if (!msg || !t2 || !read || !ticks.length) return null;
+      if (!msg || !t2 || !ticks.length) return null;
       return gsap.timeline({ paused: true, repeat: -1, repeatDelay: 0.3 })
         .set(msg, { autoAlpha: 0, y: 16, scale: 0.9 }).set(t2, { autoAlpha: 0 })
-        .set(ticks, { stroke: COLORS.muted }).set(read, { autoAlpha: 0, x: -6 })
+        .set(ticks, { stroke: COLORS.muted })
         .to(msg, { autoAlpha: 1, y: 0, scale: 1, duration: 0.5, ease: SPRING }, 0.2)
         .to(t2, { autoAlpha: 1, duration: 0.2 }, 1)
         .to(ticks, { stroke: COLORS.azure, duration: 0.3 }, 1.7)
-        .to(read, { autoAlpha: 1, x: 0, duration: 0.3 }, 1.75)
         .addLabel('done', 2.3)
         .to({}, { duration: 1.5 });
     },
@@ -1026,7 +892,7 @@
       const q = (key) => $$(`[data-d="${key}"]`, tile);
       const tl = make ? make(q, tile) : null;
       if (!tl) return;
-      // suppressEvents = false: callback-driven text (the invoice total) must follow every jump
+      // start on the finished frame, which is the static HTML state
       tl.pause('done', false);
       let toDone = null;
       const play = () => { if (toDone) toDone.kill(); tl.restart(false, false); };
@@ -1178,16 +1044,11 @@
     const roller = trail && $('[data-roller]', trail);
     const stones = trail ? $$('.stone', trail) : [];
     if (!line || !done || !roller || stones.length < 2 || !window.MotionPathPlugin) return undefined;
-    const dayEl = $('[data-trail-day]', trail);
     const noteEl = $('[data-trail-note]', trail);
-    const oldEl = $('[data-trail-old-text]', trail);
     const stamp = $('[data-stamp]', trail);
     const sig = $('[data-signature]', trail);
-    const NOTES = [
-      'Roster and officers arrive through My Rotary', 'Importing attendance history', 'Importing balances',
-      'Importing contacts', 'Importing events', 'Importing documents', 'Reconciliation report ready',
-      'Secretary checks counts and balances', 'Your old system is still running', 'Report signed. ROW goes live.',
-    ];
+    // The doc's own terms, in its order, as the wheel rolls; the last one is the static HTML state
+    const NOTES = ['My Rotary', 'Attendance history', 'Balances', 'Contacts', 'Events', 'Documents', 'Your secretary signs a reconciliation report'];
     // No lilac (the panel colour, the stone would vanish) and no cream (the resting colour, no change shows).
     const STONE_COLORS = [COLORS.coral, COLORS.sky, COLORS.mint, COLORS.marigold, COLORS.coral, COLORS.sky, COLORS.mint, COLORS.marigold, COLORS.coral, COLORS.marigold];
 
@@ -1217,7 +1078,7 @@
     const mp = (end) => ({ path: line, align: line, alignOrigin: [0.5, 0.5], start: 0, end });
 
     if (!motion || !ST) {
-      // Parked on Day 10 by plain x/y: a motionPath set re-aligns from the transform it left last time, so
+      // Parked on the last stone by plain x/y: a motionPath set re-aligns from the transform it left last time, so
       // repeating it on every refresh compounded the offset (the roller ended up thousands of px away).
       const park = () => {
         const end = line.getPointAtLength(line.getTotalLength());
@@ -1229,19 +1090,17 @@
       return () => offs.forEach((off) => off());
     }
 
-    let day = -1;
-    const setDay = (p) => {
-      const d = Math.min(10, Math.round(p * 9) + 1);
-      if (d === day) return;
-      day = d;
-      if (dayEl) dayEl.textContent = `Day ${d} of 10`;
-      if (noteEl) noteEl.textContent = NOTES[d - 1];
-      if (oldEl) oldEl.textContent = d < 10 ? 'Old system still running' : 'ROW is live';
+    let shown = -1;
+    const setNote = (p) => {
+      const i = Math.min(NOTES.length - 1, Math.round(p * (NOTES.length - 1)));
+      if (i === shown) return;
+      shown = i;
+      if (noteEl) noteEl.textContent = NOTES[i];
     };
     const ROLL = 10;
     gsap.set(roller, { motionPath: mp(0) });
     const tl = gsap.timeline({ defaults: { ease: 'none' } });
-    tl.to(roller, { motionPath: mp(1), duration: ROLL, onUpdate() { setDay(this.progress()); } }, 0)
+    tl.to(roller, { motionPath: mp(1), duration: ROLL, onUpdate() { setNote(this.progress()); } }, 0)
       .fromTo(roller, { rotation: 0 }, { rotation: () => (line.getTotalLength() / (Math.PI * (roller.offsetWidth || 52))) * 360, duration: ROLL }, 0);
     if (hasDraw) tl.fromTo(done, drawFrom(), drawTo({ duration: ROLL }), 0);
     stones.forEach((st, i) => {
@@ -1254,7 +1113,7 @@
     tl.to({}, { duration: 0.3 });
     ST.create({
       animation: tl, trigger: trail, start: 'top 75%', end: 'bottom 72%', scrub: 0.6, invalidateOnRefresh: true,
-      onRefresh: () => setDay(Math.min(1, tl.time() / ROLL)), // refresh restores progress silently; resync the readout
+      onRefresh: () => setNote(Math.min(1, tl.time() / ROLL)), // refresh restores progress silently; resync the readout
     });
     return () => offs.forEach((off) => off());
   }));

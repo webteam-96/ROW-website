@@ -20,7 +20,6 @@
   const mqReduce = matchMedia('(prefers-reduced-motion: reduce)');
   const mqFine = matchMedia('(pointer: fine)');
   const mqHover = matchMedia('(hover: hover)');
-  const mqDesktop = matchMedia('(min-width: 1024px)');
   const reduced = () => mqReduce.matches;
   const dur = d => (reduced() ? 0 : d);
 
@@ -115,82 +114,7 @@
   addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  /* ---------- desktop nav: sliding pill + mega menus ---------- */
-  const nav = $('.nav');
-  const navList = $('.nav-list');
-  const pill = $('.nav-pill');
-  const triggers = $$('.nav-trigger');
-  let openBtn = null;
-  let openedAt = 0;
-  let openTimer = 0;
-  let closeTimer = 0;
-  const panelOf = btn => document.getElementById(btn.getAttribute('aria-controls'));
-
-  function movePill(el) {
-    if (!pill || !el) return;
-    gsap.to(pill, { x: el.offsetLeft, width: el.offsetWidth, autoAlpha: 1, duration: dur(0.32), ease: OUT, overwrite: true });
-  }
-  function restPill() {
-    if (!pill) return;
-    if (openBtn) movePill(openBtn);
-    else gsap.to(pill, { autoAlpha: 0, duration: dur(0.2), overwrite: true });
-  }
-  function openMega(btn) {
-    clearTimeout(closeTimer);
-    if (openBtn === btn) return;
-    if (openBtn) closeMega(true);
-    const panel = panelOf(btn);
-    if (!panel || !header) return;
-    openBtn = btn;
-    openedAt = performance.now();
-    btn.setAttribute('aria-expanded', 'true');
-    header.classList.add('mega-open');
-    panel.hidden = false;
-    gsap.fromTo(panel, { height: 0, autoAlpha: 0 }, { height: 'auto', autoAlpha: 1, duration: dur(0.32), ease: OUT, overwrite: true, clearProps: 'height' });
-    gsap.fromTo($$('.mega-lead, .mega-link', panel), { y: 10, autoAlpha: 0 },
-      { y: 0, autoAlpha: 1, duration: dur(0.4), stagger: reduced() ? 0 : 0.035, delay: dur(0.06), ease: OUT, overwrite: true, clearProps: 'transform' });
-    movePill(btn);
-  }
-  function closeMega(instant) {
-    clearTimeout(openTimer);
-    if (!openBtn) return;
-    const btn = openBtn;
-    const panel = panelOf(btn);
-    openBtn = null;
-    btn.setAttribute('aria-expanded', 'false');
-    if (header) header.classList.remove('mega-open');
-    if (!panel) return;
-    gsap.to(panel, {
-      height: 0, autoAlpha: 0, duration: instant ? 0 : dur(0.24), ease: IN_OUT, overwrite: true,
-      onComplete: () => { panel.hidden = true; gsap.set(panel, { clearProps: 'height,opacity,visibility' }); }
-    });
-  }
-
-  triggers.forEach(btn => {
-    btn.addEventListener('click', () => {
-      if (openBtn !== btn) openMega(btn);
-      else if (performance.now() - openedAt > 400) { closeMega(); restPill(); }
-    });
-    btn.addEventListener('pointerenter', e => {
-      if (e.pointerType !== 'mouse') return;
-      movePill(btn);
-      clearTimeout(openTimer);
-      openTimer = setTimeout(() => openMega(btn), openBtn ? 0 : 110);
-    });
-    btn.addEventListener('pointerleave', () => clearTimeout(openTimer));
-    btn.addEventListener('focus', () => movePill(btn));
-  });
-  if (navList) navList.addEventListener('pointerleave', restPill);
-  if (header) {
-    header.addEventListener('pointerleave', e => {
-      if (e.pointerType === 'mouse' && openBtn) closeTimer = setTimeout(() => { closeMega(); restPill(); }, 260);
-    });
-    header.addEventListener('pointerenter', () => clearTimeout(closeTimer));
-  }
-  if (nav) nav.addEventListener('focusout', e => { if (openBtn && !nav.contains(e.relatedTarget)) { closeMega(); restPill(); } });
-  document.addEventListener('pointerdown', e => { if (openBtn && !e.target.closest('.nav')) { closeMega(); restPill(); } });
-
-  /* ---------- full-screen menu below 1024px ---------- */
+  /* ---------- full-screen menu: the site nav at every width ---------- */
   const burger = $('.burger');
   const menu = $('#mobile-menu');
   const main = $('#main');
@@ -219,10 +143,7 @@
       });
     }
   }
-  function closeMenus() {
-    if (openBtn) { closeMega(); restPill(); }
-    setMenu(false);
-  }
+  function closeMenus() { setMenu(false); }
   if (burger) burger.addEventListener('click', () => setMenu(!menuOpen));
   if (header) header.addEventListener('keydown', e => {
     if (!menuOpen || e.key !== 'Tab') return;
@@ -235,11 +156,8 @@
     else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   });
   document.addEventListener('keydown', e => {
-    if (e.key !== 'Escape') return;
-    if (openBtn) { const b = openBtn; closeMega(); restPill(); b.focus(); }
-    if (menuOpen) { setMenu(false); burger.focus(); }
+    if (e.key === 'Escape' && menuOpen) { setMenu(false); burger.focus(); }
   });
-  mqDesktop.addEventListener('change', () => { setMenu(false); closeMega(true); restPill(); });
 
   /* ---------- FAQ: native <details>, animated height, hash follows ---------- */
   (function initFaq() {
@@ -271,19 +189,6 @@
         d.classList.toggle('is-open', d.open);
         if (d.open && d.id && history.replaceState) history.replaceState(null, '', '#' + d.id);
       });
-    });
-  })();
-
-  /* ---------- demo form: floating labels are CSS; submit is a sample ---------- */
-  (function initForm() {
-    const form = $('.demo-form');
-    if (!form) return;
-    const status = $('.form-status', form);
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      const trial = e.submitter && e.submitter.value === 'trial';
-      const name = form.elements.name ? form.elements.name.value.trim().split(/\s+/)[0] : '';
-      if (status) status.textContent = `Thanks${name ? ', ' + name : ''}. This is a design sample, so your ${trial ? 'trial' : 'demo'} request was not sent.`;
     });
   })();
 
@@ -521,22 +426,21 @@
     const items = $$('.lp-item', dial);
     const ticks = items.map(i => $('.lp-tick', i));
     const boxes = items.map(i => $('.lp-box', i));
-    const count = $('[data-lp-count]', dial);
     const arc = $('.rb-arc', dial);
     const ringA = $('.ring-a', dial);
     const ringB = $('.ring-b', dial);
     const legend = $('.dial-legend', dial);
     const caption = $('.dial-caption', dial);
     const draw = !!DrawSVGPlugin;
-    const STEPS = [0.07, 0.23, 0.39, 0.55, 0.71, 0.87]; // where each launchpad item ticks, Jan → Jun
+    // where each launchpad item ticks, spread evenly Jan → Jun
+    const STEPS = items.map((_, i) => 0.07 + (0.8 * i) / Math.max(1, items.length - 1));
     let month = 0;
     let done = 0;
     let after = false;
 
-    // From-state. The CSS defaults are the end frame (JUL, all ticked). GSAP parses those CSS
+    // From-state. The CSS defaults are the end frame (1 July, all ticked). GSAP parses those CSS
     // transforms into px values, so y/rotation are set explicitly, not only yPercent.
     items.forEach(i => i.classList.remove('is-done'));
-    if (count) count.textContent = '0';
     if (draw) gsap.set(ticks.concat(arc || []).filter(Boolean), { drawSVG: '0%' });
     gsap.set(rots, { rotation: 0 });
     if (reel) gsap.set(reel, { y: 0, yPercent: 0 });
@@ -544,7 +448,6 @@
 
     const setDone = n => {
       done = n;
-      if (count) count.textContent = String(n);
       items.forEach((it, i) => {
         const on = i < n;
         if (on === it.classList.contains('is-done')) return;
@@ -552,7 +455,7 @@
         if (draw && ticks[i]) gsap.to(ticks[i], { drawSVG: on ? '100%' : '0%', duration: on ? 0.32 : 0.12, delay: on ? 0.1 : 0, ease: OUT, overwrite: true });
         if (on && boxes[i]) gsap.fromTo(boxes[i], { scale: 1.7 }, { scale: 1, duration: 0.32, ease: 'power3.out', overwrite: true, clearProps: 'transform' });
       });
-      if (draw && arc) gsap.to(arc, { drawSVG: (n / 6) * 100 + '%', duration: 0.5, ease: OUT, overwrite: true });
+      if (draw && arc) gsap.to(arc, { drawSVG: (n / items.length) * 100 + '%', duration: 0.5, ease: OUT, overwrite: true });
     };
     const setAfter = a => {
       after = a;
@@ -566,10 +469,10 @@
     };
     const update = p => {
       const q = Math.min(1, p / 0.86);
-      const m = Math.round(q * 6);
+      const m = Math.round(q * 6) === 6 ? 1 : 0; // the readout says January until the needle reaches July
       if (m !== month) {
         month = m;
-        if (reel) gsap.to(reel, { yPercent: (-100 * m) / 7, duration: 0.45, ease: OUT, overwrite: true });
+        if (reel) gsap.to(reel, { yPercent: -50 * m, duration: 0.45, ease: OUT, overwrite: true });
       }
       const n = STEPS.filter(s => q >= s).length;
       if (n !== done) setDone(n);
@@ -588,7 +491,6 @@
       dial.classList.remove('is-after');
       updateHeaderTone();
       items.forEach(i => i.classList.add('is-done'));
-      if (count) count.textContent = '6';
     };
   }
 
@@ -598,16 +500,12 @@
     const track = $('.feat-track');
     if (!pin || !track) return null;
     const bar = $('.fm-bar i');
-    const idx = $('[data-feat-idx]');
     const dist = () => Math.max(0, track.scrollWidth - pin.clientWidth);
     const tween = gsap.to(track, { x: () => -dist(), ease: 'none' });
     const st = ScrollTrigger.create({
       trigger: pin, start: 'top top', end: () => '+=' + dist(), pin: true, scrub: true, animation: tween,
       invalidateOnRefresh: true, anticipatePin: 1, refreshPriority: 1,
-      onUpdate: self => {
-        if (bar) gsap.set(bar, { scaleX: self.progress });
-        if (idx) idx.textContent = String(Math.min(8, 1 + Math.floor(self.progress * 8))).padStart(2, '0');
-      }
+      onUpdate: self => { if (bar) gsap.set(bar, { scaleX: self.progress }); }
     });
     // keyboard: a focused tile scrolls the page to where the track shows it
     const onFocus = e => {
@@ -666,18 +564,15 @@
     qr(tl, d) {
       const run = $('.dq-run', d);
       const code = $('.dq-code svg', d);
-      const a = $('.dq-a', d);
-      const b = $('.dq-b', d);
+      const dot = $('.dq-new', d);
       const badge = $('.dq-badge', d);
-      if (!run || !code || !a || !b || !badge) return;
-      tl.set(run, { yPercent: 0, autoAlpha: 0 }).set(a, { yPercent: 0, autoAlpha: 1 })
-        .set(b, { yPercent: 100, autoAlpha: 0 }).set(badge, { scale: 0.6, autoAlpha: 0 })
+      if (!run || !code || !dot || !badge) return;
+      tl.set(run, { yPercent: 0, autoAlpha: 0 }).set(dot, { scale: 0, autoAlpha: 0 }).set(badge, { scale: 0.6, autoAlpha: 0 })
         .to(run, { autoAlpha: 1, duration: 0.15 }, 0.3)
         .to(run, { yPercent: 100, duration: 1.1, ease: IN_OUT }, '<')
         .to(run, { autoAlpha: 0, duration: 0.15 }, '>-0.05')
         .to(code, { opacity: 0.35, duration: 0.08, yoyo: true, repeat: 1 }, '<')
-        .to(a, { yPercent: -100, autoAlpha: 0, duration: 0.32 }, '>')
-        .to(b, { yPercent: 0, autoAlpha: 1, duration: 0.32 }, '<')
+        .to(dot, { scale: 1, autoAlpha: 1, duration: 0.32, ease: 'back.out(2.2)' }, '>')
         .to(badge, { scale: 1, autoAlpha: 1, duration: 0.45, ease: 'back.out(2.2)' }, '<');
     },
     inv(tl, d) {
@@ -685,15 +580,11 @@
       const sum = $('.di-sum', d);
       const chips = $$('.chip', d);
       if (!lines.length || !sum) return;
-      const vals = lines.map(li => parseFloat(li.lastElementChild.textContent) || 0);
-      const o = { v: vals.reduce((s, v) => s + v, 0) };
-      tl.eventCallback('onUpdate', () => { sum.textContent = o.v.toFixed(2); });
-      tl.set(lines, { autoAlpha: 0, x: -10 }).set(o, { v: 0 }).set(chips, { autoAlpha: 0.35 });
-      let total = 0;
+      // the total bar grows as each line lands (no figures: the demo shows shapes only)
+      tl.set(lines, { autoAlpha: 0, x: -10 }).set(sum, { scaleX: 0 }).set(chips, { autoAlpha: 0.35 });
       lines.forEach((li, i) => {
-        total += vals[i];
         tl.to(li, { autoAlpha: 1, x: 0, duration: 0.35 }, 0.3 + i * 0.45)
-          .to(o, { v: total, duration: 0.4, ease: 'power2.out' }, '<');
+          .to(sum, { scaleX: (i + 1) / lines.length, duration: 0.4, ease: 'power2.out' }, '<');
       });
       tl.to(chips, { autoAlpha: 1, duration: 0.3, stagger: 0.1 }, '+=0.2');
     },

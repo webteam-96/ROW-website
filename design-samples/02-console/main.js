@@ -34,7 +34,6 @@
   const EOUT = window.CustomEase ? window.CustomEase.create('rowOut', '.22,1,.36,1') : 'expo.out';
   const EIO = window.CustomEase ? window.CustomEase.create('rowInOut', '.65,0,.35,1') : 'power3.inOut';
   const CLEAR = 'transform,translate,rotate,scale,opacity,visibility';
-  const CJK = '日本語한국어';
   if (ST) ST.config({ ignoreMobileResize: true });
 
   const mm = gsap.matchMedia();
@@ -112,99 +111,23 @@
   });
 
   /* =========================================================
-     Desktop nav: sliding pill + mega menus
+     Desktop nav: a pill slides under the hovered or focused link
      ========================================================= */
-  const nav = safe('nav', () => {
+  safe('nav', () => {
     const root = $('.nav');
-    if (!root) return null;
-    const pill = $('.nav__pill', root);
-    const items = $$('[data-menu]', root);
-    let open = null, openedAt = 0, timer = 0;
-    const parts = (item) => ({ btn: $('.nav__trigger', item), panel: $('.mega', item) });
-
-    const movePill = (btn) => {
-      if (!pill || !btn) return;
-      root.style.setProperty('--pill-x', btn.parentElement.offsetLeft + btn.offsetLeft + 'px');
-      root.style.setProperty('--pill-w', btn.offsetWidth + 'px');
+    const pill = root && $('.nav__pill', root);
+    if (!pill) return;
+    const movePill = (a) => {
+      root.style.setProperty('--pill-x', a.parentElement.offsetLeft + a.offsetLeft + 'px');
+      root.style.setProperty('--pill-w', a.offsetWidth + 'px');
       root.classList.add('has-pill');
     };
-    // the pill rests on the open trigger, and goes once nothing is open, hovered or focused
-    const restPill = () => {
-      if (open) movePill(parts(open).btn);
-      else if (!root.matches(':hover') && !root.contains(document.activeElement)) root.classList.remove('has-pill');
-    };
-
-    function openMenu(item, viaHover) {
-      if (open === item) return;
-      if (open) closeMenu(open, true);
-      const { btn, panel } = parts(item);
-      open = item;
-      openedAt = viaHover ? performance.now() : 0;
-      item.classList.add('is-open');
-      btn.setAttribute('aria-expanded', 'true');
-      gsap.killTweensOf(panel);
-      // opacity, not autoAlpha: a visibility:hidden panel cannot take focus (ArrowDown → first link)
-      if (reduceMQ.matches) gsap.fromTo(panel, { opacity: 0 }, { opacity: 1, duration: 0.16 });
-      else gsap.fromTo(panel, { height: 0, opacity: 0 }, { height: 'auto', opacity: 1, duration: 0.32, ease: EOUT, clearProps: 'height' });
-      movePill(btn);
-    }
-    function closeMenu(item, instant) {
-      const { btn, panel } = parts(item);
-      btn.setAttribute('aria-expanded', 'false');
-      if (open === item) open = null;
-      gsap.killTweensOf(panel);
-      const done = () => { item.classList.remove('is-open'); gsap.set(panel, { clearProps: 'all' }); };
-      if (instant || reduceMQ.matches) done();
-      else gsap.to(panel, { height: 0, autoAlpha: 0, duration: 0.2, ease: EIO, onComplete: done });
-      restPill();
-    }
-
-    items.forEach((item) => {
-      const { btn } = parts(item);
-      if (!btn) return;
-      btn.addEventListener('click', () => {
-        if (open === item) {
-          if (performance.now() - openedAt < 450) return; // a click right after hover-open keeps it open
-          closeMenu(item);
-        } else openMenu(item, false);
-      });
-      btn.addEventListener('keydown', (e) => {
-        if (e.key !== 'ArrowDown') return;
-        e.preventDefault();
-        openMenu(item, false);
-        const first = $('.mega__link', item);
-        if (first) first.focus();
-      });
-      btn.addEventListener('pointerenter', () => movePill(btn));
-      btn.addEventListener('focus', () => movePill(btn));
-      item.addEventListener('focusout', (e) => { if (open === item && !item.contains(e.relatedTarget)) closeMenu(item); });
-      item.addEventListener('pointerenter', (e) => {
-        if (e.pointerType !== 'mouse' || !hoverMQ.matches) return;
-        clearTimeout(timer);
-        timer = setTimeout(() => openMenu(item, true), open ? 0 : 70);
-      });
-      item.addEventListener('pointerleave', (e) => {
-        if (e.pointerType !== 'mouse' || !hoverMQ.matches) return;
-        clearTimeout(timer);
-        timer = setTimeout(() => { if (open === item) closeMenu(item); }, 180);
-      });
+    $$('.nav__link', root).forEach((a) => {
+      a.addEventListener('pointerenter', () => movePill(a));
+      a.addEventListener('focus', () => movePill(a));
     });
-    root.addEventListener('pointerleave', restPill);
-    root.addEventListener('focusout', (e) => {
-      if (root.contains(e.relatedTarget)) return;
-      if (open) closeMenu(open);
-      restPill();
-    });
-    document.addEventListener('keydown', (e) => {
-      if (e.key !== 'Escape' || !open) return;
-      const { btn } = parts(open);
-      closeMenu(open);
-      btn.focus();
-    });
-    document.addEventListener('pointerdown', (e) => {
-      if (open && !open.contains(e.target)) closeMenu(open);
-    });
-    return { close: (instant) => { if (open) closeMenu(open, instant); } };
+    root.addEventListener('pointerleave', () => { if (!root.contains(document.activeElement)) root.classList.remove('has-pill'); });
+    root.addEventListener('focusout', (e) => { if (!root.contains(e.relatedTarget) && !root.matches(':hover')) root.classList.remove('has-pill'); });
   });
 
   /* =========================================================
@@ -334,7 +257,6 @@
       const target = id ? document.getElementById(id) : null;
       if (!target) return;
       e.preventDefault();
-      if (nav) nav.close(true);
       if (menu && menu.isOpen()) menu.close(false);
       if (faq && target.classList.contains('qa')) faq.open(target, true);
       if (location.hash !== '#' + id) history.pushState(null, '', '#' + id);
@@ -350,11 +272,9 @@
     if (!items.length) return;
     if (late || reduceMQ.matches) { gsap.to(items, { autoAlpha: 1, duration: late ? 0 : 0.16 }); return; }
     const title = $('.hero__title');
-    const chip = $('.hero__chip');
-    const rest = items.filter((el) => el !== title && el !== chip);
+    const rest = items.filter((el) => el !== title);
     const run = () => {
       const tl = gsap.timeline({ defaults: { ease: EOUT } });
-      if (chip) tl.fromTo(chip, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.6, clearProps: 'transform' }, 0);
       if (title && Split) {
         const split = Split.create(title, { type: 'words', aria: 'auto' });
         gsap.set(title, { autoAlpha: 1 });
@@ -401,7 +321,7 @@
     ripples.forEach((r) => keep(r.el, 'class', 'cx', 'cy', 'r'));
     layers.forEach((l) => l && keep(l, 'transform'));
     const label0 = label ? label.textContent : '';
-    const badge0 = badge ? [badge.textContent, badge.dataset.state] : null;
+    const badge0 = badge ? badge.dataset.state : null;
 
     const f1 = (v) => v.toFixed(1);
     const nodePos = (n) => ({ x: n.x + off[n.ring].x, y: n.y + off[n.ring].y });
@@ -452,13 +372,14 @@
       }
     }
 
-    // Each event is a real sync story: a record changes, travels to ROW, then on to RI (or back).
+    // Each event is a sync story: a record travels to ROW, then on to RI (or back).
+    // Labels are the doc's own words: "members, officers and club details".
     const EVENTS = [
-      { dir: 'out', ring: 2, text: 'member.updated → RI' },
-      { dir: 'in', ring: 0, text: 'officer.next_year ← RI' },
-      { dir: 'out', ring: 1, text: 'club.meeting_time → RI' },
-      { dir: 'in', ring: 2, text: 'member.added ← RI' },
-      { dir: 'out', ring: 0, text: 'officer.changed → RI' },
+      { dir: 'out', ring: 2, text: 'Members' },
+      { dir: 'in', ring: 0, text: 'Officers' },
+      { dir: 'out', ring: 1, text: 'Club details' },
+      { dir: 'in', ring: 2, text: 'Members' },
+      { dir: 'out', ring: 0, text: 'Officers' },
     ];
     const pools = [0, 1, 2].map((r) => nodes.filter((n) => n.ring === r && !n.el.classList.contains('o-node--dot')));
     const coreGet = () => CORE, riGet = () => RI;
@@ -469,7 +390,7 @@
       r.el.setAttribute('class', 'o-ripple is-' + kind);
       gsap.fromTo(r.el, { attr: { r: 6 }, opacity: 0.9 }, { attr: { r: 32 }, opacity: 0, duration: 0.9, ease: 'power2.out', overwrite: true });
     };
-    const setBadge = (state, text) => { if (badge) { badge.dataset.state = state; badge.textContent = text; } };
+    const setBadge = (state) => { if (badge) badge.dataset.state = state; };
 
     function eventTl(ev, slot) {
       const pk = packets[slot], sp = spokes[slot];
@@ -484,8 +405,8 @@
         pk.p = 0;
         pk.on = true;
         pk.el.classList.toggle('is-in', ev.dir === 'in');
-        if (ev.dir === 'out') { ripple(nodeGet, 'out'); setBadge('queued', 'queued'); }
-        else { ripple(riGet, 'in'); setBadge('received', 'received'); }
+        if (ev.dir === 'out') { ripple(nodeGet, 'out'); setBadge('queued'); }
+        else { ripple(riGet, 'in'); setBadge('received'); }
         scrambleTo(label, ev.text, 'lowerCase', 0.55);
       }, null, 0)
         .fromTo(sp.el, { opacity: 0 }, { opacity: 1, duration: 0.25, immediateRender: false }, 0)
@@ -494,8 +415,8 @@
         .call(() => ripple(coreGet, ev.dir === 'out' ? 'out' : 'in'), null, 0.65)
         .fromTo(pk, { p: 1 }, { p: 2, duration: 0.6, ease: 'power2.inOut', immediateRender: false }, 0.68)
         .call(() => {
-          if (ev.dir === 'out') { ripple(riGet, 'ok'); setBadge('accepted', 'accepted'); }
-          else { ripple(nodeGet, 'ok'); setBadge('synced', 'synced'); }
+          if (ev.dir === 'out') { ripple(riGet, 'ok'); setBadge('accepted'); }
+          else { ripple(nodeGet, 'ok'); setBadge('synced'); }
         }, null, 1.28)
         .to([pk.el, sp.el], { opacity: 0, duration: 0.3 }, 1.45)
         .call(() => { pk.on = false; sp.node = null; }, null, 1.76);
@@ -537,7 +458,7 @@
         snap.forEach(([el, a, v]) => (v == null ? el.removeAttribute(a) : el.setAttribute(a, v)));
         gsap.set([...packets.map((k) => k.el), ...spokes.map((s) => s.el), ...ripples.map((r) => r.el)], { clearProps: 'opacity' });
         if (label) { gsap.killTweensOf(label); label.textContent = label0; }
-        if (badge0) setBadge(badge0[1], badge0[0]);
+        if (badge0) setBadge(badge0);
       },
     };
     return api;
@@ -702,12 +623,8 @@
       rohanBadge: q('row-rohan-badge'), chip: q('chip'), chipText: q('chip-text'),
     };
     if (Object.values(el).some((v) => !v)) return;
-    const orig = {
-      newBadge: [el.newBadge.textContent, el.newBadge.dataset.state],
-      rohanBadge: [el.rohanBadge.textContent, el.rohanBadge.dataset.state],
-      chip: el.chipText.textContent,
-    };
-    const setBadge = (b, state, text) => { b.dataset.state = state; b.textContent = text; };
+    const orig = { newBadge: el.newBadge.dataset.state, rohanBadge: el.rohanBadge.dataset.state, chip: el.chipText.textContent };
+    const setBadge = (b, state) => { b.dataset.state = state; };
     const clearHl = () => $$('.is-hl', root).forEach((n) => n.classList.remove('is-hl', 'is-hl--in'));
 
     mmAdd({ wide: '(min-width: 768px)', motion: '(prefers-reduced-motion: no-preference)' }, (ctx) => {
@@ -720,9 +637,9 @@
         tl = gsap.timeline({ repeat: -1, repeatDelay: 0.6, paused: true, defaults: { ease: EOUT } });
         tl.call(() => {
           clearHl();
-          setBadge(el.newBadge, 'queued', 'queued');
-          setBadge(el.rohanBadge, 'ok', 'in sync');
-          el.chipText.textContent = 'member.added';
+          setBadge(el.newBadge, 'queued');
+          setBadge(el.rohanBadge, 'ok');
+          el.chipText.textContent = 'Members';
         }, null, 0)
           .set([el.riNew, el.rowNew, el.riNext, el.rowNext, el.chip], { autoAlpha: 0 }, 0)
           .set(el.chip, { [axis]: D }, 0)
@@ -733,23 +650,23 @@
           .to(el.chip, { autoAlpha: 1, duration: 0.15 }, 0.9)
           .to(el.chip, { [axis]: 6, duration: 0.5, ease: 'power2.in' }, 0.9)
           .to(el.chip, { [axis]: 16, autoAlpha: 0, duration: 0.25, ease: 'power2.out' }, 1.4)
-          .call(() => setBadge(el.newBadge, 'retried', 'retried · 1'), null, 1.45)
+          .call(() => setBadge(el.newBadge, 'retried'), null, 1.45)
           // …so it is retried automatically, and accepted
           .set(el.chip, { [axis]: D }, 2.1)
           .to(el.chip, { autoAlpha: 1, duration: 0.15 }, 2.1)
           .to(el.chip, { [axis]: -D, duration: 0.8, ease: EIO }, 2.1)
           .to(el.chip, { autoAlpha: 0, duration: 0.2 }, 2.8)
           .to(el.riNew, { autoAlpha: 1, duration: 0.4 }, 2.8)
-          .call(() => { el.riNew.classList.add('is-hl'); setBadge(el.newBadge, 'accepted', 'accepted'); }, null, 2.85)
+          .call(() => { el.riNew.classList.add('is-hl'); setBadge(el.newBadge, 'accepted'); }, null, 2.85)
           // next year's officer arrives from RI
-          .call(() => { el.riRohan.classList.add('is-hl', 'is-hl--in'); el.chipText.textContent = 'officer.next_year'; }, null, 3.8)
+          .call(() => { el.riRohan.classList.add('is-hl', 'is-hl--in'); el.chipText.textContent = 'Officers'; }, null, 3.8)
           .to(el.riNext, { autoAlpha: 1, duration: 0.3 }, 3.8)
           .set(el.chip, { [axis]: -D }, 4.2)
           .to(el.chip, { autoAlpha: 1, duration: 0.15 }, 4.2)
           .to(el.chip, { [axis]: D, duration: 0.8, ease: EIO }, 4.2)
           .to(el.chip, { autoAlpha: 0, duration: 0.2 }, 4.9)
           .to(el.rowNext, { autoAlpha: 1, duration: 0.3 }, 4.9)
-          .call(() => { el.rowRohan.classList.add('is-hl', 'is-hl--in'); setBadge(el.rohanBadge, 'received', '← RI'); }, null, 4.95)
+          .call(() => { el.rowRohan.classList.add('is-hl', 'is-hl--in'); setBadge(el.rohanBadge, 'received'); }, null, 4.95)
           .call(clearHl, null, 6.4)
           .set({}, {}, 6.8);
       });
@@ -757,8 +674,8 @@
       return () => {
         loop.kill();
         clearHl();
-        setBadge(el.newBadge, orig.newBadge[1], orig.newBadge[0]);
-        setBadge(el.rohanBadge, orig.rohanBadge[1], orig.rohanBadge[0]);
+        setBadge(el.newBadge, orig.newBadge);
+        setBadge(el.rohanBadge, orig.rohanBadge);
         el.chipText.textContent = orig.chip;
       };
     });
@@ -782,24 +699,20 @@
     const segsG = $('.dial__segs', planner);
     const curBar = $('.gantt__bar--current', planner);
     const monthEl = $('[data-dial-month]', planner);
-    const countEl = $('[data-dial-count]', planner);
     const swapA = $$('.swap__a', planner);
     const swapB = $$('.swap__b', planner);
     if (!lane || !tasks.length) return;
-    const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN'];
     const S = tasks.map((t) => parseFloat(t.style.getPropertyValue('--s')) || 0);
     const E = tasks.map((t) => parseFloat(t.style.getPropertyValue('--e')) || 1);
     const month0 = monthEl ? monthEl.textContent : '';
-    const count0 = countEl ? countEl.textContent : '';
+    // the dial names only the doc's two dates: January until the changeover, then 1 July
+    const monthAt = (t) => (t >= 1 ? '1 July' : 'January');
 
     mmAdd({ desk: '(min-width: 1024px) and (min-height: 640px)', motion: '(prefers-reduced-motion: no-preference)' }, (ctx) => {
       const { desk, motion } = ctx.conditions;
       if (!motion) return undefined;
-      let lastM = null, lastC = null;
-      const show = (m, c) => {
-        if (monthEl && m !== lastM) { lastM = m; monthEl.textContent = m; }
-        if (countEl && c !== lastC) { lastC = c; countEl.textContent = c; }
-      };
+      let lastM = null;
+      const show = (m) => { if (monthEl && m !== lastM) { lastM = m; monthEl.textContent = m; } };
       const tl = gsap.timeline({
         defaults: { ease: 'none' },
         scrollTrigger: desk
@@ -809,10 +722,7 @@
             end: '+=110%', pin: true, scrub: 0.6, anticipatePin: 1, invalidateOnRefresh: true,
           }
           : { trigger: planner, start: 'top 72%', end: 'top 14%', scrub: 0.6 },
-        onUpdate: () => {
-          const t = tl.time();
-          show(t >= 1 ? '1 JUL' : MONTHS[Math.min(5, Math.floor(t * 6))], String(E.filter((e) => t >= e).length));
-        },
+        onUpdate: () => show(monthAt(tl.time())),
       });
 
       gsap.set(lane, { x: 0, xPercent: 0 });
@@ -841,8 +751,8 @@
       if (swapA.length) tl.to(swapA, { autoAlpha: 0, yPercent: -50, duration: 0.04 }, 'jul+=0.05');
       if (swapB.length) tl.fromTo(swapB, { autoAlpha: 0, yPercent: 50 }, { autoAlpha: 1, yPercent: 0, duration: 0.04 }, 'jul+=0.06');
       tl.to({}, { duration: 0.18 });
-      show(tl.time() >= 1 ? '1 JUL' : MONTHS[Math.min(5, Math.floor(tl.time() * 6))], String(E.filter((e) => tl.time() >= e).length));
-      return () => show(month0, count0);
+      show(monthAt(tl.time()));
+      return () => show(month0);
     });
   });
 
@@ -874,14 +784,13 @@
     sync(tile) {
       const lane = $('.ds-lane', tile), pulse = $('.ds-pulse', tile);
       const ri = $('.ds-node--ri', tile), rowN = $('.ds-node--row', tile);
-      const checks = $$('.ds-check', tile), txt = $('.ds-time__txt', tile);
-      if (!lane || !pulse || !ri || !rowN || checks.length < 3 || !txt) return null;
+      const checks = $$('.ds-check', tile);
+      if (!lane || !pulse || !ri || !rowN || checks.length < 3) return null;
       const pop = { autoAlpha: 1, scale: 1, duration: 0.3, ease: 'back.out(2)' };
       const glow = (n) => [n, { '--glow': 1 }, { '--glow': 0, duration: 0.6 }];
       return demoTl({ repeatDelay: 0.8 })
         .set(checks, { autoAlpha: 0, scale: 0.4 }, 0)
         .set(lane, { xPercent: 0 }, 0)
-        .call(() => { txt.textContent = 'Syncing…'; }, null, 0)
         .to(pulse, { autoAlpha: 1, duration: 0.1 }, 0.1)
         .to(lane, { xPercent: 100, duration: 0.7, ease: EIO }, 0.1)
         .fromTo(...glow(rowN), 0.8)
@@ -893,61 +802,51 @@
         .fromTo(...glow(rowN), 2.6)
         .to(checks[2], pop, 2.6)
         .to(pulse, { autoAlpha: 0, duration: 0.15 }, 2.6)
-        .call(() => scrambleTo(txt, 'Synced just now', 'lowerCase', 0.5), null, 2.7)
         .set({}, {}, 3.6);
     },
     qr(tile) {
-      const lane = $('.dq-lane', tile), ok = $('.dq-ok', tile), num = $('.dq-num', tile);
+      const lane = $('.dq-lane', tile), ok = $('.dq-ok', tile);
       const fill = $('.dq-bar__fill', tile), code = $('.dq-code', tile);
-      if (!lane || !ok || !num || !fill || !code) return null;
+      if (!lane || !ok || !fill || !code) return null;
       return demoTl({ repeatDelay: 0.9 })
         .set(ok, { autoAlpha: 0, scale: 0.92 }, 0).set(code, { autoAlpha: 1 }, 0)
         .set(fill, { scaleX: 31 / 44 }, 0).set(lane, { yPercent: 0 }, 0)
-        .call(() => { num.textContent = '31'; }, null, 0)
         .to(lane, { yPercent: 92, duration: 1, ease: 'sine.inOut' }, 0.2)
         .to(lane, { yPercent: 0, duration: 0.8, ease: 'sine.inOut' }, 1.2)
         .to(code, { autoAlpha: 0.25, duration: 0.2 }, 2.0)
         .to(ok, { autoAlpha: 1, scale: 1, duration: 0.45, ease: 'back.out(2)' }, 2.05)
-        .call(() => { num.textContent = '32'; }, null, 2.2)
         .to(fill, { scaleX: 32 / 44, duration: 0.4 }, 2.2)
         .set({}, {}, 3.4);
     },
     dues(tile) {
-      const lines = $$('.di-lines li', tile), sum = $('.di-sum__n', tile), exp = $('.di-export', tile);
+      const lines = $$('.di-lines li', tile), sum = $('.di-sum .skel', tile), exp = $('.di-export', tile);
       if (!lines.length || !sum || !exp) return null;
-      const vals = [120, 37.5, 18, 48];
-      const o = { v: 0 };
-      const render = () => { sum.textContent = o.v.toFixed(2); };
+      // the total bar grows as each line lands (a shape, not an amount)
       const tl = demoTl({ repeatDelay: 1 })
         .set(lines, { autoAlpha: 0, x: -8 }, 0).set(exp, { autoAlpha: 0, scale: 0.9 }, 0)
-        .call(() => { o.v = 0; render(); }, null, 0);
-      let acc = 0;
+        .set(sum, { scaleX: 0, transformOrigin: '0% 50%' }, 0);
       lines.forEach((li, i) => {
-        acc += vals[i] || 0;
         const at = 0.3 + i * 0.45;
         tl.to(li, { autoAlpha: 1, x: 0, duration: 0.35 }, at)
-          .to(o, { v: acc, duration: 0.4, ease: 'power2.out', onUpdate: render }, at + 0.08);
+          .to(sum, { scaleX: (i + 1) / lines.length, duration: 0.4, ease: 'power2.out' }, at + 0.08);
       });
       return tl.to(exp, { autoAlpha: 1, scale: 1, duration: 0.35, ease: 'back.out(2)' }, 2.3).set({}, {}, 3.6);
     },
     chat(tile) {
       const bubble = $('.dc-bubble', tile), t2 = $('.dc-t2', tile), ticksEl = $('.dc-ticks', tile);
-      const nums = $$('.dc-stats b', tile);
+      const stats = $$('.dc-stats .skel', tile);
       if (!bubble || !t2 || !ticksEl) return null;
       const tl = demoTl({ repeatDelay: 0.9 })
         .set(bubble, { autoAlpha: 0, y: 14, scale: 0.96, transformOrigin: '100% 100%' }, 0)
         .set(t2, { autoAlpha: 0 }, 0)
-        .call(() => { ticksEl.classList.remove('is-read'); nums.forEach((b) => { b.textContent = '0'; }); }, null, 0)
+        .call(() => ticksEl.classList.remove('is-read'), null, 0)
         .to(bubble, { autoAlpha: 1, y: 0, scale: 1, duration: 0.5, ease: 'back.out(1.6)' }, 0.3) // sent
         .to(t2, { autoAlpha: 1, duration: 0.15 }, 1.0) // delivered
         .call(() => ticksEl.classList.add('is-read'), null, 1.6); // read
-      nums.forEach((b) => {
-        const o = { v: 0 };
-        const T = Number(b.dataset.n) || 0;
-        tl.to(o, { v: T, duration: 1.2, ease: 'power2.out', onUpdate: () => { b.textContent = String(Math.round(o.v)); } }, 1.0);
-      });
+      // open and click tracking fills in (bars, not counts)
+      if (stats.length) tl.set(stats, { scaleX: 0, transformOrigin: '0% 50%' }, 0).to(stats, { scaleX: 1, duration: 1.2, ease: 'power2.out', stagger: 0.1 }, 1.0);
       tl.set({}, {}, 3.4);
-      tl.data = { reset: () => { ticksEl.classList.add('is-read'); nums.forEach((b) => { b.textContent = b.dataset.n; }); } };
+      tl.data = { reset: () => ticksEl.classList.add('is-read') };
       return tl;
     },
     proj(tile) {
@@ -981,24 +880,24 @@
       return tl;
     },
     web(tile) {
-      const name = $('.dw-lang__name', tile), code = $('.dw-lang__code', tile), bars = $$('.sk', tile);
-      if (!name || !code || !bars.length) return null;
-      const L = [['Français', 'fr'], ['English', 'en'], ['Español', 'es'], ['Deutsch', 'de'], ['日本語', 'ja'], ['Italiano', 'it'], ['한국어', 'ko'], ['Português', 'pt']];
+      const name = $('.dw-lang__name', tile), bars = $$('.sk', tile);
+      if (!name || !bars.length) return null;
       const base = bars.map((b) => parseFloat(b.style.getPropertyValue('--w')) || 1);
-      // re-flowed line lengths per language (layout only; no invented copy)
-      const W = {
-        fr: base, en: [0.7, 0.48, 0.88, 0.84, 0.58], es: [0.92, 0.64, 0.97, 0.76, 0.7], de: [0.96, 0.72, 0.99, 0.9, 0.76],
-        ja: [0.58, 0.36, 0.7, 0.6, 0.46], it: [0.82, 0.6, 0.93, 0.8, 0.66], ko: [0.62, 0.4, 0.76, 0.64, 0.5], pt: [0.9, 0.55, 0.95, 0.83, 0.69],
-      };
+      // the doc's language names, each with re-flowed line lengths (layout only; no invented copy)
+      const L = [
+        ['French', base], ['English', [0.7, 0.48, 0.88, 0.84, 0.58]], ['Spanish', [0.92, 0.64, 0.97, 0.76, 0.7]],
+        ['German', [0.96, 0.72, 0.99, 0.9, 0.76]], ['Japanese', [0.58, 0.36, 0.7, 0.6, 0.46]], ['Italian', [0.82, 0.6, 0.93, 0.8, 0.66]],
+        ['Korean', [0.62, 0.4, 0.76, 0.64, 0.5]], ['Portuguese', [0.9, 0.55, 0.95, 0.83, 0.69]],
+      ];
       const tl = demoTl({ repeatDelay: 0 });
       L.forEach((_, i) => {
-        const [nn, cc] = L[(i + 1) % L.length];
+        const [nn, w] = L[(i + 1) % L.length];
         const at = i * 1.5 + 0.6;
-        tl.call(() => { scrambleTo(name, nn, /[^\u0000-ɏ]/.test(nn) ? CJK : 'upperAndLowerCase', 0.6); code.textContent = cc; }, null, at);
-        bars.forEach((b, k) => tl.to(b, { scaleX: (W[cc][k] || base[k]) / base[k], duration: 0.5 }, at + 0.05 + k * 0.03));
+        tl.call(() => scrambleTo(name, nn, 'upperAndLowerCase', 0.6), null, at);
+        bars.forEach((b, k) => tl.to(b, { scaleX: (w[k] || base[k]) / base[k], duration: 0.5 }, at + 0.05 + k * 0.03));
       });
       tl.set({}, {}, L.length * 1.5);
-      tl.data = { reset: () => { gsap.killTweensOf(name); name.textContent = 'Français'; code.textContent = 'fr'; } };
+      tl.data = { reset: () => { gsap.killTweensOf(name); name.textContent = L[0][0]; } };
       return tl;
     },
   };
@@ -1055,34 +954,26 @@
   });
 
   /* =========================================================
-     Languages: UI string scrambles between endonyms
+     Languages: the display scrambles between the doc's language names
      ========================================================= */
   safe('languages', () => {
     const root = $('.locale');
     if (!root) return;
-    const word = $('[data-lang-word]', root), code = $('[data-lang-code]', root);
-    const val = $('[data-lang-value]', root), code2 = $('[data-lang-code2]', root);
+    const word = $('[data-lang-word]', root);
     const opts = $$('.locale__opt', root);
     if (!word || !opts.length) return;
-    const L = opts.map((b) => ({ name: b.lastChild.textContent.trim(), code: b.getAttribute('lang') }));
+    const L = opts.map((b) => b.textContent.trim());
     let i = 0, holdUntil = 0;
     function show(n, animate) {
       i = (n + L.length) % L.length;
-      const { name, code: c } = L[i];
+      const name = L[i];
       opts.forEach((b, k) => b.setAttribute('aria-pressed', String(k === i)));
-      const chars = /[^\u0000-ɏ]/.test(name) ? CJK : 'upperAndLowerCase';
       if (animate && hasScramble && !reduceMQ.matches) {
-        gsap.to(word, { duration: 0.9, overwrite: true, scrambleText: { text: name, chars, speed: 0.6, revealDelay: 0.15 } });
-        if (val) gsap.to(val, { duration: 0.7, overwrite: true, scrambleText: { text: name, chars, speed: 0.8 } });
+        gsap.to(word, { duration: 0.9, overwrite: true, scrambleText: { text: name, chars: 'upperAndLowerCase', speed: 0.6, revealDelay: 0.15 } });
       } else {
-        gsap.killTweensOf([word, val].filter(Boolean));
+        gsap.killTweensOf(word);
         word.textContent = name;
-        if (val) val.textContent = name;
       }
-      word.setAttribute('lang', c);
-      if (val) val.setAttribute('lang', c);
-      if (code) code.textContent = c;
-      if (code2) code2.textContent = c;
     }
     opts.forEach((b, k) => b.addEventListener('click', () => { holdUntil = performance.now() + 6000; show(k, true); }));
     mmAdd('(prefers-reduced-motion: no-preference)', () => {
@@ -1100,21 +991,13 @@
     const root = $('.graph');
     if (!root || !ST) return;
     const links = $$('.g-link', root);
-    const count = $('[data-graph-count]', root);
     const hub = $('.g-hub', root);
-    const total = links.length;
     mmAdd('(prefers-reduced-motion: no-preference)', () => {
-      const mid = (total - 1) / 2;
+      const mid = (links.length - 1) / 2;
       const order = links.map((_, k) => k).sort((a, b) => Math.abs(a - mid) - Math.abs(b - mid)); // fan opens from the centre
-      const times = [];
       const tl = gsap.timeline({
         defaults: { ease: 'none' },
         scrollTrigger: { trigger: root, start: 'top 80%', end: 'center 55%', scrub: 0.6 }, // complete by the time it is centred
-        onUpdate: () => {
-          const t = tl.time();
-          const n = String(times.filter((x) => t >= x).length);
-          if (count && count.textContent !== n) count.textContent = n;
-        },
       });
       if (hub) tl.fromTo(hub, { scale: 0.82, autoAlpha: 0.5, transformOrigin: '50% 50%' }, { scale: 1, autoAlpha: 1, duration: 0.12, ease: EOUT }, 0);
       order.forEach((idx, k) => {
@@ -1123,10 +1006,8 @@
         const t = 0.1 + k * 0.05;
         if (on) tl.fromTo(on, hasDraw ? { drawSVG: '0%' } : { opacity: 0 }, hasDraw ? { drawSVG: '100%', duration: 0.16 } : { opacity: 0.85, duration: 0.1 }, t);
         if (node) tl.fromTo(node, { autoAlpha: 0, scale: 0.3, transformOrigin: '50% 50%' }, { autoAlpha: 1, scale: 1, duration: 0.06, ease: 'back.out(3)' }, t + 0.15);
-        times.push(t + 0.15);
       });
-      if (count) count.textContent = String(times.filter((x) => tl.time() >= x).length);
-      return () => { if (count) count.textContent = String(total); };
+      return undefined;
     });
   });
 
@@ -1136,28 +1017,22 @@
   safe('importer', () => {
     const root = $('.importer');
     if (!root || !ST) return;
-    const fills = $$('.seg__fill', root), logs = $$('.log', root), day = $('[data-day]', root);
+    const fills = $$('.seg__fill', root), logs = $$('.log', root);
     const report = $('.report', root), sig = $('.report__sig path', root), stamp = $('.stamp', root);
     const live = $('.importer__live', root), checks = $$('.report__checks li', root);
-    const day0 = day ? day.textContent : '10';
     mmAdd('(prefers-reduced-motion: no-preference)', () => {
       const tl = gsap.timeline({
         defaults: { ease: 'none' },
         scrollTrigger: { trigger: root, start: 'top 80%', end: 'bottom 85%', scrub: 0.6 },
-        onUpdate: () => {
-          const d = String(clamp(Math.ceil(tl.time() / 0.1), 1, 10));
-          if (day && day.textContent !== d) day.textContent = d;
-        },
       });
       fills.forEach((f, d) => tl.fromTo(f, { scaleX: 0 }, { scaleX: 1, duration: 0.1 }, d * 0.1));
       logs.forEach((li) => {
         const dd = Number(li.dataset.day) || 1;
         const t0 = Math.max(0, (dd - 1) * 0.1), t1 = dd * 0.1;
-        const spin = $('.log__spin', li), ok = $('.log__ok', li), st = $('.log__state', li);
+        const spin = $('.log__spin', li), ok = $('.log__ok', li);
         tl.fromTo(li, { autoAlpha: 0.35 }, { autoAlpha: 1, duration: 0.02 }, t0);
         if (spin) tl.fromTo(spin, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01 }, t0).to(spin, { autoAlpha: 0, duration: 0.01 }, t1 - 0.015);
         if (ok) tl.fromTo(ok, { autoAlpha: 0, scale: 0.4 }, { autoAlpha: 1, scale: 1, duration: 0.03, ease: 'back.out(3)' }, t1 - 0.01);
-        if (st) tl.fromTo(st, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.02 }, t1);
       });
       if (report) tl.fromTo(report, { autoAlpha: 0.25, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.06 }, 0.74);
       if (checks.length) tl.fromTo(checks, { autoAlpha: 0, x: -6 }, { autoAlpha: 1, x: 0, duration: 0.03, stagger: 0.02 }, 0.8);
@@ -1165,8 +1040,7 @@
       if (stamp) tl.fromTo(stamp, { autoAlpha: 0, scale: 1.6, rotation: -18 }, { autoAlpha: 1, scale: 1, rotation: -6, duration: 0.04, ease: 'back.out(2)' }, 0.98);
       if (live) tl.fromTo(live, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.02 }, 0.99);
       tl.set({}, {}, 1.04);
-      if (day) day.textContent = String(clamp(Math.ceil(tl.time() / 0.1), 1, 10));
-      return () => { if (day) day.textContent = day0; };
+      return undefined;
     });
   });
 
@@ -1195,26 +1069,13 @@
   });
 
   /* =========================================================
-     Section reveals, kicker decode, tile cascade, heading words
+     Section reveals, tile cascade, heading words
      ========================================================= */
   safe('reveals', () => {
     if (!ST) return;
     mmAdd('(prefers-reduced-motion: no-preference)', (ctx) => {
       $$('[data-reveal]').forEach((el) => {
         gsap.from(el, { autoAlpha: 0, y: 24, duration: 0.7, ease: EOUT, clearProps: CLEAR, scrollTrigger: { trigger: el, start: 'top 88%', once: true } });
-      });
-
-      $$('[data-kicker]').forEach((k) => {
-        const t = $('.kicker__text', k);
-        const text = t ? t.textContent : '';
-        gsap.set(k, { autoAlpha: 0 });
-        ST.create({
-          trigger: k, start: 'top 90%', once: true,
-          onEnter: () => {
-            gsap.to(k, { autoAlpha: 1, duration: 0.3 });
-            if (t) scrambleTo(t, text, 'upperCase', 0.8);
-          },
-        });
       });
 
       const tiles = $$('.tile');

@@ -169,7 +169,7 @@ section{position:relative}
 .pin{position:sticky;top:72px;height:calc(100vh - 72px);min-height:680px;max-height:900px;overflow:hidden;display:flex;align-items:center}
 .plan-grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:72px;align-items:center;width:100%}
 .rail{position:relative;margin:0 0 28px}
-.rail-months{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));font-family:var(--display);font-size:24px;letter-spacing:.04em}
+.rail-months{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));white-space:nowrap;font-family:var(--display);font-size:24px;letter-spacing:.04em}
 .rail-months span{--dd:calc(var(--p,0) * 6 - var(--i));--ad:max(var(--dd),calc(var(--dd) * -1));--hi:clamp(0, calc(1 - var(--ad) * 1.6), 1);color:color-mix(in srgb,var(--gold) calc(var(--hi) * 100%),var(--mut));opacity:calc(.45 + var(--hi) * .55)}
 .rail-line{position:relative;height:2px;background:var(--ln);margin-top:12px}
 .rail-line i{position:absolute;left:0;top:0;height:2px;width:calc(var(--p,0) * (100% - 100% / 7));background:var(--gold)}
@@ -180,6 +180,7 @@ section{position:relative}
   --dd:calc(var(--p,0) * 6 - var(--i));--ad:max(var(--dd),calc(var(--dd) * -1));
   transform:translateY(calc(clamp(-1, var(--dd), 1) * -48px)) scale(calc(1 - min(var(--ad), 1) * .06));
   opacity:calc(1 - min(var(--ad) * 1.6, 1));visibility:visible;transform-origin:center}
+.pc h3{margin-top:auto}
 .pc.last{background:var(--navy) !important;color:#e8e0d2;border-color:var(--navy)}
 .pc .k{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc);display:flex;justify-content:space-between}
 .pc.last .k{color:var(--gold)}
@@ -457,6 +458,7 @@ section{position:relative}
   .what,.dist,.mig,.faq,.langs,.cta{padding-top:100px;padding-bottom:100px}
   .pc{padding:28px}
   .q button{font-size:24px}
+  .lc > span > span{font-size:10px;padding:6px 9px;letter-spacing:.08em}
   .nav .btn{display:none}
   .mc{min-height:0}
 }
@@ -616,15 +618,15 @@ section{position:relative}
         </div>
       </div>
       <div>
-        <div class="rail" aria-hidden="true"><div class="rail-months"><span style="--i:0">Jan</span><span style="--i:1">Feb</span><span style="--i:2">Mar</span><span style="--i:3">Apr</span><span style="--i:4">May</span><span style="--i:5">Jun</span><span style="--i:6">1 Jul</span></div><div class="rail-line"><i></i><b></b></div></div>
+        <div class="rail" aria-hidden="true"><div class="rail-months"><span style="--i:0">January</span><span style="--i:1">·</span><span style="--i:2">·</span><span style="--i:3">·</span><span style="--i:4">·</span><span style="--i:5">·</span><span style="--i:6">1 July</span></div><div class="rail-line"><i></i><b></b></div></div>
         <div class="cards">
-          <div class="pc" style="--i:0"><span class="k"><span>01</span><span>January</span></span><h3>With ROW, a district governor elect can sign up in January</h3><p>and start building the coming Rotary year straight away.</p></div>
-          <div class="pc" style="--i:1"><span class="k"><span>02</span></span><span class="ic"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="10" cy="9" r="4"></circle><path d="M3 23c1-5 4-7 7-7s6 2 7 7"></path><circle cx="20" cy="10" r="3"></circle><path d="M19 16c3 0 5 2 6 6"></path></svg></span><h3>Appoint the district team</h3></div>
-          <div class="pc" style="--i:2"><span class="k"><span>03</span></span><span class="ic"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="14" cy="14" r="10"></circle><circle cx="14" cy="14" r="6"></circle><circle cx="14" cy="14" r="2"></circle></svg></span><h3>Set goals</h3></div>
-          <div class="pc" style="--i:3"><span class="k"><span>04</span></span><span class="ic"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="4" y="6" width="20" height="18" rx="2"></rect><path d="M4 11h20M9 3v5M19 3v5"></path></svg></span><h3>Publish the calendar</h3></div>
-          <div class="pc" style="--i:4"><span class="k"><span>05</span></span><span class="ic"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 8h18v4a2 2 0 0 0 0 4v4H5v-4a2 2 0 0 0 0-4z"></path><path d="M16 8v12" stroke-dasharray="2 2"></path></svg></span><h3>Open PETS and SETS registration</h3></div>
-          <div class="pc" style="--i:5"><span class="k"><span>06</span></span><h3>Every incoming club president and secretary gets a next-year workspace automatically.</h3></div>
-          <div class="pc last" style="--i:6"><span class="k"><span>07</span><span>1 July</span></span><h3>Your current year keeps running on your current system until the 1 July changeover.</h3></div>
+          <div class="pc" style="--i:0"><span class="k"><span>January</span></span><h3>With ROW, a district governor elect can sign up in January</h3><p>and start building the coming Rotary year straight away.</p></div>
+          <div class="pc" style="--i:1"><span class="ic"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="10" cy="9" r="4"></circle><path d="M3 23c1-5 4-7 7-7s6 2 7 7"></path><circle cx="20" cy="10" r="3"></circle><path d="M19 16c3 0 5 2 6 6"></path></svg></span><h3>Appoint the district team</h3></div>
+          <div class="pc" style="--i:2"><span class="ic"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="14" cy="14" r="10"></circle><circle cx="14" cy="14" r="6"></circle><circle cx="14" cy="14" r="2"></circle></svg></span><h3>Set goals</h3></div>
+          <div class="pc" style="--i:3"><span class="ic"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="4" y="6" width="20" height="18" rx="2"></rect><path d="M4 11h20M9 3v5M19 3v5"></path></svg></span><h3>Publish the calendar</h3></div>
+          <div class="pc" style="--i:4"><span class="ic"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 8h18v4a2 2 0 0 0 0 4v4H5v-4a2 2 0 0 0 0-4z"></path><path d="M16 8v12" stroke-dasharray="2 2"></path></svg></span><h3>Open PETS and SETS registration</h3></div>
+          <div class="pc" style="--i:5"><h3>Every incoming club president and secretary gets a next-year workspace automatically.</h3></div>
+          <div class="pc last" style="--i:6"><span class="k"><span>1 July</span></span><h3>Your current year keeps running on your current system until the 1 July changeover.</h3></div>
         </div>
       </div>
     </div>
@@ -636,10 +638,10 @@ section{position:relative}
   <div class="pin">
     <div class="wrap mods-head">
       <h2 class="h2 split rv"><span class="ln"><span style="--l:0">Everything a Rotary</span></span><span class="ln"><span style="--l:1">club needs, <em>in one plan</em></span></span></h2>
-      <div class="mcount"><span class="win"><span class="strip"><span>01</span><span>02</span><span>03</span><span>04</span><span>05</span><span>06</span><span>07</span><span>08</span></span></span><span>/ 08</span><span class="mbar"><i></i></span></div>
+      <div class="mcount" aria-hidden="true"><span class="mbar"><i></i></span></div>
     </div>
     <div class="mtrack">
-      <article class="mc"><span class="idx">01</span>
+      <article class="mc">
         <div class="viz v-dir" aria-hidden="true">
           <div class="row" style="--i:0"><i></i><b></b></div>
           <div class="row" style="--i:1"><i></i><b></b><span class="lk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#08123f" stroke-width="1.5"><rect x="2.5" y="5.5" width="7" height="5" rx="1"></rect><path d="M4 5.5V4a2 2 0 0 1 4 0v1.5"></path></svg></span></div>
@@ -647,13 +649,13 @@ section{position:relative}
           <div class="row" style="--i:3"><i></i><b></b><span class="lk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#08123f" stroke-width="1.5"><rect x="2.5" y="5.5" width="7" height="5" rx="1"></rect><path d="M4 5.5V4a2 2 0 0 1 4 0v1.5"></path></svg></span></div>
         </div>
         <h3>Membership and directory</h3><p>A member app with a directory that respects each member's privacy choices.</p></article>
-      <article class="mc"><span class="idx">02</span>
+      <article class="mc">
         <div class="viz v-sync" aria-hidden="true"><div class="arc t"></div><div class="arc b"></div><span class="dt"></span><span class="dt" style="animation-delay:-1s"></span><span class="dt rv2"></span><span class="dt rv2" style="animation-delay:-2.5s"></span><div class="o l">My<br>Rotary</div><div class="o r">ROW</div></div>
         <h3>My Rotary sync</h3><p>Members, officers and club details kept in step with Rotary International.</p></article>
-      <article class="mc"><span class="idx">03</span>
+      <article class="mc">
         <div class="viz v-evt" aria-hidden="true"><div class="ticket"><span class="qr"></span><span class="tl"><i></i><i></i><i></i></span><span class="ok"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#08123f" stroke-width="2"><path d="M3.5 8.5l3 3 6-7"></path></svg></span></div></div>
         <h3>Events and forms</h3><p>Registration, payment and QR check-in for meetings, PETS, SETS and the district conference, plus unlimited forms.</p></article>
-      <article class="mc"><span class="idx">04</span>
+      <article class="mc">
         <div class="viz v-due" aria-hidden="true">
           <div class="li" style="--i:0"><i style="width:60%"></i><b></b></div>
           <div class="li" style="--i:1"><i style="width:45%"></i><b></b></div>
@@ -662,7 +664,7 @@ section{position:relative}
           <div class="tot"><span style="--i:0">QuickBooks</span><span style="--i:1">Xero</span></div>
         </div>
         <h3>Dues and finance</h3><p>Multi-line invoices, quarterly or monthly billing, member statements and export to QuickBooks and Xero.</p></article>
-      <article class="mc"><span class="idx">05</span>
+      <article class="mc">
         <div class="viz v-com" aria-hidden="true">
           <div class="bub" style="--i:0"><i></i><i></i></div>
           <div class="bub me" style="--i:1"><i></i></div>
@@ -670,19 +672,19 @@ section{position:relative}
           <div class="chans"><span style="--i:0">Email</span><span style="--i:1">WhatsApp</span><span style="--i:2">Push</span><span style="--i:3">In-app chat</span></div>
         </div>
         <h3>Communication</h3><p>Email, WhatsApp, push notifications and in-app chat, with open and click tracking.</p></article>
-      <article class="mc"><span class="idx">06</span>
+      <article class="mc">
         <div class="viz v-prj" aria-hidden="true">
           <div class="prj-ring"><svg width="110" height="110" viewBox="0 0 110 110" fill="none"><circle cx="55" cy="55" r="46" stroke="rgba(232,224,210,.15)" stroke-width="8"></circle><circle class="fill" pathLength="1" cx="55" cy="55" r="46" stroke="#b89a5a" stroke-width="8" stroke-linecap="round"></circle></svg></div>
           <div class="up"><span class="ar"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#b89a5a" stroke-width="1.6"><path d="M9 15V3M4 8l5-5 5 5"></path></svg></span>Rotary Showcase</div>
         </div>
         <h3>Service projects</h3><p>Track projects by Avenue of Service and publish them to Rotary Showcase in one click.</p></article>
-      <article class="mc"><span class="idx">07</span>
+      <article class="mc">
         <div class="viz v-dst" aria-hidden="true"><span class="goal"></span>
           <span class="bar" style="--i:0;height:60px"></span><span class="bar" style="--i:1;height:90px"></span><span class="bar g" style="--i:2;height:130px"></span><span class="bar" style="--i:3;height:80px"></span><span class="bar" style="--i:4;height:110px"></span><span class="bar g" style="--i:5;height:150px"></span><span class="bar" style="--i:6;height:100px"></span>
         </div>
         <h3>District tools</h3><p>Grants, assistant governor login, monthly reports, official visits, goals and awards.</p></article>
-      <article class="mc"><span class="idx">08</span>
-        <div class="viz v-web" aria-hidden="true"><div class="brw"><div class="brw-top"><i></i><i></i><i></i><span class="lang-win"><span class="lang-strip"><span>EN</span><span>ES</span><span>FR</span><span>DE</span><span>IT</span><span>JA</span><span>KO</span><span>PT</span></span></span></div><div class="brw-body"><span class="hb"></span><span class="ad">Ad slot</span></div></div></div>
+      <article class="mc">
+        <div class="viz v-web" aria-hidden="true"><div class="brw"><div class="brw-top"><i></i><i></i><i></i><span class="lang-win"><span class="lang-strip"><span>English</span><span>Spanish</span><span>French</span><span>German</span><span>Italian</span><span>Japanese</span><span>Korean</span><span>Portuguese</span></span></span></div><div class="brw-body"><span class="hb"></span><span class="ad">Ad slot</span></div></div></div>
         <h3>Websites</h3><p>Club and district websites in more than one language, with ad slots you sell to local sponsors.</p></article>
     </div>
   </div>
@@ -706,25 +708,25 @@ section{position:relative}
       <div class="dial-ticks"></div>
       <div class="dial">
         <div class="dial-ring"></div>
-        <div class="lc" style="--i:0"><span><span>EN</span></span></div>
-        <div class="lc" style="--i:1"><span><span>ES</span></span></div>
-        <div class="lc" style="--i:2"><span><span>FR</span></span></div>
-        <div class="lc" style="--i:3"><span><span>DE</span></span></div>
-        <div class="lc" style="--i:4"><span><span>IT</span></span></div>
-        <div class="lc" style="--i:5"><span><span>JA</span></span></div>
-        <div class="lc" style="--i:6"><span><span>KO</span></span></div>
-        <div class="lc" style="--i:7"><span><span>PT</span></span></div>
+        <div class="lc" style="--i:0"><span><span>English</span></span></div>
+        <div class="lc" style="--i:1"><span><span>Spanish</span></span></div>
+        <div class="lc" style="--i:2"><span><span>French</span></span></div>
+        <div class="lc" style="--i:3"><span><span>German</span></span></div>
+        <div class="lc" style="--i:4"><span><span>Italian</span></span></div>
+        <div class="lc" style="--i:5"><span><span>Japanese</span></span></div>
+        <div class="lc" style="--i:6"><span><span>Korean</span></span></div>
+        <div class="lc" style="--i:7"><span><span>Portuguese</span></span></div>
       </div>
       <div class="marker"></div>
       <div class="dial-center">
-        <span class="lw" style="--i:0">English<small>EN</small></span>
-        <span class="lw" style="--i:1">Español<small>ES</small></span>
-        <span class="lw" style="--i:2">Français<small>FR</small></span>
-        <span class="lw" style="--i:3">Deutsch<small>DE</small></span>
-        <span class="lw" style="--i:4">Italiano<small>IT</small></span>
-        <span class="lw" style="--i:5">日本語<small>JA</small></span>
-        <span class="lw" style="--i:6">한국어<small>KO</small></span>
-        <span class="lw" style="--i:7">Português<small>PT</small></span>
+        <span class="lw" style="--i:0">English</span>
+        <span class="lw" style="--i:1">Spanish</span>
+        <span class="lw" style="--i:2">French</span>
+        <span class="lw" style="--i:3">German</span>
+        <span class="lw" style="--i:4">Italian</span>
+        <span class="lw" style="--i:5">Japanese</span>
+        <span class="lw" style="--i:6">Korean</span>
+        <span class="lw" style="--i:7">Portuguese</span>
       </div>
     </div>
   </div>
@@ -737,8 +739,8 @@ section{position:relative}
       <h2 class="h2 split rv"><span class="ln"><span style="--l:0">Built for districts,</span></span><span class="ln"><span style="--l:1"><em>free for their clubs</em></span></span></h2>
       <p class="body rv" style="--d:2">When a district subscribes to ROW District, every club in that district gets ROW Club Basic at no charge, and every Rotaract club gets the full club product free.</p>
       <div class="legend">
-        <div class="lg rv" style="--d:3"><span class="sw" style="background:#0e1d61"></span>Every club: ROW Club Basic<span class="free">No charge</span></div>
-        <div class="lg rv" style="--d:4"><span class="sw" style="border:3px solid #b89a5a"></span>Every Rotaract club: the full club product<span class="free">Free</span></div>
+        <div class="lg rv" style="--d:3"><span class="sw" style="background:#0e1d61"></span>Every club in that district gets ROW Club Basic at no charge</div>
+        <div class="lg rv" style="--d:4"><span class="sw" style="border:3px solid #b89a5a"></span>Every Rotaract club gets the full club product free</div>
       </div>
     </div>
     <div class="net" data-prog="dp" aria-hidden="true">
@@ -771,17 +773,17 @@ section{position:relative}
     </div>
     <div class="flow" data-prog="mp">
       <div class="trk"><i></i><span class="packet"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#b89a5a" stroke-width="1.5"><path d="M6 3h7l4 4v12H6z"></path><path d="M13 3v4h4M9 11h5M9 14h5"></path></svg></span></div>
-      <div class="st" style="--s:0"><span class="disc"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6" y="8" width="28" height="24" rx="3"></rect><path d="M6 15h28M12 22h10M12 27h6"></path></svg></span><span class="num">01</span><h3>ClubRunner or DACdb</h3></div>
-      <div class="st" style="--s:.33"><span class="disc"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="20" cy="20" r="13"></circle><path d="M7 20h26M20 7c5 5 5 21 0 26M20 7c-5 5-5 21 0 26"></path></svg></span><span class="num">02</span><h3>Roster and officers through My Rotary</h3>
+      <div class="st" style="--s:0"><span class="disc"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6" y="8" width="28" height="24" rx="3"></rect><path d="M6 15h28M12 22h10M12 27h6"></path></svg></span><h3>ClubRunner or DACdb</h3></div>
+      <div class="st" style="--s:.33"><span class="disc"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="20" cy="20" r="13"></circle><path d="M7 20h26M20 7c5 5 5 21 0 26M20 7c-5 5-5 21 0 26"></path></svg></span><h3>Roster and officers come across through My Rotary</h3>
         <div class="imports"><span style="--j:0">Attendance history</span><span style="--j:1">Balances</span><span style="--j:2">Contacts</span><span style="--j:3">Events</span><span style="--j:4">Documents</span></div></div>
-      <div class="st" style="--s:.66"><span class="disc"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="8" y="5" width="24" height="30" rx="2"></rect><path d="M13 12h14M13 17h14M13 22h8"></path><path class="sig" pathLength="1" d="M12 30c3-4 4 2 7-1s3 1 6-1 2 0 4-1" stroke="#b89a5a" stroke-width="1.8"></path></svg></span><span class="num">03</span><h3>Reconciliation report, signed by your secretary</h3></div>
-      <div class="st" style="--s:.97"><span class="disc"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#b89a5a" stroke-width="1.8"><circle cx="20" cy="20" r="13" stroke="currentColor" stroke-width="1.5"></circle><path class="chk" pathLength="1" d="M14 20.5l4 4 8-9"></path></svg></span><span class="num">04</span><h3>Live</h3></div>
+      <div class="st" style="--s:.66"><span class="disc"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="8" y="5" width="24" height="30" rx="2"></rect><path d="M13 12h14M13 17h14M13 22h8"></path><path class="sig" pathLength="1" d="M12 30c3-4 4 2 7-1s3 1 6-1 2 0 4-1" stroke="#b89a5a" stroke-width="1.8"></path></svg></span><h3>Your secretary signs a reconciliation report</h3></div>
+      <div class="st" style="--s:.97"><span class="disc"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#b89a5a" stroke-width="1.8"><circle cx="20" cy="20" r="13" stroke="currentColor" stroke-width="1.5"></circle><path class="chk" pathLength="1" d="M14 20.5l4 4 8-9"></path></svg></span><h3>Live</h3></div>
     </div>
     <div class="mig-foot">
       <p class="body rv" style="max-width:none;font-family:var(--serif);font-size:clamp(26px,2.6vw,36px);line-height:1.2;color:var(--fg)">Standard migration is free and takes ten working days.</p>
       <div class="badges">
         <div class="badge rv" style="--d:1"><b>Free</b><span>Standard migration</span></div>
-        <div class="badge rv" style="--d:2"><b class="cnt">10</b><span>Working days</span></div>
+        <div class="badge rv" style="--d:2"><b>Ten</b><span>Working days</span></div>
       </div>
     </div>
   </div>
@@ -833,7 +835,7 @@ section{position:relative}
         <li><a href="#districts">For Districts</a></li><li><a href="#features">For Clubs</a></li><li><a href="#plan">Plan Next Year</a></li><li><a href="#what">My Rotary Integration</a></li><li><a href="#languages">Languages</a></li><li><a href="#migrate">ROW vs ClubRunner vs DACdb</a></li><li><a href="#migrate">Migration</a></li><li><a href="#faq">FAQ</a></li><li><a href="#">About</a></li>
       </ul>
     </div>
-    <div class="foot-bot">Kaizen Infotech Solutions Pvt. Ltd. · Design sample · Concept 05 · Heritage · <a href="../">All concepts</a></div>
+    <div class="foot-bot">Kaizen Infotech Solutions Pvt. Ltd. · <a href="../">All concepts</a></div>
   </div>
 </footer>
 
