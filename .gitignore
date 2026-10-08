@@ -1,3 +1,6 @@
 .webcheck/
 .playwright-cli/
 node_modules/
+sample/
+old-website/
+ROW_Website_Content.docx

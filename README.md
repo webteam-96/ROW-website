@@ -1,6 +1,6 @@
 # Roster On Wheels website: design samples
 
-Five homepage design concepts for the new Roster On Wheels website, and the previous site for reference.
+Five homepage design concepts for the new Roster On Wheels website.
 
 | Folder | What it is |
 | --- | --- |
@@ -10,7 +10,6 @@ Five homepage design concepts for the new Roster On Wheels website, and the prev
 | `design-samples/03-fellowship/` | Concept 03 · Fellowship |
 | `design-samples/04-kinetic/` | Concept 04 · Kinetic |
 | `design-samples/05-heritage/` | Concept 05 · Heritage |
-| `sample/` | The previous website |
 
 ## View it
 
