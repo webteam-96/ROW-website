@@ -1,0 +1,1016 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rotary Club Management Software and App | Roster On Wheels</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 26'%3E%3Ccircle cx='13' cy='13' r='13' fill='%230e1d61'/%3E%3Cg fill='none' stroke='%23b89a5a' stroke-width='1.6'%3E%3Ccircle cx='13' cy='13' r='8.5'/%3E%3Ccircle cx='13' cy='13' r='2.8'/%3E%3Cpath d='M13 4.5v5.7M13 15.8v5.7M4.5 13h5.7M15.8 13h5.7'/%3E%3C/g%3E%3C/svg%3E">
+<meta name="description" content="Roster On Wheels (ROW) is Rotary club and district management software with a member app, My Rotary sync, Grants, events and every RI language included.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Instrument+Serif:ital@0;1&amp;family=Hanken+Grotesk:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0e1d61}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+a{color:inherit}a:hover{color:#b89a5a}
+@property --bgc{syntax:'<color>';inherits:true;initial-value:#0e1d61}
+@property --fg{syntax:'<color>';inherits:true;initial-value:#e8e0d2}
+@property --mut{syntax:'<color>';inherits:true;initial-value:#c9c3bb}
+@property --ln{syntax:'<color>';inherits:true;initial-value:rgba(232,224,210,.14)}
+@property --card{syntax:'<color>';inherits:true;initial-value:rgba(232,224,210,.06)}
+@property --acc{syntax:'<color>';inherits:true;initial-value:#b89a5a}
+
+.row-root{--ease:cubic-bezier(.2,.8,.2,1);--ivory:#e8e0d2;--ivory-2:#f2ece2;--ivory-3:#d9cfbd;--ink:#0e1d61;--ink-2:#08123f;
+  --display:'Bebas Neue',Impact,'Arial Narrow',sans-serif;--serif:'Instrument Serif',Georgia,serif;--sans:'Hanken Grotesk',system-ui,sans-serif;--mono:'IBM Plex Mono',ui-monospace,monospace;
+  --bgc:#e8e0d2;--fg:#0e1d61;--mut:#4a4f6a;--ln:rgba(14,29,97,.14);--card:#f2ece2;--acc:#6f5a28;
+  background:var(--bgc);color:var(--fg);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:clip;
+  transition:--bgc .9s ease,--fg .9s ease,--mut .9s ease,--ln .9s ease,--card .9s ease,--acc .9s ease}
+.row-root.dark{--bgc:var(--navy);--fg:#e8e0d2;--mut:#c9c3bb;--ln:rgba(232,224,210,.14);--card:rgba(232,224,210,.06);--acc:var(--gold)}
+.row-root *{box-sizing:border-box}
+.wrap{max-width:1240px;margin:0 auto;padding:0 40px}
+.tag{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc);display:flex;align-items:center;gap:12px;margin:0 0 22px}
+.tag::before{content:"";width:28px;height:1px;background:currentColor}
+.h2{font-family:var(--display);font-weight:400;font-size:clamp(48px,5.8vw,92px);line-height:.92;letter-spacing:.005em;margin:0 0 24px}
+.h2 em,.h1 em,.pc h3 em{font-family:var(--serif);font-style:italic;font-weight:400;font-size:.9em;letter-spacing:-.01em;color:var(--acc)}
+.body{font-size:18px;line-height:1.6;color:var(--mut);margin:0;max-width:560px}
+section{position:relative}
+
+/* ===== reveal primitives ===== */
+.rv{opacity:0;transform:translateY(32px);transition:opacity 1s var(--ease),transform 1s var(--ease);transition-delay:calc(var(--d,0) * 90ms)}
+.rv.in{opacity:1;transform:none}
+.split .ln{display:block;overflow:hidden;padding-bottom:.06em;margin-bottom:-.06em}
+.split .ln > span{display:inline-block;transform:translateY(105%) rotate(3deg);transform-origin:left bottom;transition:transform 1s var(--ease);transition-delay:calc(var(--l,0) * 90ms)}
+.split.in .ln > span{transform:none}
+
+/* ===== intro loader ===== */
+.intro{position:fixed;inset:0;z-index:200;background:var(--navy);display:grid;place-items:center;pointer-events:none;animation:introOut 1s cubic-bezier(.8,0,.2,1) 1.7s forwards}
+.intro-in{display:flex;flex-direction:column;align-items:center;gap:22px;animation:introFade .5s ease 1.5s forwards}
+.intro svg circle,.intro svg line{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.2s cubic-bezier(.6,0,.2,1) forwards}
+.intro svg{animation:spin 2.4s cubic-bezier(.6,0,.2,1) forwards}
+.intro-word{font-family:var(--display);font-size:40px;color:#e8e0d2;letter-spacing:.08em;display:flex;overflow:hidden}
+.intro-word span{display:inline-block;transform:translateY(110%);animation:rise .8s cubic-bezier(.2,.8,.1,1) forwards;animation-delay:calc(var(--i) * 35ms + 300ms);white-space:pre}
+
+/* ===== cursor ===== */
+.cur{position:fixed;left:0;top:0;width:40px;height:40px;margin:-20px 0 0 -20px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:150;transition:width .3s,height .3s,margin .3s,background .3s;mix-blend-mode:normal}
+.cur.big{width:84px;height:84px;margin:-42px 0 0 -42px;background:rgba(184,154,90,.14)}
+.cur-dot{position:fixed;left:0;top:0;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;background:var(--gold);pointer-events:none;z-index:151}
+@media (pointer:coarse){.cur,.cur-dot{display:none}}
+
+/* ===== nav ===== */
+.nav{position:sticky;top:0;z-index:60;background:color-mix(in srgb,var(--bgc) 78%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--ln)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;gap:24px;height:72px}
+.brand{display:flex;align-items:center;gap:12px;min-height:44px;text-decoration:none;color:var(--fg)}
+.brand-mark{width:38px;height:38px;border-radius:50%;border:1px solid var(--acc);display:grid;place-items:center}
+.brand-mark svg{animation:spin 14s linear infinite}
+.brand-word{font-family:var(--display);font-size:30px;line-height:.9;letter-spacing:.04em}
+.brand-sub{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);display:block;margin-top:2px}
+.links{display:flex;gap:28px}
+.links a{font-size:15px;font-weight:500;text-decoration:none;color:var(--fg);position:relative;padding:6px 0}
+.links a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:right;transition:transform .4s}
+.links a:hover::after{transform:scaleX(1);transform-origin:left}
+.progress{position:absolute;left:0;bottom:-1px;height:2px;width:100%;background:var(--gold);transform-origin:left;transform:scaleX(var(--sp,0))}
+.btn{display:inline-flex;align-items:center;gap:10px;min-height:50px;padding:0 26px;border-radius:999px;font-weight:600;font-size:15px;text-decoration:none;white-space:nowrap;position:relative;overflow:hidden;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.btn::before{content:"";position:absolute;inset:0;border-radius:inherit;transform:translateY(101%);transition:transform .5s cubic-bezier(.7,0,.2,1);z-index:0}
+.btn:hover::before{transform:none}
+.btn > *{position:relative;z-index:1}
+.btn-gold{background:var(--gold);color:var(--ink-2)}
+.btn-gold::before{background:#e8e0d2}
+.btn-gold:hover{color:var(--ink-2)}
+.btn-line{border:1px solid var(--ln);color:var(--fg)}
+.btn-line::before{background:var(--gold)}
+.btn-line:hover{color:var(--ink-2)}
+.btn svg{transition:transform .35s}
+.btn:hover svg{transform:translateX(4px)}
+.burger{display:none}
+.mnav{position:fixed;inset:72px 0 0;z-index:59;background:var(--bgc);color:var(--fg);padding:12px 40px 40px;display:flex;flex-direction:column;gap:32px;overflow-y:auto;overscroll-behavior:contain;animation:menuIn .3s ease both}
+.mnav[hidden]{display:none}
+.mnav nav{display:flex;flex-direction:column}
+.mnav nav a{display:flex;align-items:center;min-height:64px;font-family:var(--display);font-size:clamp(36px,9vw,56px);line-height:1;letter-spacing:.02em;text-decoration:none;color:var(--fg);border-bottom:1px solid var(--ln);animation:menuUp .6s var(--ease) both;animation-delay:calc(var(--i,0) * 45ms + 60ms)}
+.mnav nav a:hover{color:var(--acc)}
+.mnav .btn{align-self:flex-start}
+
+/* ===== hero ===== */
+.hero{min-height:900px;padding:64px 0 0;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:40px;align-items:center;position:relative;z-index:2}
+.h1{font-family:var(--display);font-weight:400;font-size:clamp(56px,calc(7.6vw - 10px),86px);line-height:.88;letter-spacing:.005em;margin:0 0 32px;text-wrap:balance}
+.h1 .w{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.1em;margin-bottom:-.1em}
+.h1 .w > span{display:inline-block;transform:translateY(115%) rotate(4deg);transform-origin:left bottom;animation:rise 1.2s cubic-bezier(.2,.8,.1,1) forwards;animation-delay:calc(var(--i) * 70ms + 2s)}
+.h1 em{color:var(--gold)}
+.lede{font-size:19px;line-height:1.6;color:var(--mut);max-width:600px;margin:0 0 40px;opacity:0;animation:fadeUp 1s ease forwards 2.7s}
+.ctas{display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:fadeUp 1s ease forwards 2.9s}
+.hero-move{transform:translateY(calc(var(--hp,0) * -90px));opacity:calc(1 - var(--hp,0) * 1.3)}
+.hero-bg{position:absolute;inset:0;pointer-events:none}
+.gridlines{position:absolute;inset:0;background-image:linear-gradient(rgba(184,154,90,.09) 1px,transparent 1px),linear-gradient(90deg,rgba(184,154,90,.09) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse at 72% 40%,#000,transparent 68%);-webkit-mask-image:radial-gradient(ellipse at 72% 40%,#000,transparent 68%)}
+.globe{position:absolute;right:-200px;top:20px;width:860px;height:860px;opacity:.5;transform:translateY(calc(var(--hp,0) * 160px)) rotate(calc(var(--hp,0) * 30deg)) scale(calc(1 + var(--hp,0) * .2))}
+.mer{transform-box:fill-box;transform-origin:center;animation:meridian 16s ease-in-out infinite}
+.stage-wrap{perspective:1200px}
+.stage{position:relative;height:660px;display:grid;place-items:center;transform-style:preserve-3d;transform:rotateY(calc(var(--mx,0) * 10deg)) rotateX(calc(var(--my,0) * -8deg)) translateY(calc(var(--hp,0) * 80px)) scale(calc(1 - var(--hp,0) * .12));opacity:0;animation:fadeIn 1.4s ease forwards 2.2s}
+.ring{position:absolute;border-radius:50%;border:1px solid rgba(184,154,90,.35)}
+.ring.r1{width:540px;height:540px;border-style:dashed;animation:spin 60s linear infinite}
+.ring.r2{width:430px;height:430px;border-color:rgba(232,224,210,.12)}
+.ring.r3{width:650px;height:650px;border-color:rgba(232,224,210,.07);animation:spin 90s linear infinite reverse}
+.sat{position:absolute;top:-5px;left:50%;width:10px;height:10px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 6px rgba(184,154,90,.18)}
+.ring.r3 .sat{width:6px;height:6px;top:-3px;background:#e8e0d2;box-shadow:none}
+.phone{position:relative;width:290px;height:590px;border-radius:44px;background:#050c33;padding:12px;box-shadow:0 60px 120px -30px rgba(0,0,0,.65),0 0 0 1px rgba(232,224,210,.14) inset;animation:float 7s ease-in-out infinite;transform:translateZ(60px)}
+.screen{width:100%;height:100%;border-radius:34px;background:var(--ivory-2);overflow:hidden;display:flex;flex-direction:column;color:var(--ink)}
+.scr-top{background:var(--navy);color:#e8e0d2;padding:46px 18px 18px}
+.scr-top small{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.scr-top h4{font-family:var(--display);font-weight:400;font-size:34px;letter-spacing:.03em;margin:4px 0 0}
+.mem{display:flex;align-items:center;gap:10px;padding:11px 16px;border-bottom:1px solid rgba(14,29,97,.1);opacity:0;transform:translateX(18px);animation:slideIn .6s ease forwards;animation-delay:calc(var(--i) * 140ms + 3s)}
+.av{width:32px;height:32px;border-radius:50%;background:var(--ivory-3);flex:none}
+.bars{flex:1;display:flex;flex-direction:column;gap:6px}
+.bars i{display:block;height:7px;border-radius:4px;background:rgba(14,29,97,.18)}
+.bars i + i{width:55%;background:rgba(14,29,97,.09)}
+.lock{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:rgba(184,154,90,.18)}
+.qr-card{margin:12px 14px 0;border-radius:16px;background:var(--navy);color:#e8e0d2;padding:12px;display:flex;gap:12px;align-items:center;opacity:0;animation:fadeUp .8s ease forwards 3.7s}
+.qr{width:54px;height:54px;border-radius:6px;background:#e8e0d2;padding:5px;background-image:conic-gradient(var(--ink) 25%,transparent 0 50%,var(--ink) 0 75%,transparent 0);background-size:8px 8px;background-origin:content-box;background-clip:content-box;position:relative;flex:none}
+.qr::after{content:"";position:absolute;left:4px;right:4px;height:2px;background:var(--gold);top:6px;animation:scan 3s ease-in-out infinite;box-shadow:0 0 8px var(--gold)}
+.qr-card b{font-size:13px;display:block}
+.qr-card span{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+.tabbar{margin-top:auto;display:flex;justify-content:space-around;padding:12px 0 18px}
+.tabbar i{width:6px;height:6px;border-radius:50%;background:var(--ivory-3)}
+.tabbar i:first-child{background:var(--navy)}
+.float{position:absolute;z-index:3;background:var(--ivory-2);color:var(--ink);border-radius:16px;padding:12px 16px;display:flex;gap:12px;align-items:center;box-shadow:0 24px 48px -16px rgba(0,0,0,.45);font-size:13px;font-weight:600;white-space:nowrap}
+.float .ico{width:34px;height:34px;border-radius:10px;background:var(--navy);display:grid;place-items:center;flex:none}
+.f1{left:-36px;top:214px;transform:translateZ(120px);animation:float 6s ease-in-out infinite .8s}
+.f2{right:-24px;top:310px;transform:translateZ(160px);animation:float 8s ease-in-out infinite}
+.f3{left:0;bottom:90px;transform:translateZ(100px);animation:float 7s ease-in-out infinite 1.6s}
+.spinning{animation:spin 6s linear infinite}
+
+.stats{position:relative;z-index:2;margin-top:64px;border-top:1px solid var(--ln)}
+.stats-in{display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
+.stat{padding:32px 24px 44px;border-left:1px solid var(--ln)}
+.stat:first-child{border-left:0;padding-left:0}
+.stat .n{font-family:var(--display);font-size:60px;letter-spacing:.01em;line-height:1;display:block;font-variant-numeric:tabular-nums}
+.stat .l{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--acc);margin-top:12px;display:block}
+
+/* ===== what is ===== */
+.what{padding:170px 0 150px}
+.what-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:72px;align-items:center}
+.statement{font-family:var(--serif);font-size:clamp(28px,2.9vw,42px);line-height:1.22;margin:0;letter-spacing:-.005em}
+.statement > span{opacity:.14;transition:opacity .35s,color .35s}
+.statement > span.on{opacity:1}
+.statement > span.hl.on{color:var(--acc);font-style:italic}
+.sync{position:relative;aspect-ratio:1;max-width:460px;width:100%;margin-left:auto}
+.sync-in{position:absolute;left:0;top:0;width:460px;height:460px;transform-origin:0 0;transform:scale(var(--k,1))}
+.sync svg.paths{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.sync .pth{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.6s cubic-bezier(.6,0,.2,1) .2s}
+.sync.in .pth{stroke-dashoffset:0}
+.snode{position:absolute;width:132px;height:132px;border-radius:50%;display:grid;place-items:center;text-align:center;font-weight:600;font-size:15px;line-height:1.15;z-index:2}
+.snode.a{left:0;top:50%;margin-top:-66px;background:var(--card);border:1px solid var(--ln)}
+.snode.b{right:0;top:50%;margin-top:-66px;background:var(--navy);color:#e8e0d2}
+.snode.b::after,.snode.b::before{content:"";position:absolute;inset:-10px;border-radius:50%;border:1px solid var(--gold);animation:pulse 3s ease-out infinite}
+.snode.b::before{animation-delay:1.3s}
+.pkt{position:absolute;left:0;top:0;offset-rotate:0deg;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:6px 11px;border-radius:999px;white-space:nowrap;animation:along 6s var(--ease) infinite;opacity:0;z-index:1}
+.pkt.top{offset-path:path('M66 230 C 140 40, 320 40, 394 230');background:var(--gold);color:var(--ink-2)}
+.pkt.bot{offset-path:path('M394 230 C 320 420, 140 420, 66 230');background:var(--fg);color:var(--bgc)}
+
+/* ===== plan (pinned) ===== */
+.plan{height:4200px}
+.pin{position:sticky;top:72px;height:calc(100vh - 72px);min-height:680px;max-height:900px;overflow:hidden;display:flex;align-items:center}
+.plan-grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:72px;align-items:center;width:100%}
+.rail{position:relative;margin:0 0 28px}
+.rail-months{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));font-family:var(--display);font-size:24px;letter-spacing:.04em}
+.rail-months span{--dd:calc(var(--p,0) * 6 - var(--i));--ad:max(var(--dd),calc(var(--dd) * -1));--hi:clamp(0, calc(1 - var(--ad) * 1.6), 1);color:color-mix(in srgb,var(--gold) calc(var(--hi) * 100%),var(--mut));opacity:calc(.45 + var(--hi) * .55)}
+.rail-line{position:relative;height:2px;background:var(--ln);margin-top:12px}
+.rail-line i{position:absolute;left:0;top:0;height:2px;width:calc(var(--p,0) * (100% - 100% / 7));background:var(--gold)}
+.rail-line b{position:absolute;top:-6px;left:calc(var(--p,0) * (100% - 100% / 7));width:14px;height:14px;border-radius:50%;background:var(--fg);box-shadow:0 0 0 5px rgba(184,154,90,.3)}
+.plan-intro{font-size:18px;line-height:1.6;color:var(--mut);max-width:480px;margin:0}
+.cards{position:relative;height:340px}
+.pc{position:absolute;inset:0;border-radius:28px;padding:36px 40px;background-clip:padding-box;display:flex;flex-direction:column;justify-content:space-between;background:var(--card);border:1px solid var(--ln);
+  --dd:calc(var(--p,0) * 6 - var(--i));--ad:max(var(--dd),calc(var(--dd) * -1));
+  transform:translateY(calc(clamp(-1, var(--dd), 1) * -48px)) scale(calc(1 - min(var(--ad), 1) * .06));
+  opacity:calc(1 - min(var(--ad) * 1.6, 1));visibility:visible;transform-origin:center}
+.pc.last{background:var(--navy) !important;color:#e8e0d2;border-color:var(--navy)}
+.pc .k{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc);display:flex;justify-content:space-between}
+.pc.last .k{color:var(--gold)}
+.pc h3{font-family:var(--display);font-weight:400;font-size:clamp(36px,3.3vw,52px);line-height:.95;letter-spacing:.01em;margin:0}
+.pc p{margin:0;font-size:17px;line-height:1.55;color:var(--mut);max-width:440px}
+.pc.last p{color:rgba(232,224,210,.8)}
+.pc .ic{width:64px;height:64px;border-radius:50%;border:1px solid var(--ln);display:grid;place-items:center}
+.yrs{display:flex;flex-direction:column;gap:10px;margin-top:40px;max-width:440px}
+.yr{display:grid;grid-template-columns:110px minmax(0,1fr);gap:14px;align-items:center;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+.yr .tr{height:8px;border-radius:8px;background:var(--ln);overflow:hidden}
+.yr .tr i{display:block;height:100%;border-radius:8px;background:var(--fg);transform-origin:left}
+.yr.now .tr i{transform:scaleX(calc(1 - clamp(0, (var(--p,0) - .9) * 10, 1)))}
+.yr.nxt .tr i{background:var(--gold);transform:scaleX(var(--p,0))}
+
+/* ===== modules (pinned horizontal) ===== */
+.mods{height:3600px}
+.mods .pin{flex-direction:column;align-items:stretch;justify-content:center;gap:36px}
+.mods-head{display:flex;justify-content:space-between;align-items:end;gap:40px}
+.mods-head .h2{margin:0;max-width:760px}
+.mcount{font-family:var(--mono);font-size:13px;letter-spacing:.1em;display:flex;align-items:center;gap:14px;color:var(--mut)}
+.mcount .win{height:1.3em;overflow:hidden;display:inline-block;color:var(--fg)}
+.mcount .strip{display:flex;flex-direction:column;transform:translateY(calc(var(--ci,0) * -1.3em));transition:transform .6s var(--ease)}
+.mcount .strip span{height:1.3em;line-height:1.3em}
+.mbar{width:120px;height:2px;background:var(--ln);position:relative}
+.mbar i{position:absolute;inset:0;background:var(--gold);transform-origin:left;transform:scaleX(var(--p,0))}
+.mtrack{display:flex;gap:24px;padding-left:max(40px,calc((100vw - 1240px) / 2 + 40px));padding-right:40px;transform:translateX(var(--tx,0px));will-change:transform}
+.mc{flex:none;width:380px;height:460px;border-radius:28px;background:var(--card);border:1px solid var(--ln);padding:28px;display:flex;flex-direction:column;gap:14px;position:relative;overflow:hidden;transition:transform .5s cubic-bezier(.2,.8,.2,1),border-color .4s}
+.mc:hover{transform:translateY(-8px);border-color:var(--gold)}
+.mc .idx{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--acc)}
+.mc h3{font-family:var(--display);font-weight:400;font-size:42px;line-height:.95;letter-spacing:.01em;margin:auto 0 0}
+.mc p{margin:0;font-size:15px;line-height:1.55;color:var(--mut)}
+.viz{height:190px;border-radius:18px;background:var(--navy);position:relative;overflow:hidden;color:#e8e0d2;flex:none}
+/* viz 1 directory */
+.v-dir{padding:18px;display:flex;flex-direction:column;gap:10px}
+.v-dir .row{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;background:rgba(232,224,210,.07);animation:dirRow 6s var(--ease) infinite;animation-delay:calc(var(--i) * .25s);opacity:0}
+.v-dir .row i{width:24px;height:24px;border-radius:50%;background:rgba(232,224,210,.25);flex:none}
+.v-dir .row b{flex:1;height:6px;border-radius:4px;background:rgba(232,224,210,.25)}
+.v-dir .row .lk{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:var(--gold);animation:pop 6s ease infinite;animation-delay:calc(var(--i) * .25s + .6s)}
+/* viz 2 sync */
+.v-sync .o{position:absolute;top:50%;width:70px;height:70px;margin-top:-35px;border-radius:50%;display:grid;place-items:center;font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;text-align:center;line-height:1.3}
+.v-sync .o.l{left:30px;border:1px solid rgba(232,224,210,.35)}
+.v-sync .o.r{right:30px;background:var(--gold);color:var(--ink-2)}
+.v-sync .arc{position:absolute;left:100px;right:100px;top:50%;height:60px}
+.v-sync .arc.t{margin-top:-60px;border:1px dashed rgba(232,224,210,.3);border-bottom:0;border-radius:60px 60px 0 0}
+.v-sync .arc.b{border:1px dashed rgba(232,224,210,.3);border-top:0;border-radius:0 0 60px 60px}
+.v-sync .dt{position:absolute;width:10px;height:10px;border-radius:50%;background:var(--gold);offset-path:path('M100 105 C 130 30, 214 30, 244 105');animation:along2 3s var(--ease) infinite}
+.v-sync .dt.rv2{background:#e8e0d2;offset-path:path('M244 105 C 214 180, 130 180, 100 105');animation-delay:-1.5s}
+/* viz 3 events */
+.v-evt{display:grid;place-items:center}
+.ticket{width:220px;height:120px;border-radius:14px;background:#e8e0d2;color:var(--ink);display:flex;align-items:center;gap:14px;padding:14px;position:relative;animation:tilt 6s ease-in-out infinite}
+.ticket .qr{width:80px;height:80px}
+.ticket .tl{flex:1;display:flex;flex-direction:column;gap:7px}
+.ticket .tl i{height:6px;border-radius:4px;background:rgba(14,29,97,.2)}
+.ticket .tl i:nth-child(2){width:70%}.ticket .tl i:nth-child(3){width:45%}
+.ok{position:absolute;right:-14px;top:-14px;width:40px;height:40px;border-radius:50%;background:var(--gold);display:grid;place-items:center;animation:okPop 3s ease infinite}
+/* viz 4 dues */
+.v-due{padding:22px;display:flex;flex-direction:column;gap:12px}
+.v-due .li{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.v-due .li i{height:7px;border-radius:4px;background:rgba(232,224,210,.25);transform-origin:left;animation:grow 6s var(--ease) infinite;animation-delay:calc(var(--i) * .2s)}
+.v-due .li b{width:44px;height:7px;border-radius:4px;background:rgba(184,154,90,.7);transform-origin:right;animation:grow 6s var(--ease) infinite;animation-delay:calc(var(--i) * .2s + .1s)}
+.v-due .tot{margin-top:auto;padding-top:12px;border-top:1px dashed rgba(232,224,210,.3);display:flex;gap:8px}
+.v-due .tot span{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;padding:5px 9px;border-radius:999px;border:1px solid rgba(232,224,210,.3);animation:chipHi 6s ease infinite;animation-delay:calc(var(--i) * 3s)}
+/* viz 5 comms */
+.v-com{padding:18px;display:flex;flex-direction:column;gap:10px}
+.bub{max-width:70%;padding:10px 14px;border-radius:16px;background:rgba(232,224,210,.12);opacity:0;transform:translateY(10px) scale(.9);animation:bub 6s var(--ease) infinite;animation-delay:calc(var(--i) * .5s);display:flex;flex-direction:column;gap:6px}
+.bub i{display:block;height:6px;border-radius:4px;background:rgba(232,224,210,.35);width:120px}
+.bub i + i{width:70px}
+.bub.me{align-self:flex-end;background:var(--gold)}
+.bub.me i{background:rgba(8,18,63,.35)}
+.chans{display:flex;gap:6px;margin-top:auto;flex-wrap:wrap}
+.chans span{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:5px 9px;border-radius:999px;border:1px solid rgba(232,224,210,.3);animation:chipHi 8s ease infinite;animation-delay:calc(var(--i) * 2s)}
+/* viz 6 projects */
+.v-prj{display:flex;align-items:center;justify-content:center;gap:26px}
+.prj-ring{width:110px;height:110px;position:relative}
+.prj-ring svg{transform:rotate(-90deg)}
+.prj-ring .fill{stroke-dasharray:1;stroke-dashoffset:1;animation:ringFill 6s var(--ease) infinite}
+.up{display:flex;flex-direction:column;align-items:center;gap:8px;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase}
+.up .ar{width:44px;height:44px;border-radius:50%;border:1px solid rgba(232,224,210,.35);display:grid;place-items:center;overflow:hidden}
+.up .ar svg{animation:upArrow 3s var(--ease) infinite}
+/* viz 7 district */
+.v-dst{display:flex;align-items:flex-end;justify-content:center;gap:12px;padding:26px 26px 30px}
+.v-dst .bar{width:26px;border-radius:6px 6px 2px 2px;background:rgba(232,224,210,.25);transform-origin:bottom;animation:barUp 6s var(--ease) infinite;animation-delay:calc(var(--i) * .12s)}
+.v-dst .bar.g{background:var(--gold)}
+.v-dst .goal{position:absolute;left:24px;right:24px;top:58px;border-top:1px dashed var(--gold)}
+/* viz 8 websites */
+.v-web{padding:16px}
+.brw{height:100%;border-radius:12px;background:#e8e0d2;color:var(--ink);overflow:hidden;display:flex;flex-direction:column}
+.brw-top{height:28px;display:flex;align-items:center;gap:5px;padding:0 10px;border-bottom:1px solid rgba(14,29,97,.12)}
+.brw-top i{width:7px;height:7px;border-radius:50%;background:rgba(14,29,97,.2)}
+.lang-win{margin-left:auto;height:18px;overflow:hidden;font-family:var(--mono);font-size:10px;font-weight:500;padding:0 7px;border-radius:4px;background:var(--navy);color:var(--gold)}
+.lang-strip{display:flex;flex-direction:column;animation:langStep 12s steps(1) infinite}
+.lang-strip span{height:18px;line-height:18px}
+.brw-body{flex:1;padding:12px;display:grid;grid-template-columns:1.4fr 1fr;gap:10px}
+.brw-body .hb{border-radius:8px;background:var(--navy);animation:shimmer 3s ease-in-out infinite}
+.brw-body .ad{border-radius:8px;border:1px dashed var(--gold);display:grid;place-items:center;font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+
+/* ===== languages dial ===== */
+.langs{padding:160px 0 150px;overflow:hidden}
+.langs-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:56px;align-items:center}
+.where{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:36px;max-width:500px}
+.where div{display:flex;align-items:center;gap:12px;padding:16px;border-radius:14px;border:1px solid var(--ln);font-weight:600;font-size:15px}
+.where svg path{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset .8s ease;transition-delay:calc(var(--d,0) * 120ms + 400ms)}
+.where div.in svg path{stroke-dashoffset:0}
+.nocharge{display:inline-flex;margin-top:22px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:10px 16px;border-radius:999px;background:var(--gold);color:var(--ink-2)}
+.dial-wrap{position:relative;aspect-ratio:1;max-width:580px;width:100%;margin:0 auto}
+.dial{position:absolute;inset:0;animation:dial 16s cubic-bezier(.7,0,.2,1) infinite}
+.dial-ring{position:absolute;inset:9%;border-radius:50%;border:1px solid var(--ln)}
+.dial-ticks{position:absolute;inset:4%;border-radius:50%;background:repeating-conic-gradient(var(--ln) 0 .4deg,transparent .4deg 5deg);mask:radial-gradient(circle,transparent 66%,#000 67%,#000 70%,transparent 71%);-webkit-mask:radial-gradient(circle,transparent 66%,#000 67%,#000 70%,transparent 71%)}
+.lc{position:absolute;left:50%;top:50%;width:0;height:0;transform:rotate(calc(var(--i) * 45deg)) translateY(-41cqw)}
+.dial-wrap{container-type:inline-size}
+.lc > span{position:absolute;left:0;top:0;transform:translate(-50%,-50%) rotate(calc(var(--i) * -45deg))}
+.lc > span > span{display:block;font-family:var(--mono);font-size:12px;letter-spacing:.12em;padding:9px 13px;border-radius:999px;background:var(--bgc);border:1px solid var(--ln);white-space:nowrap;animation:dialRev 16s cubic-bezier(.7,0,.2,1) infinite}
+.marker{position:absolute;left:50%;top:calc(50% - 41cqw);width:84px;height:46px;margin:-23px 0 0 -42px;border-radius:999px;border:1.5px solid var(--gold);box-shadow:0 0 0 6px rgba(184,154,90,.15);z-index:3}
+.marker::after{content:"";position:absolute;left:50%;top:100%;width:1px;height:60px;background:linear-gradient(var(--gold),transparent)}
+.dial-center{position:absolute;inset:26%;border-radius:50%;background:var(--card);border:1px solid var(--ln);display:grid;place-items:center;overflow:hidden}
+.lw{grid-area:1/1;font-family:var(--serif);font-size:clamp(34px,5cqw,54px);text-align:center;opacity:0;animation:lword 16s ease infinite both;animation-delay:calc(var(--i) * 2s)}
+.lw small{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--acc);margin-top:8px}
+
+/* ===== districts ===== */
+.dist{padding:170px 0}
+.dist-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:72px;align-items:center}
+.net{position:relative;aspect-ratio:1;max-width:540px;width:100%;margin:0 auto}
+.net .spin{position:absolute;inset:0;animation:spin 90s linear infinite}
+.net .o1{position:absolute;inset:6%;border-radius:50%;border:1px dashed var(--ln)}
+.net .o2{position:absolute;inset:24%;border-radius:50%;border:1px solid var(--ln)}
+.spk{position:absolute;left:50%;top:50%;width:44%;height:1px;transform-origin:0 0;transform:rotate(calc(var(--k) * 30deg));
+  --on:clamp(0, calc((var(--dp,0) * 1.5 - var(--k) / 14) * 6), 1);--g:clamp(0, calc((var(--dp,0) - .72) * 8), 1)}
+.spk .sl{position:absolute;inset:0;background:linear-gradient(90deg,var(--fg),transparent);opacity:.35;transform:scaleX(var(--on));transform-origin:left}
+.spk .pl{position:absolute;top:-3px;left:0;width:7px;height:7px;border-radius:50%;background:var(--gold);animation:spokeRun 3s var(--ease) infinite;animation-delay:calc(var(--k) * 250ms);opacity:0}
+.spk .cl{position:absolute;right:-24px;top:-24px;width:48px;height:48px;border-radius:50%;background:var(--card);border:1px solid var(--ln);display:grid;place-items:center;transform:scale(var(--on)) rotate(calc(var(--k) * -30deg))}
+.spk .cl i{width:14px;height:14px;border-radius:50%;background:var(--fg)}
+.spk.rac .cl{border-color:color-mix(in srgb,var(--gold) calc(var(--g) * 100%),var(--ln));box-shadow:0 0 0 calc(var(--g) * 6px) rgba(184,154,90,.2)}
+.spk.rac .cl i{background:color-mix(in srgb,var(--gold) calc(var(--g) * 100%),var(--fg))}
+.hub{position:absolute;left:50%;top:50%;width:160px;height:160px;margin:-80px 0 0 -80px;border-radius:50%;background:var(--navy);color:#e8e0d2;display:grid;place-items:center;text-align:center;z-index:2;box-shadow:0 30px 60px -20px rgba(14,29,97,.5);transform:scale(calc(.6 + min(var(--dp,0) * 3, 1) * .4))}
+.hub b{font-family:var(--display);font-weight:400;font-size:44px;letter-spacing:.04em;line-height:1;display:block}
+.hub small{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.hub::before{content:"";position:absolute;inset:-14px;border-radius:50%;border:1px solid var(--gold);opacity:.5;animation:pulse 3s ease-out infinite}
+.legend{display:flex;flex-direction:column;gap:12px;margin-top:40px;max-width:520px}
+.lg{display:flex;gap:16px;align-items:center;padding:18px 20px;border-radius:16px;background:var(--card);border:1px solid var(--ln);font-size:16px;font-weight:600}
+.lg .sw{width:18px;height:18px;border-radius:50%;flex:none}
+.lg .free{margin-left:auto;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;background:var(--gold);color:var(--ink-2);padding:4px 9px;border-radius:999px}
+
+/* ===== migration ===== */
+.mig{padding:170px 0}
+.mig-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:end;margin-bottom:96px}
+.flow{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+.trk{position:absolute;left:52px;right:calc(25% - 52px);top:52px;height:2px;background:var(--ln)}
+.trk i{position:absolute;inset:0;background:var(--gold);transform-origin:left;transform:scaleX(var(--mp,0))}
+.packet{position:absolute;top:-26px;left:calc(var(--mp,0) * 100%);width:58px;height:58px;margin-left:-29px;border-radius:14px;background:var(--navy);border:1px solid var(--gold);display:grid;place-items:center;z-index:4;box-shadow:0 20px 40px -12px rgba(14,29,97,.5);transform:rotate(calc(var(--mp,0) * 360deg))}
+.packet svg{transform:rotate(calc(var(--mp,0) * -360deg))}
+.st{position:relative;z-index:2;display:flex;flex-direction:column;align-items:flex-start;gap:14px;--on:clamp(0, calc((var(--mp,0) - var(--s)) * 14 + 1), 1)}
+.st .disc{width:104px;height:104px;border-radius:50%;display:grid;place-items:center;background:var(--bgc);border:1px solid color-mix(in srgb,var(--gold) calc(var(--on) * 100%),var(--ln));box-shadow:0 0 0 calc(var(--on) * 8px) rgba(184,154,90,.12);transform:scale(calc(.9 + var(--on) * .1))}
+.st h3{font-family:var(--display);font-weight:400;font-size:34px;line-height:.98;letter-spacing:.01em;margin:0;opacity:calc(.35 + var(--on) * .65)}
+.st .num{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--acc)}
+.imports{display:flex;flex-wrap:wrap;gap:6px}
+.imports span{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:5px 9px;border-radius:999px;border:1px solid var(--ln);--c:clamp(0, calc((var(--mp,0) - .3 - var(--j) * .05) * 14), 1);opacity:calc(.45 + var(--c) * .55);background:color-mix(in srgb,var(--gold) calc(var(--c) * 100%),transparent);color:color-mix(in srgb,var(--ink-2) calc(var(--c) * 100%),var(--fg));transform:translateY(calc((1 - var(--c)) * 10px))}
+.sig{stroke-dasharray:1;stroke-dashoffset:calc(1 - clamp(0, (var(--mp,0) - .6) * 4, 1))}
+.chk{stroke-dasharray:1;stroke-dashoffset:calc(1 - clamp(0, (var(--mp,0) - .9) * 10, 1))}
+.mig-foot{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:48px;margin-top:88px;align-items:center}
+.badges{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end}
+.badge{display:flex;align-items:center;gap:14px;padding:18px 22px;border-radius:18px;background:var(--navy);color:#e8e0d2}
+.badge b{font-family:var(--display);font-weight:400;font-size:46px;color:var(--gold);line-height:1}
+.badge span{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+
+/* ===== faq ===== */
+.faq{padding:160px 0}
+.faq-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:80px}
+.q{border-top:1px solid var(--ln);position:relative}
+.q:last-child{border-bottom:1px solid var(--ln)}
+.q::before{content:"";position:absolute;left:0;top:-1px;height:1px;width:100%;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .7s cubic-bezier(.7,0,.2,1)}
+.q.open::before,.q:hover::before{transform:scaleX(1)}
+.q button{all:unset;box-sizing:border-box;width:100%;min-height:96px;display:flex;align-items:center;justify-content:space-between;gap:24px;cursor:pointer;font-family:var(--serif);font-size:32px;line-height:1.15;padding:22px 0;transition:padding .4s}
+.q button:hover{padding-left:12px}
+.q button:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
+.q .pm{width:46px;height:46px;border-radius:50%;border:1px solid var(--ln);display:grid;place-items:center;flex:none;transition:transform .6s cubic-bezier(.3,1.5,.5,1),background .3s}
+.q.open .pm{transform:rotate(135deg);background:var(--gold);border-color:var(--gold)}
+.ans{display:grid;grid-template-rows:0fr;transition:grid-template-rows .7s cubic-bezier(.2,.8,.1,1)}
+.q.open .ans{grid-template-rows:1fr}
+.ans > div{overflow:hidden}
+.ans p{margin:0 0 30px;font-size:18px;line-height:1.6;color:var(--mut);max-width:620px;transform:translateY(-12px);opacity:0;transition:transform .7s ease .1s,opacity .7s ease .1s}
+.q.open .ans p{transform:none;opacity:1}
+
+/* ===== cta ===== */
+.cta{padding:190px 0 170px;overflow:hidden;text-align:center;background:var(--navy);color:#e8e0d2;clip-path:circle(calc(var(--e,1) * 85%) at 50% 50%)}
+.wheel{position:absolute;left:50%;top:50%;width:940px;height:940px;margin:-470px 0 0 -470px;pointer-events:none;transform:rotate(calc(var(--e,1) * 90deg))}
+.wheel svg{width:100%;height:100%;animation:spin 60s linear infinite}
+.wheel2{width:660px;height:660px;margin:-330px 0 0 -330px;transform:rotate(calc(var(--e,1) * -120deg))}
+.cta .h2{font-size:clamp(72px,11vw,170px)}
+.cta .h2 em{color:var(--gold)}
+.cta .body{margin:0 auto 48px;text-align:center;color:rgba(232,224,210,.8)}
+.cta-in{position:relative;z-index:2}
+.foot{background:var(--ink-2);color:rgba(232,224,210,.7);padding:72px 0 40px}
+.foot-grid{display:flex;justify-content:space-between;gap:48px;flex-wrap:wrap;align-items:flex-end}
+.foot ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:0 26px;max-width:560px}
+.foot a{display:inline-flex;align-items:center;min-height:44px;min-width:44px;color:rgba(232,224,210,.85);text-decoration:none;font-size:14.5px}
+.foot a:hover{color:var(--gold)}
+.foot-bot a{font-size:inherit;color:var(--gold)}
+.foot-bot{margin-top:56px;padding-top:24px;border-top:1px solid rgba(232,224,210,.12);font-family:var(--mono);font-size:11px;letter-spacing:.08em}
+
+/* ===== keyframes ===== */
+@keyframes rise{to{transform:none}}
+@keyframes fadeIn{to{opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes menuIn{from{opacity:0}}
+@keyframes menuUp{from{opacity:0;transform:translateY(18px)}}
+@keyframes introOut{to{clip-path:inset(0 0 100% 0)}}
+@keyframes introFade{to{opacity:0;transform:translateY(-30px)}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes float{0%,100%{translate:0 0}50%{translate:0 -14px}}
+@keyframes slideIn{to{opacity:1;transform:none}}
+@keyframes scan{0%,100%{top:6px}50%{top:calc(100% - 8px)}}
+@keyframes meridian{0%{transform:scaleX(1)}50%{transform:scaleX(-1)}100%{transform:scaleX(1)}}
+@keyframes pulse{0%{transform:scale(.92);opacity:.8}100%{transform:scale(1.3);opacity:0}}
+@keyframes along{0%{offset-distance:0%;opacity:0}12%{opacity:1}88%{opacity:1}100%{offset-distance:100%;opacity:0}}
+@keyframes along2{0%{offset-distance:0%;opacity:0}15%{opacity:1}85%{opacity:1}100%{offset-distance:100%;opacity:0}}
+@keyframes spokeRun{0%{left:0;opacity:0}15%{opacity:1}85%{opacity:1}100%{left:calc(100% - 7px);opacity:0}}
+@keyframes dirRow{0%{opacity:0;transform:translateX(30px)}8%,80%{opacity:1;transform:none}90%,100%{opacity:0;transform:translateX(-20px)}}
+@keyframes pop{0%,15%{transform:scale(0)}22%,80%{transform:scale(1)}90%,100%{transform:scale(0)}}
+@keyframes tilt{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(3deg) translateY(-6px)}}
+@keyframes okPop{0%,40%{transform:scale(0) rotate(-90deg)}55%{transform:scale(1.2) rotate(0)}65%,90%{transform:scale(1)}100%{transform:scale(0)}}
+@keyframes grow{0%{transform:scaleX(0)}25%,85%{transform:scaleX(1)}100%{transform:scaleX(0)}}
+@keyframes chipHi{0%,10%{background:transparent;color:inherit;border-color:rgba(232,224,210,.3)}15%,40%{background:#b89a5a;color:#08123f;border-color:#b89a5a}50%,100%{background:transparent;color:inherit;border-color:rgba(232,224,210,.3)}}
+@keyframes bub{0%{opacity:0;transform:translateY(10px) scale(.9)}10%,80%{opacity:1;transform:none}92%,100%{opacity:0;transform:translateY(-6px)}}
+@keyframes ringFill{0%{stroke-dashoffset:1}60%,85%{stroke-dashoffset:0}100%{stroke-dashoffset:1}}
+@keyframes upArrow{0%{transform:translateY(20px);opacity:0}40%,60%{transform:none;opacity:1}100%{transform:translateY(-20px);opacity:0}}
+@keyframes barUp{0%{transform:scaleY(.05)}35%,85%{transform:scaleY(1)}100%{transform:scaleY(.05)}}
+@keyframes langStep{0%{transform:translateY(0)}12.5%{transform:translateY(-18px)}25%{transform:translateY(-36px)}37.5%{transform:translateY(-54px)}50%{transform:translateY(-72px)}62.5%{transform:translateY(-90px)}75%{transform:translateY(-108px)}87.5%{transform:translateY(-126px)}}
+@keyframes shimmer{0%,100%{opacity:.85}50%{opacity:1}}
+@keyframes dial{0%,9%{transform:rotate(0)}12.5%,21.5%{transform:rotate(-45deg)}25%,34%{transform:rotate(-90deg)}37.5%,46.5%{transform:rotate(-135deg)}50%,59%{transform:rotate(-180deg)}62.5%,71.5%{transform:rotate(-225deg)}75%,84%{transform:rotate(-270deg)}87.5%,96.5%{transform:rotate(-315deg)}100%{transform:rotate(-360deg)}}
+@keyframes dialRev{0%,9%{transform:rotate(0)}12.5%,21.5%{transform:rotate(45deg)}25%,34%{transform:rotate(90deg)}37.5%,46.5%{transform:rotate(135deg)}50%,59%{transform:rotate(180deg)}62.5%,71.5%{transform:rotate(225deg)}75%,84%{transform:rotate(270deg)}87.5%,96.5%{transform:rotate(315deg)}100%{transform:rotate(360deg)}}
+@keyframes lword{0%{opacity:0;transform:translateY(40px);filter:blur(8px)}2.5%,10%{opacity:1;transform:none;filter:blur(0)}12.5%,100%{opacity:0;transform:translateY(-40px);filter:blur(8px)}}
+
+/* ===== responsive ===== */
+@media (max-width:980px){
+  .hero-grid,.what-grid,.plan-grid,.dist-grid,.langs-grid,.mig-head,.faq-grid,.mig-foot{grid-template-columns:minmax(0,1fr)}
+  .h1{font-size:clamp(68px,10vw,96px)}
+  .stats-in{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .stat:nth-child(4){border-left:0;padding-left:0}
+  .links{display:none}
+  .nav-in{gap:12px}
+  .brand{margin-right:auto}
+  .burger{all:unset;box-sizing:border-box;flex:none;display:grid;place-content:center;gap:6px;width:44px;height:44px;border-radius:50%;border:1px solid var(--ln);cursor:pointer}
+  .burger span{display:block;width:18px;height:1.5px;background:var(--fg);transition:transform .35s var(--ease)}
+  .burger[aria-expanded="true"] span:first-child{transform:translateY(3.75px) rotate(45deg)}
+  .burger[aria-expanded="true"] span:last-child{transform:translateY(-3.75px) rotate(-45deg)}
+  .burger:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+  .plan,.mods{height:auto}
+  .pin{position:relative;top:0;height:auto;max-height:none;padding:120px 0;display:block}
+  .rail{display:none}
+  .cards{height:auto;display:flex;flex-direction:column;gap:14px}
+  .pc{position:relative;inset:auto;transform:none !important;opacity:1 !important;min-height:200px}
+  .yr.nxt .tr i{transform:scaleX(1)}
+  .mods-head{flex-wrap:wrap;margin-bottom:40px}
+  .mtrack{transform:none;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:40px;padding:8px 40px 12px;scrollbar-width:none;overscroll-behavior-x:contain}
+  .mtrack::-webkit-scrollbar{display:none}
+  .mc{width:min(380px,80vw);height:auto;min-height:440px;scroll-snap-align:start}
+  .sync{margin:0 auto}
+  .flow{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:48px}
+  .trk,.packet{display:none}
+  .st{--on:1}.imports span{--c:1}.sig,.chk{stroke-dashoffset:0}
+  .badges{justify-content:flex-start}
+}
+@media (max-width:640px){
+  .wrap{padding:0 16px}
+  .mtrack{padding:8px 16px 12px;scroll-padding-inline:16px}
+  .mnav{padding:8px 16px 32px}
+  .hero{padding-top:56px}
+  .stage{height:580px;scale:.86}
+  .f2{right:-4px}
+  .stats-in{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stat{padding:24px 0 28px;border-left:0}
+  .stat .n{font-size:48px}
+  .flow,.where{grid-template-columns:minmax(0,1fr)}
+  .what,.dist,.mig,.faq,.langs,.cta{padding-top:100px;padding-bottom:100px}
+  .pc{padding:28px}
+  .q button{font-size:24px}
+  .nav .btn{display:none}
+  .mc{min-height:0}
+}
+@media (prefers-reduced-motion:reduce){
+  /* loops hold still; anything that would rest on an empty frame shows its finished state */
+  .row-root *,.row-root *::before,.row-root *::after{animation-play-state:paused !important;transition-duration:.01ms !important;transition-delay:0s !important}
+  .intro,.cur,.cur-dot{display:none}
+  .h1 .w > span,.lede,.ctas,.stage,.mem,.qr-card,.v-dir .row,.ok,.v-due .li i,.v-due .li b,.bub,.prj-ring .fill,.up .ar svg,.v-dst .bar,.lw,.mnav,.mnav nav a{animation:none !important}
+  .lede,.ctas,.stage,.mem,.qr-card,.v-dir .row,.bub,.lw:first-child{opacity:1}
+  .h1 .w > span,.mem,.bub{transform:none}
+  .prj-ring .fill{stroke-dashoffset:.3}
+}
+</style>
+</head>
+<body>
+<div class="row-root dark" style="--gold: #b89a5a; --navy: #0e1d61;">
+
+<div class="intro" aria-hidden="true">
+  <div class="intro-in">
+    <svg width="72" height="72" viewBox="0 0 26 26" fill="none" stroke="#b89a5a" stroke-width=".9"><circle pathLength="1" cx="13" cy="13" r="10"></circle><circle pathLength="1" cx="13" cy="13" r="3.2"></circle><line pathLength="1" x1="13" y1="3" x2="13" y2="9.8"></line><line pathLength="1" x1="13" y1="16.2" x2="13" y2="23"></line><line pathLength="1" x1="3" y1="13" x2="9.8" y2="13"></line><line pathLength="1" x1="16.2" y1="13" x2="23" y2="13"></line></svg>
+    <div class="intro-word"><span style="--i:0">R</span><span style="--i:1">o</span><span style="--i:2">s</span><span style="--i:3">t</span><span style="--i:4">e</span><span style="--i:5">r</span><span style="--i:6"> </span><span style="--i:7">O</span><span style="--i:8">n</span><span style="--i:9"> </span><span style="--i:10">W</span><span style="--i:11">h</span><span style="--i:12">e</span><span style="--i:13">e</span><span style="--i:14">l</span><span style="--i:15">s</span></div>
+  </div>
+</div>
+<div class="cur" aria-hidden="true"></div><div class="cur-dot" aria-hidden="true"></div>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top">
+      <span class="brand-mark"><svg width="24" height="24" viewBox="0 0 26 26" fill="none" stroke="#b89a5a" stroke-width="1.4"><circle cx="13" cy="13" r="10"></circle><circle cx="13" cy="13" r="3.2"></circle><line x1="13" y1="3" x2="13" y2="9.8"></line><line x1="13" y1="16.2" x2="13" y2="23"></line><line x1="3" y1="13" x2="9.8" y2="13"></line><line x1="16.2" y1="13" x2="23" y2="13"></line></svg></span>
+      <span><span class="brand-word">ROW</span><span class="brand-sub">Roster On Wheels</span></span>
+    </a>
+    <nav class="links" aria-label="Main">
+      <a href="#districts">For Districts</a>
+      <a href="#features">For Clubs</a>
+      <a href="#plan">Plan Next Year</a>
+      <a href="#migrate">Migration</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn btn-gold" href="#demo"><span>Book a 20-minute demo</span></a>
+    <button class="burger" type="button" aria-expanded="false" aria-controls="mnav" aria-label="Open menu"><span></span><span></span></button>
+  </div>
+  <div class="progress"></div>
+</header>
+<div class="mnav" id="mnav" hidden>
+  <nav aria-label="Menu">
+    <a href="#districts" style="--i:0">For Districts</a>
+    <a href="#features" style="--i:1">For Clubs</a>
+    <a href="#plan" style="--i:2">Plan Next Year</a>
+    <a href="#what" style="--i:3">My Rotary Integration</a>
+    <a href="#languages" style="--i:4">Languages</a>
+    <a href="#migrate" style="--i:5">Migration</a>
+    <a href="#faq" style="--i:6">FAQ</a>
+  </nav>
+  <a class="btn btn-gold" href="#demo"><span>Book a 20-minute demo</span></a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="top" data-theme="dark">
+  <div class="hero-bg">
+    <div class="gridlines"></div>
+    <svg class="globe" viewBox="0 0 400 400" fill="none" stroke="#b89a5a" stroke-width=".6">
+      <circle cx="200" cy="200" r="190"></circle>
+      <ellipse class="mer" cx="200" cy="200" rx="190" ry="190" style="animation-delay:0s"></ellipse>
+      <ellipse class="mer" cx="200" cy="200" rx="190" ry="190" style="animation-delay:-2.66s"></ellipse>
+      <ellipse class="mer" cx="200" cy="200" rx="190" ry="190" style="animation-delay:-5.33s"></ellipse>
+      <ellipse class="mer" cx="200" cy="200" rx="190" ry="190" style="animation-delay:-8s"></ellipse>
+      <ellipse class="mer" cx="200" cy="200" rx="190" ry="190" style="animation-delay:-10.66s"></ellipse>
+      <ellipse class="mer" cx="200" cy="200" rx="190" ry="190" style="animation-delay:-13.33s"></ellipse>
+      <ellipse cx="200" cy="200" rx="190" ry="60"></ellipse>
+      <ellipse cx="200" cy="118" rx="152" ry="38" opacity=".7"></ellipse>
+      <ellipse cx="200" cy="282" rx="152" ry="38" opacity=".7"></ellipse>
+      <line x1="10" y1="200" x2="390" y2="200"></line>
+    </svg>
+  </div>
+
+  <div class="wrap hero-grid">
+    <div class="hero-move">
+      <h1 class="h1">
+        <span class="w"><span style="--i:0">Rotary</span></span> <span class="w"><span style="--i:1">club</span></span> <span class="w"><span style="--i:2">and</span></span> <span class="w"><span style="--i:3">district</span></span> <span class="w"><span style="--i:4">management</span></span> <span class="w"><span style="--i:5">software</span></span> <span class="w"><span style="--i:6">your</span></span> <span class="w"><span style="--i:7">members</span></span> <span class="w"><span style="--i:8"><em>actually</em></span></span> <span class="w"><span style="--i:9"><em>open</em></span></span>
+      </h1>
+      <p class="lede">Roster On Wheels (ROW) runs your Rotary club or district in one place: a member app for every Rotarian, a full web console for officers, and two-way sync with My Rotary. Grants, events, dues, websites and every Rotary International language are included in one annual plan.</p>
+      <div class="ctas">
+        <a class="btn btn-gold" href="#demo"><span>Book a 20-minute demo</span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8h10M9 4l4 4-4 4"></path></svg></a>
+        <a class="btn btn-line" href="#what"><span>What is Roster On Wheels?</span></a>
+      </div>
+    </div>
+
+    <div class="stage-wrap">
+      <div class="stage" aria-hidden="true">
+        <div class="ring r3"><span class="sat"></span></div>
+        <div class="ring r1"><span class="sat"></span></div>
+        <div class="ring r2"></div>
+        <div class="phone">
+          <div class="screen">
+            <div class="scr-top"><small>Member app</small><h4>Directory</h4></div>
+            <div class="mem" style="--i:0"><span class="av"></span><span class="bars"><i></i><i></i></span></div>
+            <div class="mem" style="--i:1"><span class="av"></span><span class="bars"><i></i><i></i></span><span class="lock"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#6f5a28" stroke-width="1.4"><rect x="2.5" y="5.5" width="7" height="5" rx="1"></rect><path d="M4 5.5V4a2 2 0 0 1 4 0v1.5"></path></svg></span></div>
+            <div class="mem" style="--i:2"><span class="av"></span><span class="bars"><i></i><i></i></span></div>
+            <div class="mem" style="--i:3"><span class="av"></span><span class="bars"><i></i><i></i></span><span class="lock"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#6f5a28" stroke-width="1.4"><rect x="2.5" y="5.5" width="7" height="5" rx="1"></rect><path d="M4 5.5V4a2 2 0 0 1 4 0v1.5"></path></svg></span></div>
+            <div class="qr-card"><span class="qr"></span><div><span>Events</span><b>QR check-in</b></div></div>
+            <div class="tabbar"><i></i><i></i><i></i><i></i></div>
+          </div>
+        </div>
+        <div class="float f1"><span class="ico"><svg class="spinning" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#b89a5a" stroke-width="1.5"><path d="M13 6a5 5 0 0 0-9.3-1.5M3 10a5 5 0 0 0 9.3 1.5"></path><path d="M3.5 1.8v2.8h2.8M12.5 14.2v-2.8H9.7"></path></svg></span>My Rotary sync</div>
+        <div class="float f2"><span class="ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#b89a5a" stroke-width="1.5"><circle cx="8" cy="8" r="6"></circle><path d="M2 8h12M8 2c2 2 2 10 0 12M8 2c-2 2-2 10 0 12"></path></svg></span>Every Rotary language</div>
+        <div class="float f3"><span class="ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#b89a5a" stroke-width="1.5"><rect x="3" y="2" width="10" height="12" rx="1.5"></rect><path d="M5.5 6h5M5.5 9h5M5.5 12h3"></path></svg></span>Dues and finance</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="wrap stats-in">
+      <div class="stat rv" style="--d:0"><span class="n cnt">12+</span><span class="l">years serving Rotary</span></div>
+      <div class="stat rv" style="--d:1"><span class="n cnt">4,500+</span><span class="l">clubs</span></div>
+      <div class="stat rv" style="--d:2"><span class="n cnt">180,000+</span><span class="l">members</span></div>
+      <div class="stat rv" style="--d:3"><span class="n cnt">42</span><span class="l">districts</span></div>
+      <div class="stat rv" style="--d:4"><span class="n cnt">800+</span><span class="l">club websites</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT IS ROW -->
+<section class="what" id="what" data-theme="light">
+  <div class="wrap">
+    <h2 class="h2 split rv"><span class="ln"><span style="--l:0">What is Roster</span></span><span class="ln"><span style="--l:1"><em>On Wheels?</em></span></span></h2>
+    <div class="what-grid" style="margin-top:56px">
+      <p class="statement" data-words="1"><span>Roster</span> <span>On</span> <span>Wheels</span> <span>is</span> <span>club</span> <span>management</span> <span>software</span> <span class="hl">built</span> <span class="hl">only</span> <span class="hl">for</span> <span class="hl">Rotary.</span> <span>It</span> <span>is</span> <span>made</span> <span>by</span> <span>Kaizen</span> <span>Infotech</span> <span>Solutions,</span> <span>which</span> <span>has</span> <span>run</span> <span>Rotary</span> <span>club</span> <span>and</span> <span>district</span> <span>administration</span> <span>in</span> <span>India</span> <span>for</span> <span>over</span> <span>twelve</span> <span>years.</span> <span>ROW</span> <span>connects</span> <span>to</span> <span>the</span> <span>Rotary</span> <span>International</span> <span>database,</span> <span>so</span> <span>your</span> <span>roster</span> <span>and</span> <span>officers</span> <span>come</span> <span>straight</span> <span>from</span> <span>My</span> <span>Rotary</span> <span class="hl">instead</span> <span class="hl">of</span> <span class="hl">being</span> <span class="hl">typed</span> <span class="hl">in</span> <span class="hl">twice.</span></p>
+      <div class="sync rv" aria-hidden="true"><div class="sync-in">
+        <svg class="paths" viewBox="0 0 460 460" fill="none">
+          <path class="pth" pathLength="1" d="M66 230 C 140 40, 320 40, 394 230" stroke="#b89a5a" stroke-width="1.2" stroke-dasharray="1"></path>
+          <path class="pth" pathLength="1" d="M394 230 C 320 420, 140 420, 66 230" stroke="currentColor" stroke-opacity=".35" stroke-width="1.2"></path>
+        </svg>
+        <span class="pkt top" style="animation-delay:0s">Members</span>
+        <span class="pkt top" style="animation-delay:-2s">Officers</span>
+        <span class="pkt top" style="animation-delay:-4s">Club details</span>
+        <span class="pkt bot" style="animation-delay:-1s">Members</span>
+        <span class="pkt bot" style="animation-delay:-3s">Officers</span>
+        <span class="pkt bot" style="animation-delay:-5s">Club details</span>
+        <div class="snode a">My Rotary</div>
+        <div class="snode b">ROW</div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PLAN NEXT YEAR (pinned) -->
+<section class="plan" id="plan" data-pin="1" data-steps="6" data-theme="light">
+  <div class="pin">
+    <div class="wrap plan-grid">
+      <div>
+        <h2 class="h2 split rv"><span class="ln"><span style="--l:0">Plan next year</span></span><span class="ln"><span style="--l:1">from <em>January</em>,</span></span><span class="ln"><span style="--l:2">not July</span></span></h2>
+        <p class="plan-intro rv" style="--d:3">Most Rotary software only works for the year you are already in.</p>
+        <div class="yrs" aria-hidden="true">
+          <div class="yr now"><span>Current year</span><span class="tr"><i></i></span></div>
+          <div class="yr nxt"><span>Next year</span><span class="tr"><i></i></span></div>
+        </div>
+      </div>
+      <div>
+        <div class="rail" aria-hidden="true"><div class="rail-months"><span style="--i:0">Jan</span><span style="--i:1">Feb</span><span style="--i:2">Mar</span><span style="--i:3">Apr</span><span style="--i:4">May</span><span style="--i:5">Jun</span><span style="--i:6">1 Jul</span></div><div class="rail-line"><i></i><b></b></div></div>
+        <div class="cards">
+          <div class="pc" style="--i:0"><span class="k"><span>01</span><span>January</span></span><h3>With ROW, a district governor elect can sign up in January</h3><p>and start building the coming Rotary year straight away.</p></div>
+          <div class="pc" style="--i:1"><span class="k"><span>02</span></span><span class="ic"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="10" cy="9" r="4"></circle><path d="M3 23c1-5 4-7 7-7s6 2 7 7"></path><circle cx="20" cy="10" r="3"></circle><path d="M19 16c3 0 5 2 6 6"></path></svg></span><h3>Appoint the district team</h3></div>
+          <div class="pc" style="--i:2"><span class="k"><span>03</span></span><span class="ic"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="14" cy="14" r="10"></circle><circle cx="14" cy="14" r="6"></circle><circle cx="14" cy="14" r="2"></circle></svg></span><h3>Set goals</h3></div>
+          <div class="pc" style="--i:3"><span class="k"><span>04</span></span><span class="ic"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="4" y="6" width="20" height="18" rx="2"></rect><path d="M4 11h20M9 3v5M19 3v5"></path></svg></span><h3>Publish the calendar</h3></div>
+          <div class="pc" style="--i:4"><span class="k"><span>05</span></span><span class="ic"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 8h18v4a2 2 0 0 0 0 4v4H5v-4a2 2 0 0 0 0-4z"></path><path d="M16 8v12" stroke-dasharray="2 2"></path></svg></span><h3>Open PETS and SETS registration</h3></div>
+          <div class="pc" style="--i:5"><span class="k"><span>06</span></span><h3>Every incoming club president and secretary gets a next-year workspace automatically.</h3></div>
+          <div class="pc last" style="--i:6"><span class="k"><span>07</span><span>1 July</span></span><h3>Your current year keeps running on your current system until the 1 July changeover.</h3></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULES (pinned horizontal) -->
+<section class="mods" id="features" data-pin="1" data-hscroll="1" data-theme="dark">
+  <div class="pin">
+    <div class="wrap mods-head">
+      <h2 class="h2 split rv"><span class="ln"><span style="--l:0">Everything a Rotary</span></span><span class="ln"><span style="--l:1">club needs, <em>in one plan</em></span></span></h2>
+      <div class="mcount"><span class="win"><span class="strip"><span>01</span><span>02</span><span>03</span><span>04</span><span>05</span><span>06</span><span>07</span><span>08</span></span></span><span>/ 08</span><span class="mbar"><i></i></span></div>
+    </div>
+    <div class="mtrack">
+      <article class="mc"><span class="idx">01</span>
+        <div class="viz v-dir" aria-hidden="true">
+          <div class="row" style="--i:0"><i></i><b></b></div>
+          <div class="row" style="--i:1"><i></i><b></b><span class="lk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#08123f" stroke-width="1.5"><rect x="2.5" y="5.5" width="7" height="5" rx="1"></rect><path d="M4 5.5V4a2 2 0 0 1 4 0v1.5"></path></svg></span></div>
+          <div class="row" style="--i:2"><i></i><b></b></div>
+          <div class="row" style="--i:3"><i></i><b></b><span class="lk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#08123f" stroke-width="1.5"><rect x="2.5" y="5.5" width="7" height="5" rx="1"></rect><path d="M4 5.5V4a2 2 0 0 1 4 0v1.5"></path></svg></span></div>
+        </div>
+        <h3>Membership and directory</h3><p>A member app with a directory that respects each member's privacy choices.</p></article>
+      <article class="mc"><span class="idx">02</span>
+        <div class="viz v-sync" aria-hidden="true"><div class="arc t"></div><div class="arc b"></div><span class="dt"></span><span class="dt" style="animation-delay:-1s"></span><span class="dt rv2"></span><span class="dt rv2" style="animation-delay:-2.5s"></span><div class="o l">My<br>Rotary</div><div class="o r">ROW</div></div>
+        <h3>My Rotary sync</h3><p>Members, officers and club details kept in step with Rotary International.</p></article>
+      <article class="mc"><span class="idx">03</span>
+        <div class="viz v-evt" aria-hidden="true"><div class="ticket"><span class="qr"></span><span class="tl"><i></i><i></i><i></i></span><span class="ok"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#08123f" stroke-width="2"><path d="M3.5 8.5l3 3 6-7"></path></svg></span></div></div>
+        <h3>Events and forms</h3><p>Registration, payment and QR check-in for meetings, PETS, SETS and the district conference, plus unlimited forms.</p></article>
+      <article class="mc"><span class="idx">04</span>
+        <div class="viz v-due" aria-hidden="true">
+          <div class="li" style="--i:0"><i style="width:60%"></i><b></b></div>
+          <div class="li" style="--i:1"><i style="width:45%"></i><b></b></div>
+          <div class="li" style="--i:2"><i style="width:70%"></i><b></b></div>
+          <div class="li" style="--i:3"><i style="width:38%"></i><b></b></div>
+          <div class="tot"><span style="--i:0">QuickBooks</span><span style="--i:1">Xero</span></div>
+        </div>
+        <h3>Dues and finance</h3><p>Multi-line invoices, quarterly or monthly billing, member statements and export to QuickBooks and Xero.</p></article>
+      <article class="mc"><span class="idx">05</span>
+        <div class="viz v-com" aria-hidden="true">
+          <div class="bub" style="--i:0"><i></i><i></i></div>
+          <div class="bub me" style="--i:1"><i></i></div>
+          <div class="bub" style="--i:2"><i></i><i></i></div>
+          <div class="chans"><span style="--i:0">Email</span><span style="--i:1">WhatsApp</span><span style="--i:2">Push</span><span style="--i:3">In-app chat</span></div>
+        </div>
+        <h3>Communication</h3><p>Email, WhatsApp, push notifications and in-app chat, with open and click tracking.</p></article>
+      <article class="mc"><span class="idx">06</span>
+        <div class="viz v-prj" aria-hidden="true">
+          <div class="prj-ring"><svg width="110" height="110" viewBox="0 0 110 110" fill="none"><circle cx="55" cy="55" r="46" stroke="rgba(232,224,210,.15)" stroke-width="8"></circle><circle class="fill" pathLength="1" cx="55" cy="55" r="46" stroke="#b89a5a" stroke-width="8" stroke-linecap="round"></circle></svg></div>
+          <div class="up"><span class="ar"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#b89a5a" stroke-width="1.6"><path d="M9 15V3M4 8l5-5 5 5"></path></svg></span>Rotary Showcase</div>
+        </div>
+        <h3>Service projects</h3><p>Track projects by Avenue of Service and publish them to Rotary Showcase in one click.</p></article>
+      <article class="mc"><span class="idx">07</span>
+        <div class="viz v-dst" aria-hidden="true"><span class="goal"></span>
+          <span class="bar" style="--i:0;height:60px"></span><span class="bar" style="--i:1;height:90px"></span><span class="bar g" style="--i:2;height:130px"></span><span class="bar" style="--i:3;height:80px"></span><span class="bar" style="--i:4;height:110px"></span><span class="bar g" style="--i:5;height:150px"></span><span class="bar" style="--i:6;height:100px"></span>
+        </div>
+        <h3>District tools</h3><p>Grants, assistant governor login, monthly reports, official visits, goals and awards.</p></article>
+      <article class="mc"><span class="idx">08</span>
+        <div class="viz v-web" aria-hidden="true"><div class="brw"><div class="brw-top"><i></i><i></i><i></i><span class="lang-win"><span class="lang-strip"><span>EN</span><span>ES</span><span>FR</span><span>DE</span><span>IT</span><span>JA</span><span>KO</span><span>PT</span></span></span></div><div class="brw-body"><span class="hb"></span><span class="ad">Ad slot</span></div></div></div>
+        <h3>Websites</h3><p>Club and district websites in more than one language, with ad slots you sell to local sponsors.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- LANGUAGES -->
+<section class="langs" id="languages" data-theme="dark">
+  <div class="wrap langs-grid">
+    <div>
+      <h2 class="h2 split rv"><span class="ln"><span style="--l:0">Every Rotary</span></span><span class="ln"><span style="--l:1">language, <em>included</em></span></span></h2>
+      <p class="body rv" style="--d:2">The app, the officer console, emails and your website work in English, Spanish, French, German, Italian, Japanese, Korean and Portuguese, with no charge per language.</p>
+      <div class="where">
+        <div class="rv" style="--d:3"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#b89a5a" stroke-width="1.8"><path pathLength="1" d="M4 10.5l4 4 8-9"></path></svg>The app</div>
+        <div class="rv" style="--d:4"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#b89a5a" stroke-width="1.8"><path pathLength="1" d="M4 10.5l4 4 8-9"></path></svg>The officer console</div>
+        <div class="rv" style="--d:5"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#b89a5a" stroke-width="1.8"><path pathLength="1" d="M4 10.5l4 4 8-9"></path></svg>Emails</div>
+        <div class="rv" style="--d:6"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#b89a5a" stroke-width="1.8"><path pathLength="1" d="M4 10.5l4 4 8-9"></path></svg>Your website</div>
+      </div>
+      <span class="nocharge rv" style="--d:7">No charge per language</span>
+    </div>
+    <div class="dial-wrap rv" style="--d:2" aria-hidden="true">
+      <div class="dial-ticks"></div>
+      <div class="dial">
+        <div class="dial-ring"></div>
+        <div class="lc" style="--i:0"><span><span>EN</span></span></div>
+        <div class="lc" style="--i:1"><span><span>ES</span></span></div>
+        <div class="lc" style="--i:2"><span><span>FR</span></span></div>
+        <div class="lc" style="--i:3"><span><span>DE</span></span></div>
+        <div class="lc" style="--i:4"><span><span>IT</span></span></div>
+        <div class="lc" style="--i:5"><span><span>JA</span></span></div>
+        <div class="lc" style="--i:6"><span><span>KO</span></span></div>
+        <div class="lc" style="--i:7"><span><span>PT</span></span></div>
+      </div>
+      <div class="marker"></div>
+      <div class="dial-center">
+        <span class="lw" style="--i:0">English<small>EN</small></span>
+        <span class="lw" style="--i:1">Español<small>ES</small></span>
+        <span class="lw" style="--i:2">Français<small>FR</small></span>
+        <span class="lw" style="--i:3">Deutsch<small>DE</small></span>
+        <span class="lw" style="--i:4">Italiano<small>IT</small></span>
+        <span class="lw" style="--i:5">日本語<small>JA</small></span>
+        <span class="lw" style="--i:6">한국어<small>KO</small></span>
+        <span class="lw" style="--i:7">Português<small>PT</small></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DISTRICTS -->
+<section class="dist" id="districts" data-theme="light">
+  <div class="wrap dist-grid">
+    <div>
+      <h2 class="h2 split rv"><span class="ln"><span style="--l:0">Built for districts,</span></span><span class="ln"><span style="--l:1"><em>free for their clubs</em></span></span></h2>
+      <p class="body rv" style="--d:2">When a district subscribes to ROW District, every club in that district gets ROW Club Basic at no charge, and every Rotaract club gets the full club product free.</p>
+      <div class="legend">
+        <div class="lg rv" style="--d:3"><span class="sw" style="background:#0e1d61"></span>Every club: ROW Club Basic<span class="free">No charge</span></div>
+        <div class="lg rv" style="--d:4"><span class="sw" style="border:3px solid #b89a5a"></span>Every Rotaract club: the full club product<span class="free">Free</span></div>
+      </div>
+    </div>
+    <div class="net" data-prog="dp" aria-hidden="true">
+      <div class="spin">
+        <div class="o1"></div><div class="o2"></div>
+        <div class="spk" style="--k:0"><span class="sl"></span><span class="pl"></span><span class="cl"><i></i></span></div>
+        <div class="spk rac" style="--k:1"><span class="sl"></span><span class="pl"></span><span class="cl"><i></i></span></div>
+        <div class="spk" style="--k:2"><span class="sl"></span><span class="pl"></span><span class="cl"><i></i></span></div>
+        <div class="spk" style="--k:3"><span class="sl"></span><span class="pl"></span><span class="cl"><i></i></span></div>
+        <div class="spk rac" style="--k:4"><span class="sl"></span><span class="pl"></span><span class="cl"><i></i></span></div>
+        <div class="spk" style="--k:5"><span class="sl"></span><span class="pl"></span><span class="cl"><i></i></span></div>
+        <div class="spk" style="--k:6"><span class="sl"></span><span class="pl"></span><span class="cl"><i></i></span></div>
+        <div class="spk" style="--k:7"><span class="sl"></span><span class="pl"></span><span class="cl"><i></i></span></div>
+        <div class="spk rac" style="--k:8"><span class="sl"></span><span class="pl"></span><span class="cl"><i></i></span></div>
+        <div class="spk" style="--k:9"><span class="sl"></span><span class="pl"></span><span class="cl"><i></i></span></div>
+        <div class="spk" style="--k:10"><span class="sl"></span><span class="pl"></span><span class="cl"><i></i></span></div>
+        <div class="spk" style="--k:11"><span class="sl"></span><span class="pl"></span><span class="cl"><i></i></span></div>
+      </div>
+      <div class="hub"><div><b>ROW</b><small>District</small></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- MIGRATION -->
+<section class="mig" id="migrate" data-theme="light">
+  <div class="wrap">
+    <div class="mig-head">
+      <h2 class="h2 split rv"><span class="ln"><span style="--l:0">Moving from <em>ClubRunner</em></span></span><span class="ln"><span style="--l:1">or <em>DACdb?</em></span></span></h2>
+      <p class="body rv" style="--d:2">Your member data lives at Rotary International, so your roster and officers come across through My Rotary. We import the rest: attendance history, balances, contacts, events and documents. Your secretary signs a reconciliation report before anything goes live, and your old system keeps running until then.</p>
+    </div>
+    <div class="flow" data-prog="mp">
+      <div class="trk"><i></i><span class="packet"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#b89a5a" stroke-width="1.5"><path d="M6 3h7l4 4v12H6z"></path><path d="M13 3v4h4M9 11h5M9 14h5"></path></svg></span></div>
+      <div class="st" style="--s:0"><span class="disc"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6" y="8" width="28" height="24" rx="3"></rect><path d="M6 15h28M12 22h10M12 27h6"></path></svg></span><span class="num">01</span><h3>ClubRunner or DACdb</h3></div>
+      <div class="st" style="--s:.33"><span class="disc"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="20" cy="20" r="13"></circle><path d="M7 20h26M20 7c5 5 5 21 0 26M20 7c-5 5-5 21 0 26"></path></svg></span><span class="num">02</span><h3>Roster and officers through My Rotary</h3>
+        <div class="imports"><span style="--j:0">Attendance history</span><span style="--j:1">Balances</span><span style="--j:2">Contacts</span><span style="--j:3">Events</span><span style="--j:4">Documents</span></div></div>
+      <div class="st" style="--s:.66"><span class="disc"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="8" y="5" width="24" height="30" rx="2"></rect><path d="M13 12h14M13 17h14M13 22h8"></path><path class="sig" pathLength="1" d="M12 30c3-4 4 2 7-1s3 1 6-1 2 0 4-1" stroke="#b89a5a" stroke-width="1.8"></path></svg></span><span class="num">03</span><h3>Reconciliation report, signed by your secretary</h3></div>
+      <div class="st" style="--s:.97"><span class="disc"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#b89a5a" stroke-width="1.8"><circle cx="20" cy="20" r="13" stroke="currentColor" stroke-width="1.5"></circle><path class="chk" pathLength="1" d="M14 20.5l4 4 8-9"></path></svg></span><span class="num">04</span><h3>Live</h3></div>
+    </div>
+    <div class="mig-foot">
+      <p class="body rv" style="max-width:none;font-family:var(--serif);font-size:clamp(26px,2.6vw,36px);line-height:1.2;color:var(--fg)">Standard migration is free and takes ten working days.</p>
+      <div class="badges">
+        <div class="badge rv" style="--d:1"><b>Free</b><span>Standard migration</span></div>
+        <div class="badge rv" style="--d:2"><b class="cnt">10</b><span>Working days</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq" data-theme="light">
+  <div class="wrap faq-grid">
+    <h2 class="h2 split rv"><span class="ln"><span style="--l:0">Questions</span></span><span class="ln"><span style="--l:1">Rotarians</span></span><span class="ln"><span style="--l:2"><em>ask us</em></span></span></h2>
+    <div class="rv" style="--d:2">
+      <div class="q open">
+        <button type="button" aria-expanded="true">Is ROW connected to My Rotary?<span class="pm"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 2v12M2 8h12"></path></svg></span></button>
+        <div class="ans"><div><p>Yes. ROW syncs members, officers and club details with Rotary International once your club designates ROW in My Rotary.</p></div></div>
+      </div>
+      <div class="q">
+        <button type="button" aria-expanded="false">Can we try it first?<span class="pm"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 2v12M2 8h12"></path></svg></span></button>
+        <div class="ans"><div><p>Yes. Every plan starts with a 60-day trial with full access, and nothing you set up is lost when you subscribe.</p></div></div>
+      </div>
+      <div class="q">
+        <button type="button" aria-expanded="false">Do members need to log in on a website?<span class="pm"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 2v12M2 8h12"></path></svg></span></button>
+        <div class="ans"><div><p>No. Members use the ROW app on iPhone or Android, and officers use the web console.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="demo" data-curtain="1" data-theme="dark">
+  <div class="wheel" aria-hidden="true">
+    <svg viewBox="0 0 400 400"><defs><path id="circ" d="M200,200 m-170,0 a170,170 0 1,1 340,0 a170,170 0 1,1 -340,0"></path></defs><circle cx="200" cy="200" r="190" fill="none" stroke="rgba(184,154,90,.25)" stroke-width=".6"></circle><text font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="7" fill="rgba(184,154,90,.6)"><textPath href="#circ">ROSTER ON WHEELS · ROSTER ON WHEELS · ROSTER ON WHEELS · ROSTER ON WHEELS · </textPath></text></svg>
+  </div>
+  <div class="wheel wheel2" aria-hidden="true">
+    <svg viewBox="0 0 400 400" fill="none" stroke="rgba(232,224,210,.12)" stroke-width=".8"><circle cx="200" cy="200" r="190" stroke-dasharray="2 10"></circle><circle cx="200" cy="200" r="150"></circle></svg>
+  </div>
+  <div class="wrap cta-in">
+    <h2 class="h2 split rv"><span class="ln"><span style="--l:0">See your district</span></span><span class="ln"><span style="--l:1"><em>in ROW</em></span></span></h2>
+    <p class="body rv" style="--d:2">Book a 20-minute demo and we will show you your own clubs, your next-year plan and a live import from your current system.</p>
+    <div class="rv" style="--d:3;display:flex;justify-content:center">
+      <a class="btn btn-gold" href="#demo" style="min-height:60px;padding:0 34px;font-size:16px"><span>Book a 20-minute demo</span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8h10M9 4l4 4-4 4"></path></svg></a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <span class="brand-word" style="color:#e8e0d2;font-size:64px">Roster On Wheels</span>
+      <ul>
+        <li><a href="#districts">For Districts</a></li><li><a href="#features">For Clubs</a></li><li><a href="#plan">Plan Next Year</a></li><li><a href="#what">My Rotary Integration</a></li><li><a href="#languages">Languages</a></li><li><a href="#migrate">ROW vs ClubRunner vs DACdb</a></li><li><a href="#migrate">Migration</a></li><li><a href="#faq">FAQ</a></li><li><a href="#">About</a></li>
+      </ul>
+    </div>
+    <div class="foot-bot">Kaizen Infotech Solutions Pvt. Ltd. · Design sample · Concept 05 · Heritage · <a href="../">All concepts</a></div>
+  </div>
+</footer>
+
+</div>
+<script>
+class RowPage {
+  componentDidMount() {
+    var self = this, doc = document;
+    var clamp = function (v) { return Math.max(0, Math.min(1, v)); };
+    var smooth = function (x) { x = clamp(x); return x * x * (3 - 2 * x); };
+    var seen = new WeakSet();
+    var RM = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    var countUp = function (el) {
+      if (RM) return;
+      var raw = el.getAttribute('data-final') || el.textContent;
+      el.setAttribute('data-final', raw);
+      var m = raw.match(/^([^0-9]*)([0-9,]+)(.*)$/);
+      if (!m) return;
+      var target = parseInt(m[2].replace(/,/g, ''), 10), t0 = performance.now(), dur = 1600;
+      var step = function (now) {
+        var k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+        el.textContent = m[1] + Math.round(target * e).toLocaleString('en-US') + m[3];
+        if (k < 1) requestAnimationFrame(step); else el.textContent = raw;
+      };
+      requestAnimationFrame(step);
+    };
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('in');
+        e.target.querySelectorAll('.cnt').forEach(countUp);
+        if (e.target.classList.contains('cnt')) countUp(e.target);
+        io.unobserve(e.target);
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+    this._io = io;
+    var wire = function () {
+      doc.querySelectorAll('.rv, .sync, .where div').forEach(function (el) {
+        if (!seen.has(el)) { seen.add(el); io.observe(el); }
+      });
+    };
+    // every scroll-linked value eases toward its target at the same rate
+    var cur = new Map();
+    var setS = function (el, name, target, unit) {
+      var key = el; var m = cur.get(key); if (!m) { m = {}; cur.set(key, m); }
+      var v = m[name] == null ? target : m[name] + (target - m[name]) * 0.14;
+      if (Math.abs(target - v) < 0.0005) v = target;
+      m[name] = v;
+      el.style.setProperty(name, unit ? v.toFixed(1) + unit : v.toFixed(4));
+    };
+    var cursor = doc.querySelector('.cur'), dot = doc.querySelector('.cur-dot');
+    var mx = -100, my = -100, cx = -100, cy = -100, hx = 0, hy = 0;
+    var frame = function () {
+      var vh = window.innerHeight || 800, vw = window.innerWidth || 1440;
+      var root = doc.querySelector('.row-root');
+      if (root) {
+        var rr = root.getBoundingClientRect();
+        setS(root, '--sp', clamp(-rr.top / Math.max(1, rr.height - vh)));
+        var mid = vh * 0.45, theme = null;
+        doc.querySelectorAll('[data-theme]').forEach(function (s) {
+          var r = s.getBoundingClientRect();
+          if (r.top <= mid && r.bottom > mid) theme = s.getAttribute('data-theme');
+        });
+        if (theme) root.classList.toggle('dark', theme === 'dark');
+        var hero = doc.querySelector('.hero');
+        if (hero && !RM) {
+          var hr = hero.getBoundingClientRect();
+          setS(hero, '--hp', clamp(-hr.top / hr.height));
+          setS(hero, '--mx', hx); setS(hero, '--my', hy);
+        }
+        doc.querySelectorAll('[data-pin]').forEach(function (s) {
+          var r = s.getBoundingClientRect(), pin = s.querySelector('.pin');
+          var span = r.height - (pin ? pin.offsetHeight : 0) - 72;
+          var p = clamp((72 - r.top) / Math.max(1, span));
+          var steps = parseInt(s.getAttribute('data-steps') || '0', 10);
+          if (steps) {
+            // hold on each step, move between them
+            var t = p * steps, i = Math.min(steps - 1, Math.floor(t)), f = t - i;
+            p = (i + smooth((f - 0.3) / 0.4)) / steps;
+            if (t >= steps) p = 1;
+          }
+          var tr = s.hasAttribute('data-hscroll') ? s.querySelector('.mtrack') : null;
+          // at 980 and below the track is a native swipe, so its own scroll drives the counter
+          if (tr && vw <= 980) { var room = tr.scrollWidth - tr.clientWidth; p = room > 0 ? clamp(tr.scrollLeft / room) : 0; }
+          setS(s, '--p', p);
+          if (tr) {
+            var last = tr.lastElementChild;
+            var dist = (last && vw > 980) ? Math.max(0, last.offsetLeft + last.offsetWidth + Math.max(40, (vw - 1240) / 2 + 40) - s.clientWidth) : 0;
+            setS(s, '--tx', -p * dist, 'px');
+            s.style.setProperty('--ci', Math.min(7, Math.round(p * 7)));
+          }
+        });
+        doc.querySelectorAll('[data-prog]').forEach(function (el) {
+          var r = el.getBoundingClientRect();
+          setS(el, '--' + el.getAttribute('data-prog'), clamp((vh * 0.85 - r.top) / (vh * 0.6)));
+        });
+        doc.querySelectorAll('[data-curtain]').forEach(function (el) {
+          var r = el.getBoundingClientRect();
+          setS(el, '--e', 0.12 + 0.88 * smooth((vh - r.top) / (vh * 0.8)));
+        });
+        doc.querySelectorAll('[data-words]').forEach(function (el) {
+          var r = el.getBoundingClientRect();
+          var spans = el.querySelectorAll(':scope > span');
+          var lit = Math.round(clamp((vh * 0.8 - r.top) / (r.height + vh * 0.25)) * spans.length);
+          spans.forEach(function (sp, i) { sp.classList.toggle('on', i < lit); });
+        });
+      }
+      cx += (mx - cx) * 0.16; cy += (my - cy) * 0.16;
+      if (cursor) cursor.style.transform = 'translate(' + cx.toFixed(1) + 'px,' + cy.toFixed(1) + 'px)';
+      if (dot) dot.style.transform = 'translate(' + mx + 'px,' + my + 'px)';
+      self._raf = requestAnimationFrame(frame);
+    };
+    this._pm = function (e) {
+      mx = e.clientX; my = e.clientY;
+      hx = e.clientX / (window.innerWidth || 1) - 0.5; hy = e.clientY / (window.innerHeight || 1) - 0.5;
+      var t = e.target && e.target.closest ? e.target.closest('a, button') : null;
+      if (cursor) cursor.classList.toggle('big', !!t);
+    };
+    window.addEventListener('pointermove', this._pm, { passive: true });
+    wire();
+    this._raf = requestAnimationFrame(frame);
+    // the sync diagram is drawn at 460px; scale it as one piece so the packets stay on their paths
+    var sync = doc.querySelector('.sync');
+    if (sync && window.ResizeObserver) {
+      this._ro = new ResizeObserver(function () { sync.style.setProperty('--k', (sync.clientWidth / 460).toFixed(4)); });
+      this._ro.observe(sync);
+    }
+    this._t = setTimeout(wire, 150);
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      doc.querySelectorAll('.rv, .sync, .where div').forEach(function (el) { el.classList.add('in'); });
+    }
+  }
+  componentWillUnmount() {
+    if (this._io) this._io.disconnect();
+    if (this._ro) this._ro.disconnect();
+    window.removeEventListener('pointermove', this._pm);
+    cancelAnimationFrame(this._raf);
+    clearTimeout(this._t);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  new RowPage().componentDidMount();
+  // FAQ accordion: one open at a time
+  var qs = document.querySelectorAll('.faq .q');
+  qs.forEach(function (q) {
+    q.querySelector('button').addEventListener('click', function () {
+      var wasOpen = q.classList.contains('open');
+      qs.forEach(function (o) { o.classList.remove('open'); o.querySelector('button').setAttribute('aria-expanded', 'false'); });
+      if (!wasOpen) { q.classList.add('open'); this.setAttribute('aria-expanded', 'true'); }
+    });
+  });
+  // phone and tablet menu
+  var burger = document.querySelector('.burger'), mnav = document.getElementById('mnav');
+  if (burger && mnav) {
+    var setMenu = function (open, refocus) {
+      mnav.hidden = !open;
+      burger.setAttribute('aria-expanded', String(open));
+      burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      document.documentElement.style.overflow = open ? 'hidden' : '';
+      if (open) mnav.querySelector('a').focus();
+      else if (refocus) burger.focus();
+    };
+    burger.addEventListener('click', function () { setMenu(mnav.hidden); });
+    mnav.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
+    document.addEventListener('keydown', function (e) {
+      if (mnav.hidden) return;
+      if (e.key === 'Escape') { setMenu(false, true); return; }
+      if (e.key !== 'Tab') return;
+      var items = [burger].concat([].slice.call(mnav.querySelectorAll('a')));
+      var first = items[0], last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+    window.addEventListener('resize', function () { if (window.innerWidth > 980 && !mnav.hidden) setMenu(false); });
+  }
+});
+</script>
+</body>
+</html>

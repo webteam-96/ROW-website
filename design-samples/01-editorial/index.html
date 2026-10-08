@@ -1,0 +1,782 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rotary Club Management Software and App | Roster On Wheels</title>
+  <meta name="description" content="Roster On Wheels (ROW) is Rotary club and district management software with a member app, My Rotary sync, Grants, events and every RI language included.">
+  <meta name="theme-color" content="#F7F4EE">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%230E1726' stroke-width='3.4' stroke-dasharray='58 11.1' transform='rotate(-11 16 16)'/%3E%3Ccircle cx='24.4' cy='8.9' r='3.4' fill='%23F2B33D'/%3E%3Ccircle cx='16' cy='16' r='2.8' fill='%230E1726'/%3E%3C/svg%3E">
+  <script>document.documentElement.classList.add('js')</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,100..900,0..100;1,9..144,100..900,0..100&family=Inter+Tight:wght@400..700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500&family=Noto+Sans+KR:wght@500&display=swap&text=%E6%97%A5%E6%9C%AC%E8%AA%9E%ED%95%9C%EA%B5%AD%EC%96%B4">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="../vendor/gsap.min.js"></script>
+  <script defer src="../vendor/ScrollTrigger.min.js"></script>
+  <script defer src="../vendor/SplitText.min.js"></script>
+  <script defer src="../vendor/DrawSVGPlugin.min.js"></script>
+  <script defer src="../vendor/CustomEase.min.js"></script>
+  <script defer src="../vendor/lenis.min.js"></script>
+  <script defer src="main.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ============================== Header ============================== -->
+  <header class="site-header" id="site-header">
+    <div class="site-header__bar wrap">
+      <a class="brand" href="#top" aria-label="Roster On Wheels, back to top">
+        <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+          <circle cx="16" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="3.2" stroke-dasharray="58 11.1" transform="rotate(-11 16 16)"/>
+          <circle cx="24.4" cy="8.9" r="3.3" fill="#F2B33D"/>
+          <circle cx="16" cy="16" r="2.7" fill="currentColor"/>
+        </svg>
+        <span class="brand__word">Roster On Wheels</span>
+      </a>
+
+      <nav class="nav" aria-label="Main">
+        <ul class="nav__list">
+          <li class="nav__item">
+            <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="mega-product">Product<svg class="nav__chev" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5l3-3"/></svg></button>
+            <div class="mega" id="mega-product">
+              <div class="mega__inner wrap">
+                <div class="mega__intro">
+                  <p class="mega__kicker">Product</p>
+                  <p class="mega__lede">One annual plan for Rotary clubs and districts.</p>
+                </div>
+                <ul class="mega__links">
+                  <li><a class="mega__link" href="#districts"><span class="mega__title">For Districts</span><span class="mega__desc">Grants, assistant governor login, monthly reports, goals and awards.</span></a></li>
+                  <li><a class="mega__link" href="#features"><span class="mega__title">For Clubs</span><span class="mega__desc">The member app, QR attendance, dues, WhatsApp and a club website.</span></a></li>
+                  <li><a class="mega__link" href="#plan"><span class="mega__title">Plan Next Year</span><span class="mega__desc">Governors elect plan from January and switch on 1 July.</span></a></li>
+                  <li><a class="mega__link" href="#what"><span class="mega__title">My Rotary Integration</span><span class="mega__desc">Members, officers and club details, kept in step with Rotary International.</span></a></li>
+                  <li><a class="mega__link" href="#languages"><span class="mega__title">Languages</span><span class="mega__desc">All eight official Rotary languages, at no extra cost.</span></a></li>
+                </ul>
+                <div class="mega__aside">
+                  <p class="mega__aside-title">Every plan starts with a 60-day trial</p>
+                  <p class="mega__aside-text">Full access, and nothing you set up is lost when you subscribe.</p>
+                  <a class="text-link" href="#demo"><span>Start 60-day trial</span></a>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="nav__item">
+            <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="mega-switch">Switch to ROW<svg class="nav__chev" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5l3-3"/></svg></button>
+            <div class="mega" id="mega-switch">
+              <div class="mega__inner wrap">
+                <div class="mega__intro">
+                  <p class="mega__kicker">Switch to ROW</p>
+                  <p class="mega__lede">Keep your history when you change software.</p>
+                </div>
+                <ul class="mega__links">
+                  <li><a class="mega__link" href="#migration"><span class="mega__title">ROW vs ClubRunner vs DACdb</span><span class="mega__desc">What each includes and what costs extra, side by side.</span></a></li>
+                  <li><a class="mega__link" href="#migration"><span class="mega__title">Migration</span><span class="mega__desc">Free, in ten working days, signed off by your secretary.</span></a></li>
+                </ul>
+                <div class="mega__aside">
+                  <p class="mega__aside-title">Standard migration is free</p>
+                  <p class="mega__aside-text">It takes ten working days, and your old system keeps running until you sign off.</p>
+                  <a class="text-link" href="#migration"><span>How migration works</span></a>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="nav__item">
+            <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="mega-company">Company<svg class="nav__chev" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5l3-3"/></svg></button>
+            <div class="mega" id="mega-company">
+              <div class="mega__inner wrap">
+                <div class="mega__intro">
+                  <p class="mega__kicker">Company</p>
+                  <p class="mega__lede">Built for Rotary, by people who have run it for over twelve years.</p>
+                </div>
+                <ul class="mega__links">
+                  <li><a class="mega__link" href="#faq"><span class="mega__title">FAQ</span><span class="mega__desc">My Rotary sync, trials, payments and data hosting.</span></a></li>
+                  <li><a class="mega__link" href="#contact"><span class="mega__title">About</span><span class="mega__desc">Kaizen Infotech Solutions in Thane, India, serving Rotary for over twelve years.</span></a></li>
+                </ul>
+                <div class="mega__aside">
+                  <p class="mega__aside-title">Kaizen Infotech Solutions Pvt. Ltd.</p>
+                  <p class="mega__aside-text">Wagle Industrial Estate, Thane West, India.</p>
+                  <a class="text-link" href="#contact"><span>Contact details</span></a>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </nav>
+      <span class="nav__pill" aria-hidden="true"></span>
+
+      <div class="site-header__actions">
+        <a class="text-link header-trial" href="#demo"><span>Start 60-day trial</span></a>
+        <a class="btn btn--primary btn--header" href="#demo"><span>Book a demo</span><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5"/></svg></a>
+        <button class="burger" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu"><span class="burger__bars" aria-hidden="true"></span></button>
+      </div>
+    </div>
+
+    <div class="mobile-menu" id="mobile-menu" hidden data-lenis-prevent>
+      <nav class="mobile-menu__inner wrap" aria-label="Mobile">
+        <div class="mobile-menu__group">
+          <p class="mobile-menu__label">Product</p>
+          <ul>
+            <li style="--d:1"><a href="#districts">For Districts</a></li>
+            <li style="--d:2"><a href="#features">For Clubs</a></li>
+            <li style="--d:3"><a href="#plan">Plan Next Year</a></li>
+            <li style="--d:4"><a href="#what">My Rotary Integration</a></li>
+            <li style="--d:5"><a href="#languages">Languages</a></li>
+          </ul>
+        </div>
+        <div class="mobile-menu__group">
+          <p class="mobile-menu__label">Switch to ROW</p>
+          <ul>
+            <li style="--d:6"><a href="#migration">ROW vs ClubRunner vs DACdb</a></li>
+            <li style="--d:7"><a href="#migration">Migration</a></li>
+          </ul>
+        </div>
+        <div class="mobile-menu__group">
+          <p class="mobile-menu__label">Company</p>
+          <ul>
+            <li style="--d:8"><a href="#faq">FAQ</a></li>
+            <li style="--d:9"><a href="#contact">About</a></li>
+          </ul>
+        </div>
+        <div class="mobile-menu__ctas">
+          <a class="btn btn--secondary" href="#demo">Start 60-day trial</a>
+          <a class="btn btn--primary" href="#demo"><span>Book a demo</span><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5"/></svg></a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+
+    <!-- ============================== Hero ============================== -->
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="wrap hero__layout">
+        <div class="hero__copy">
+          <p class="kicker hero__kicker" data-hero-item>For Rotary clubs and districts</p>
+          <h1 class="hero__title" id="hero-title">Rotary club and district management software your members <span class="ital">actually</span> open</h1>
+          <p class="hero__intro" data-hero-item>Roster On Wheels (ROW) runs your Rotary club or district in one place: a member app for every Rotarian, a full web console for officers, and two-way sync with My Rotary. Grants, events, dues, websites and every Rotary International language are included in one annual plan.</p>
+          <div class="hero__ctas" data-hero-item>
+            <a class="btn btn--primary btn--lg" href="#demo" data-magnetic><span>Book a demo</span><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5"/></svg></a>
+            <a class="btn btn--secondary btn--lg" href="#demo">Start 60-day trial</a>
+          </div>
+        </div>
+      </div>
+
+      <figure class="hero__fig">
+        <div class="hero__stage">
+          <div class="wheel" aria-hidden="true">
+            <div class="wheel__frame">
+              <span class="wheel__rim"></span>
+              <span class="wheel__spoke" style="--i:0"></span><span class="wheel__spoke" style="--i:1"></span><span class="wheel__spoke" style="--i:2"></span><span class="wheel__spoke" style="--i:3"></span>
+              <span class="wheel__spoke" style="--i:4"></span><span class="wheel__spoke" style="--i:5"></span><span class="wheel__spoke" style="--i:6"></span><span class="wheel__spoke" style="--i:7"></span>
+              <span class="wheel__spoke" style="--i:8"></span><span class="wheel__spoke" style="--i:9"></span><span class="wheel__spoke" style="--i:10"></span><span class="wheel__spoke" style="--i:11"></span>
+              <span class="wheel__spoke" style="--i:12"></span><span class="wheel__spoke" style="--i:13"></span><span class="wheel__spoke" style="--i:14"></span><span class="wheel__spoke" style="--i:15"></span>
+            </div>
+            <div class="wheel__hub">
+              <svg viewBox="0 0 32 32" focusable="false"><circle cx="16" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="2.6" stroke-dasharray="58 11.1" transform="rotate(-11 16 16)"/><circle cx="24.4" cy="8.9" r="3" fill="#F2B33D"/><circle cx="16" cy="16" r="2.4" fill="currentColor"/></svg>
+            </div>
+            <div class="wheel__card" style="--i:0" data-row="1"><span class="mono t-azure">AM</span><span class="wheel__txt"><span class="wheel__name">Anjali Mehta</span><span class="wheel__club">RC Thane Hills</span></span></div>
+            <div class="wheel__card" style="--i:1" data-row="8"><span class="mono t-marigold">KS</span><span class="wheel__txt"><span class="wheel__name">Kenji Sato</span><span class="wheel__club">RC Osaka Bay</span></span></div>
+            <div class="wheel__card" style="--i:2" data-row="10"><span class="mono t-mint">ML</span><span class="wheel__txt"><span class="wheel__name">María López</span><span class="wheel__club">RC Valencia Mar</span></span></div>
+            <div class="wheel__card" style="--i:3" data-row="4"><span class="mono t-coral">DO</span><span class="wheel__txt"><span class="wheel__name">Daniel Okafor</span><span class="wheel__club">RC Pune Central</span></span></div>
+            <div class="wheel__card" style="--i:4" data-row="3"><span class="mono t-azure">CB</span><span class="wheel__txt"><span class="wheel__name">Chloé Bernard</span><span class="wheel__club">RC Lyon Confluence</span></span></div>
+            <div class="wheel__card" style="--i:5" data-row="0"><span class="mono t-marigold">AS</span><span class="wheel__txt"><span class="wheel__name">Ana Souza</span><span class="wheel__club">RC Porto Ribeira</span></span></div>
+            <div class="wheel__card" style="--i:6" data-row="13"><span class="mono t-mint">RD</span><span class="wheel__txt"><span class="wheel__name">Rohan Desai</span><span class="wheel__club">RC Pune Central</span></span></div>
+            <div class="wheel__card" style="--i:7" data-row="7"><span class="mono t-coral">JP</span><span class="wheel__txt"><span class="wheel__name">Ji-woo Park</span><span class="wheel__club">RC Osaka Bay</span></span></div>
+            <div class="wheel__card" style="--i:8" data-row="14"><span class="mono t-azure">SM</span><span class="wheel__txt"><span class="wheel__name">Sarah Mitchell</span><span class="wheel__club">RC Valencia Mar</span></span></div>
+            <div class="wheel__card" style="--i:9" data-row="5"><span class="mono t-marigold">GR</span><span class="wheel__txt"><span class="wheel__name">Giulia Rossi</span><span class="wheel__club">RC Lyon Confluence</span></span></div>
+            <div class="wheel__card" style="--i:10" data-row="2"><span class="mono t-mint">AI</span><span class="wheel__txt"><span class="wheel__name">Arjun Iyer</span><span class="wheel__club">RC Thane Hills</span></span></div>
+            <div class="wheel__card" style="--i:11" data-row="9"><span class="mono t-coral">LB</span><span class="wheel__txt"><span class="wheel__name">Lukas Becker</span><span class="wheel__club">RC Porto Ribeira</span></span></div>
+            <div class="wheel__card" style="--i:12" data-row="15"><span class="mono t-azure">YT</span><span class="wheel__txt"><span class="wheel__name">Yui Tanaka</span><span class="wheel__club">RC Osaka Bay</span></span></div>
+            <div class="wheel__card" style="--i:13" data-row="6"><span class="mono t-marigold">JM</span><span class="wheel__txt"><span class="wheel__name">Jean Moreau</span><span class="wheel__club">RC Lyon Confluence</span></span></div>
+            <div class="wheel__card" style="--i:14" data-row="12"><span class="mono t-mint">PN</span><span class="wheel__txt"><span class="wheel__name">Priya Nair</span><span class="wheel__club">RC Thane Hills</span></span></div>
+            <div class="wheel__card" style="--i:15" data-row="11"><span class="mono t-coral">MK</span><span class="wheel__txt"><span class="wheel__name">Meera Kulkarni</span><span class="wheel__club">RC Pune Central</span></span></div>
+          </div>
+
+          <div class="phone" aria-hidden="true">
+            <div class="phone__screen">
+              <div class="app-status"><span>9:41</span><span class="app-status__icons"><i></i><i></i><i></i></span></div>
+              <div class="app-head">
+                <div>
+                  <p class="app-head__eyebrow">District directory</p>
+                  <p class="app-head__title">Members</p>
+                </div>
+                <p class="app-head__count"><span data-dir-count>16</span> <span data-dir-noun>members</span></p>
+              </div>
+              <div class="app-meeting">
+                <div>
+                  <p class="app-meeting__label">Next meeting</p>
+                  <p class="app-meeting__when">Thu · 7:00 pm</p>
+                  <p class="app-meeting__where">RC Thane Hills · Weekly meeting</p>
+                </div>
+                <span class="app-meeting__qr"><svg viewBox="0 0 21 21" focusable="false"><path d="M0 0h7v7h-7zM14 0h7v7h-7zM0 14h7v7h-7zM2 2v3h3v-3zM16 2v3h3v-3zM2 16v3h3v-3zM9 1h2v2h-2zM9 5h3v2h-3zM8 9h5v2h-5zM15 9h2v3h-2zM19 9h2v2h-2zM9 13h2v4h-2zM13 14h3v2h-3zM18 14h3v3h-3zM12 18h4v3h-4zM9 19h2v2h-2zM1 9h4v2h-4z" fill-rule="evenodd"/></svg>QR check-in</span>
+              </div>
+              <ul class="dir">
+                <li class="dir__row" data-row="0"><span class="mono t-marigold">AS</span><span class="dir__txt"><span class="dir__name">Ana Souza</span><span class="dir__club">RC Porto Ribeira</span></span><span class="dir__priv"><svg class="pi pi--on" viewBox="0 0 16 16"><path d="M2.5 4h11v8h-11zM2.8 4.5 8 8.6l5.2-4.1"/></svg><svg class="pi pi--on" viewBox="0 0 16 16"><path d="M5 1.8h6v12.4h-6zM7.2 11.9h1.6"/></svg></span></li>
+                <li class="dir__row" data-row="1"><span class="mono t-azure">AM</span><span class="dir__txt"><span class="dir__name">Anjali Mehta</span><span class="dir__club">RC Thane Hills</span></span><span class="dir__priv"><svg class="pi pi--on" viewBox="0 0 16 16"><path d="M2.5 4h11v8h-11zM2.8 4.5 8 8.6l5.2-4.1"/></svg><svg class="pi pi--off" viewBox="0 0 16 16"><path d="M5 1.8h6v12.4h-6zM7.2 11.9h1.6M2.5 14.5l11-13"/></svg></span></li>
+                <li class="dir__row" data-row="2"><span class="mono t-mint">AI</span><span class="dir__txt"><span class="dir__name">Arjun Iyer</span><span class="dir__club">RC Thane Hills</span></span><span class="dir__priv"><svg class="pi pi--on" viewBox="0 0 16 16"><path d="M2.5 4h11v8h-11zM2.8 4.5 8 8.6l5.2-4.1"/></svg><svg class="pi pi--on" viewBox="0 0 16 16"><path d="M5 1.8h6v12.4h-6zM7.2 11.9h1.6"/></svg></span></li>
+                <li class="dir__row" data-row="3"><span class="mono t-azure">CB</span><span class="dir__txt"><span class="dir__name">Chloé Bernard</span><span class="dir__club">RC Lyon Confluence</span></span><span class="dir__priv"><svg class="pi pi--on" viewBox="0 0 16 16"><path d="M2.5 4h11v8h-11zM2.8 4.5 8 8.6l5.2-4.1"/></svg><svg class="pi pi--off" viewBox="0 0 16 16"><path d="M5 1.8h6v12.4h-6zM7.2 11.9h1.6M2.5 14.5l11-13"/></svg></span></li>
+                <li class="dir__row" data-row="4"><span class="mono t-coral">DO</span><span class="dir__txt"><span class="dir__name">Daniel Okafor</span><span class="dir__club">RC Pune Central</span></span><span class="dir__priv"><svg class="pi pi--on" viewBox="0 0 16 16"><path d="M2.5 4h11v8h-11zM2.8 4.5 8 8.6l5.2-4.1"/></svg><svg class="pi pi--on" viewBox="0 0 16 16"><path d="M5 1.8h6v12.4h-6zM7.2 11.9h1.6"/></svg></span></li>
+                <li class="dir__row" data-row="5"><span class="mono t-marigold">GR</span><span class="dir__txt"><span class="dir__name">Giulia Rossi</span><span class="dir__club">RC Lyon Confluence</span></span><span class="dir__priv"><svg class="pi pi--off" viewBox="0 0 16 16"><path d="M2.5 4h11v8h-11zM2.8 4.5 8 8.6l5.2-4.1M2.5 14.5l11-13"/></svg><svg class="pi pi--off" viewBox="0 0 16 16"><path d="M5 1.8h6v12.4h-6zM7.2 11.9h1.6M2.5 14.5l11-13"/></svg></span></li>
+                <li class="dir__row" data-row="6"><span class="mono t-marigold">JM</span><span class="dir__txt"><span class="dir__name">Jean Moreau</span><span class="dir__club">RC Lyon Confluence</span></span><span class="dir__priv"><svg class="pi pi--on" viewBox="0 0 16 16"><path d="M2.5 4h11v8h-11zM2.8 4.5 8 8.6l5.2-4.1"/></svg><svg class="pi pi--on" viewBox="0 0 16 16"><path d="M5 1.8h6v12.4h-6zM7.2 11.9h1.6"/></svg></span></li>
+                <li class="dir__row" data-row="7"><span class="mono t-coral">JP</span><span class="dir__txt"><span class="dir__name">Ji-woo Park</span><span class="dir__club">RC Osaka Bay</span></span><span class="dir__priv"><svg class="pi pi--on" viewBox="0 0 16 16"><path d="M2.5 4h11v8h-11zM2.8 4.5 8 8.6l5.2-4.1"/></svg><svg class="pi pi--off" viewBox="0 0 16 16"><path d="M5 1.8h6v12.4h-6zM7.2 11.9h1.6M2.5 14.5l11-13"/></svg></span></li>
+                <li class="dir__row" data-row="8"><span class="mono t-marigold">KS</span><span class="dir__txt"><span class="dir__name">Kenji Sato</span><span class="dir__club">RC Osaka Bay</span></span><span class="dir__priv"><svg class="pi pi--on" viewBox="0 0 16 16"><path d="M2.5 4h11v8h-11zM2.8 4.5 8 8.6l5.2-4.1"/></svg><svg class="pi pi--on" viewBox="0 0 16 16"><path d="M5 1.8h6v12.4h-6zM7.2 11.9h1.6"/></svg></span></li>
+                <li class="dir__row" data-row="9"><span class="mono t-coral">LB</span><span class="dir__txt"><span class="dir__name">Lukas Becker</span><span class="dir__club">RC Porto Ribeira</span></span><span class="dir__priv"><svg class="pi pi--off" viewBox="0 0 16 16"><path d="M2.5 4h11v8h-11zM2.8 4.5 8 8.6l5.2-4.1M2.5 14.5l11-13"/></svg><svg class="pi pi--on" viewBox="0 0 16 16"><path d="M5 1.8h6v12.4h-6zM7.2 11.9h1.6"/></svg></span></li>
+                <li class="dir__row" data-row="10"><span class="mono t-mint">ML</span><span class="dir__txt"><span class="dir__name">María López</span><span class="dir__club">RC Valencia Mar</span></span><span class="dir__priv"><svg class="pi pi--on" viewBox="0 0 16 16"><path d="M2.5 4h11v8h-11zM2.8 4.5 8 8.6l5.2-4.1"/></svg><svg class="pi pi--on" viewBox="0 0 16 16"><path d="M5 1.8h6v12.4h-6zM7.2 11.9h1.6"/></svg></span></li>
+                <li class="dir__row" data-row="11"><span class="mono t-coral">MK</span><span class="dir__txt"><span class="dir__name">Meera Kulkarni</span><span class="dir__club">RC Pune Central</span></span><span class="dir__priv"><svg class="pi pi--on" viewBox="0 0 16 16"><path d="M2.5 4h11v8h-11zM2.8 4.5 8 8.6l5.2-4.1"/></svg><svg class="pi pi--off" viewBox="0 0 16 16"><path d="M5 1.8h6v12.4h-6zM7.2 11.9h1.6M2.5 14.5l11-13"/></svg></span></li>
+                <li class="dir__row" data-row="12"><span class="mono t-mint">PN</span><span class="dir__txt"><span class="dir__name">Priya Nair</span><span class="dir__club">RC Thane Hills</span></span><span class="dir__priv"><svg class="pi pi--on" viewBox="0 0 16 16"><path d="M2.5 4h11v8h-11zM2.8 4.5 8 8.6l5.2-4.1"/></svg><svg class="pi pi--on" viewBox="0 0 16 16"><path d="M5 1.8h6v12.4h-6zM7.2 11.9h1.6"/></svg></span></li>
+                <li class="dir__row" data-row="13"><span class="mono t-mint">RD</span><span class="dir__txt"><span class="dir__name">Rohan Desai</span><span class="dir__club">RC Pune Central</span></span><span class="dir__priv"><svg class="pi pi--on" viewBox="0 0 16 16"><path d="M2.5 4h11v8h-11zM2.8 4.5 8 8.6l5.2-4.1"/></svg><svg class="pi pi--off" viewBox="0 0 16 16"><path d="M5 1.8h6v12.4h-6zM7.2 11.9h1.6M2.5 14.5l11-13"/></svg></span></li>
+                <li class="dir__row" data-row="14"><span class="mono t-azure">SM</span><span class="dir__txt"><span class="dir__name">Sarah Mitchell</span><span class="dir__club">RC Valencia Mar</span></span><span class="dir__priv"><svg class="pi pi--on" viewBox="0 0 16 16"><path d="M2.5 4h11v8h-11zM2.8 4.5 8 8.6l5.2-4.1"/></svg><svg class="pi pi--on" viewBox="0 0 16 16"><path d="M5 1.8h6v12.4h-6zM7.2 11.9h1.6"/></svg></span></li>
+                <li class="dir__row" data-row="15"><span class="mono t-azure">YT</span><span class="dir__txt"><span class="dir__name">Yui Tanaka</span><span class="dir__club">RC Osaka Bay</span></span><span class="dir__priv"><svg class="pi pi--on" viewBox="0 0 16 16"><path d="M2.5 4h11v8h-11zM2.8 4.5 8 8.6l5.2-4.1"/></svg><svg class="pi pi--off" viewBox="0 0 16 16"><path d="M5 1.8h6v12.4h-6zM7.2 11.9h1.6M2.5 14.5l11-13"/></svg></span></li>
+              </ul>
+              <div class="app-tabs">
+                <svg viewBox="0 0 20 20"><path d="M3.5 9 10 3.5 16.5 9v7.5h-13z"/></svg>
+                <svg class="is-on" viewBox="0 0 20 20"><circle cx="7.5" cy="7" r="2.6"/><circle cx="13.5" cy="8" r="2"/><path d="M2.8 16c.6-3 2.4-4.4 4.7-4.4s4.1 1.4 4.7 4.4M12.4 12c2.4-.4 4.2.9 4.8 3.4"/></svg>
+                <svg viewBox="0 0 20 20"><path d="M3.5 5h13v11.5h-13zM3.5 8.5h13M7 3v3.5M13 3v3.5"/></svg>
+                <svg viewBox="0 0 20 20"><path d="M3 6.5h14v9.5H3zM3 6.5l2.5-3h9l2.5 3M13 11.2h1.5"/></svg>
+                <svg viewBox="0 0 20 20"><path d="M3.5 4.5h13v9h-7l-3.5 3v-3H3.5z"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        <figcaption class="fig-cap hero__cap"><span class="fig-cap__n">Fig. 1</span>A district directory in the ROW member app. Each member chooses who sees their phone and email.</figcaption>
+      </figure>
+    </section>
+
+    <!-- ============================== Proof ============================== -->
+    <section class="proof" aria-label="By the numbers">
+      <div class="wrap">
+        <p class="kicker proof__kicker" data-reveal>By the numbers</p>
+        <ul class="proof__list">
+          <li class="proof__item" data-reveal><span class="proof__num"><span class="proof__ghost">12+</span><span class="proof__val" aria-hidden="true" data-count="12" data-suffix="+">12+</span></span> <span class="proof__label">years serving Rotary</span></li>
+          <li class="proof__item" data-reveal><span class="proof__num"><span class="proof__ghost">4,500+</span><span class="proof__val" aria-hidden="true" data-count="4500" data-suffix="+">4,500+</span></span> <span class="proof__label">clubs</span></li>
+          <li class="proof__item" data-reveal><span class="proof__num"><span class="proof__ghost">180,000+</span><span class="proof__val" aria-hidden="true" data-count="180000" data-suffix="+">180,000+</span></span> <span class="proof__label">members</span></li>
+          <li class="proof__item" data-reveal><span class="proof__num"><span class="proof__ghost">42</span><span class="proof__val" aria-hidden="true" data-count="42">42</span></span> <span class="proof__label">districts</span></li>
+          <li class="proof__item" data-reveal><span class="proof__num"><span class="proof__ghost">800+</span><span class="proof__val" aria-hidden="true" data-count="800" data-suffix="+">800+</span></span> <span class="proof__label">club websites</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================== What is ROW ============================== -->
+    <section class="what" id="what" aria-labelledby="what-title">
+      <div class="wrap what__layout">
+        <div class="what__copy">
+          <p class="kicker" data-reveal>01 — The product</p>
+          <h2 id="what-title" data-split>What is Roster On Wheels?</h2>
+          <p class="body-copy" data-reveal>Roster On Wheels is club management software built only for Rotary. It is made by Kaizen Infotech Solutions, which has run Rotary club and district administration in India for over twelve years. ROW connects to the Rotary International database, so your roster and officers come straight from My Rotary instead of being typed in twice.</p>
+        </div>
+
+        <figure class="ledger" data-reveal>
+          <div class="ledger__books" aria-hidden="true">
+            <div class="ledger__book ledger__book--ri">
+              <div class="ledger__head"><span class="ledger__name">My Rotary</span><span class="ledger__sub">Rotary International</span></div>
+              <ol class="ledger__rows">
+                <li class="ledger__row" data-dir="in"><span class="ledger__who">Anjali Mehta</span><span class="ledger__field">Office</span><span class="ledger__val"><span class="lv lv--new">President-elect</span><span class="lv lv--old">Member</span></span><svg class="ledger__ok" viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg></li>
+                <li class="ledger__row" data-dir="out"><span class="ledger__who">Daniel Okafor</span><span class="ledger__field">Status</span><span class="ledger__val"><span class="lv lv--new">New member</span><span class="lv lv--old">Not listed</span></span><svg class="ledger__ok" viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg></li>
+                <li class="ledger__row" data-dir="in"><span class="ledger__who">Kenji Sato</span><span class="ledger__field">Admin access</span><span class="ledger__val"><span class="lv lv--new">Granted</span><span class="lv lv--old">None</span></span><svg class="ledger__ok" viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg></li>
+                <li class="ledger__row" data-dir="out"><span class="ledger__who">RC Thane Hills</span><span class="ledger__field">Meeting</span><span class="ledger__val"><span class="lv lv--new">Thu, 7:00 pm</span><span class="lv lv--old">Wed, 7:00 pm</span></span><svg class="ledger__ok" viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg></li>
+              </ol>
+            </div>
+            <div class="ledger__rule">
+              <span class="ledger__rule-label">Two-way</span>
+              <ol class="ledger__dirs">
+                <li class="is-in"><svg viewBox="0 0 24 12"><path d="M2 6h19M16 1.5 21 6l-5 4.5"/></svg></li>
+                <li class="is-out"><svg viewBox="0 0 24 12"><path d="M22 6H3M8 1.5 3 6l5 4.5"/></svg></li>
+                <li class="is-in"><svg viewBox="0 0 24 12"><path d="M2 6h19M16 1.5 21 6l-5 4.5"/></svg></li>
+                <li class="is-out"><svg viewBox="0 0 24 12"><path d="M22 6H3M8 1.5 3 6l5 4.5"/></svg></li>
+              </ol>
+            </div>
+            <div class="ledger__book ledger__book--row">
+              <div class="ledger__head"><span class="ledger__name">ROW</span><span class="ledger__sub">Roster On Wheels</span></div>
+              <ol class="ledger__rows">
+                <li class="ledger__row" data-dir="in"><span class="ledger__who">Anjali Mehta</span><span class="ledger__field">Office</span><span class="ledger__val"><span class="lv lv--new">President-elect</span><span class="lv lv--old">Member</span></span><svg class="ledger__ok" viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg></li>
+                <li class="ledger__row" data-dir="out"><span class="ledger__who">Daniel Okafor</span><span class="ledger__field">Status</span><span class="ledger__val"><span class="lv lv--new">New member</span><span class="lv lv--old">Not listed</span></span><svg class="ledger__ok" viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg></li>
+                <li class="ledger__row" data-dir="in"><span class="ledger__who">Kenji Sato</span><span class="ledger__field">Admin access</span><span class="ledger__val"><span class="lv lv--new">Granted</span><span class="lv lv--old">None</span></span><svg class="ledger__ok" viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg></li>
+                <li class="ledger__row" data-dir="out"><span class="ledger__who">RC Thane Hills</span><span class="ledger__field">Meeting</span><span class="ledger__val"><span class="lv lv--new">Thu, 7:00 pm</span><span class="lv lv--old">Wed, 7:00 pm</span></span><svg class="ledger__ok" viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg></li>
+              </ol>
+            </div>
+            <span class="ledger__token"></span>
+          </div>
+          <figcaption class="fig-cap"><span class="fig-cap__n">Fig. 2</span>Members, officers and club details flow in from My Rotary, and changes you make in ROW are sent back. Every change is queued and retried automatically.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ============================== Plan next year ============================== -->
+    <section class="plan band-ink" id="plan" aria-labelledby="plan-title">
+      <div class="wrap plan__inner">
+        <div class="plan__copy">
+          <p class="kicker" data-reveal>02 — Planning ahead</p>
+          <h2 id="plan-title" data-split>Plan next year from January, not July</h2>
+          <p class="body-copy" data-reveal>Most Rotary software only works for the year you are already in. With ROW, a district governor elect can sign up in January and start building the coming Rotary year straight away: appoint the district team, set goals, publish the calendar and open PETS and SETS registration. Every incoming club president and secretary gets a next-year workspace automatically. Your current year keeps running on your current system until the 1 July changeover.</p>
+          <ul class="plan__legend" data-reveal>
+            <li><span class="swatch swatch--current" aria-hidden="true"></span>Current year, 2026–27: untouched</li>
+            <li><span class="swatch swatch--next" aria-hidden="true"></span>Next year, 2027–28: planned from January</li>
+          </ul>
+        </div>
+
+        <figure class="plan__fig">
+          <div class="dial" aria-hidden="true">
+            <svg class="dial__svg" viewBox="0 0 440 440" focusable="false">
+              <circle class="dial__minor" cx="220" cy="220" r="186" stroke-dasharray="1 23.347" stroke-dashoffset="0.5"/>
+              <circle class="dial__major" cx="220" cy="220" r="186" stroke-dasharray="2 95.389" stroke-dashoffset="1"/>
+              <circle class="dial__current" cx="220" cy="220" r="164"/>
+              <circle class="dial__track" cx="220" cy="220" r="138"/>
+              <path class="dial__arc" d="M220 358A138 138 0 0 1 220 82"/>
+              <circle class="dial__nextfull" cx="220" cy="220" r="138"/>
+              <g class="dial__months">
+                <text x="220" y="13" class="is-plan">JUL</text>
+                <text x="326.2" y="36.1">AUG</text>
+                <text x="406.2" y="112.5">SEP</text>
+                <text x="433" y="220">OCT</text>
+                <text x="406.2" y="327.5">NOV</text>
+                <text x="326.2" y="403.9">DEC</text>
+                <text x="220" y="427" class="is-plan">JAN</text>
+                <text x="113.8" y="403.9" class="is-plan">FEB</text>
+                <text x="33.8" y="327.5" class="is-plan">MAR</text>
+                <text x="7" y="220" class="is-plan">APR</text>
+                <text x="33.8" y="112.5" class="is-plan">MAY</text>
+                <text x="113.8" y="36.1" class="is-plan">JUN</text>
+              </g>
+              <g class="dial__handwrap">
+                <g transform="rotate(270 220 220)">
+                  <g class="dial__hand">
+                    <line x1="220" y1="220" x2="402" y2="220"/>
+                    <circle cx="358" cy="220" r="6"/>
+                  </g>
+                </g>
+                <circle class="dial__face" cx="220" cy="220" r="104"/>
+              </g>
+            </svg>
+            <div class="dial__readout">
+              <span class="dial__month" data-dial-month>1 Jul</span>
+              <span class="dial__state" data-dial-state>Changeover</span>
+            </div>
+          </div>
+
+          <div class="launchpad">
+            <p class="launchpad__title">Next-year launchpad</p>
+            <ol class="launchpad__list">
+              <li class="launchpad__item"><span class="launchpad__box" aria-hidden="true"><svg viewBox="0 0 16 16"><path class="launchpad__tick" d="M3.5 8.5l3 3 6-7"/></svg></span><span>District team appointed</span></li>
+              <li class="launchpad__item"><span class="launchpad__box" aria-hidden="true"><svg viewBox="0 0 16 16"><path class="launchpad__tick" d="M3.5 8.5l3 3 6-7"/></svg></span><span>District goals set</span></li>
+              <li class="launchpad__item"><span class="launchpad__box" aria-hidden="true"><svg viewBox="0 0 16 16"><path class="launchpad__tick" d="M3.5 8.5l3 3 6-7"/></svg></span><span>District calendar published</span></li>
+              <li class="launchpad__item"><span class="launchpad__box" aria-hidden="true"><svg viewBox="0 0 16 16"><path class="launchpad__tick" d="M3.5 8.5l3 3 6-7"/></svg></span><span>PETS and SETS scheduled, with registration open</span></li>
+              <li class="launchpad__item"><span class="launchpad__box" aria-hidden="true"><svg viewBox="0 0 16 16"><path class="launchpad__tick" d="M3.5 8.5l3 3 6-7"/></svg></span><span>Clubs invited</span></li>
+              <li class="launchpad__item"><span class="launchpad__box" aria-hidden="true"><svg viewBox="0 0 16 16"><path class="launchpad__tick" d="M3.5 8.5l3 3 6-7"/></svg></span><span>Clubs authorized with Rotary International</span></li>
+            </ol>
+          </div>
+          <figcaption class="fig-cap plan__cap"><span class="fig-cap__n">Fig. 3</span>The Rotary year dial. The current year stays untouched while next year is built from January; on 1 July, next year becomes current.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ============================== Features (bento) ============================== -->
+    <section class="features" id="features" aria-labelledby="features-title">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="kicker" data-reveal>03 — In one plan</p>
+          <h2 id="features-title" data-split>Everything a Rotary club needs, in one plan</h2>
+        </div>
+
+        <ul class="bento">
+          <!-- 1 · Membership and directory -->
+          <li class="tile tile--dir" tabindex="0" data-demo="privacy" data-reveal>
+            <div class="tile__demo demo-privacy" aria-hidden="true">
+              <div class="pv">
+                <div class="pv__who"><span class="mono t-mint">PN</span><span class="pv__id"><b>Priya Nair</b><i>Privacy · RC Thane Hills</i></span></div>
+                <ul class="pv__list">
+                  <li><span class="pv__label">Email</span><span class="pv__state">Members</span><span class="sw is-on"><span class="sw__fill"></span><span class="sw__knob"></span></span></li>
+                  <li class="pv__phone"><span class="pv__label">Phone</span><span class="pv__state pv__swap"><span class="pv__off">Hidden</span><span class="pv__on">Members</span></span><span class="sw"><span class="sw__fill"></span><span class="sw__knob"></span></span></li>
+                  <li><span class="pv__label">Home address</span><span class="pv__state">Hidden</span><span class="sw"><span class="sw__fill"></span><span class="sw__knob"></span></span></li>
+                </ul>
+              </div>
+              <div class="pv__preview">
+                <p class="pv__cap">How the directory shows Priya</p>
+                <div class="pv__row">
+                  <span class="mono t-mint">PN</span>
+                  <span class="pv__id"><b>Priya Nair</b><i>RC Thane Hills</i></span>
+                  <span class="pv__icons">
+                    <svg class="pi pi--on" viewBox="0 0 16 16"><path d="M2.5 4h11v8h-11zM2.8 4.5 8 8.6l5.2-4.1"/></svg>
+                    <span class="pv__phone-ic">
+                      <svg class="pi pi--off pv__ic-off" viewBox="0 0 16 16"><path d="M5 1.8h6v12.4h-6zM7.2 11.9h1.6M2.5 14.5l11-13"/></svg>
+                      <svg class="pi pi--on pv__ic-on" viewBox="0 0 16 16"><path d="M5 1.8h6v12.4h-6zM7.2 11.9h1.6"/></svg>
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <h3 class="tile__title">Membership and directory</h3>
+            <p class="tile__text">a member app with a directory that respects each member's privacy choices</p>
+          </li>
+
+          <!-- 2 · My Rotary sync -->
+          <li class="tile tile--sync" tabindex="0" data-demo="sync" data-reveal>
+            <div class="tile__demo demo-sync" aria-hidden="true">
+              <div class="sy">
+                <span class="sy__node"><b>My Rotary</b><i>Rotary International</i></span>
+                <span class="sy__track"><span class="sy__runner"><span class="sy__dot"></span></span></span>
+                <span class="sy__node"><b>ROW</b><i>Your club</i></span>
+              </div>
+              <p class="sy__status"><span class="sy__led"></span><span class="sy__swap"><span class="sy__s sy__s--rest">In step · just now</span><span class="sy__s sy__s--a">Sending officer change to ROW</span><span class="sy__s sy__s--b">Sending new member to My Rotary</span></span></p>
+            </div>
+            <h3 class="tile__title">My Rotary sync</h3>
+            <p class="tile__text">members, officers and club details kept in step with Rotary International</p>
+          </li>
+
+          <!-- 3 · Events and forms -->
+          <li class="tile tile--qr" tabindex="0" data-demo="qr" data-reveal>
+            <div class="tile__demo demo-qr" aria-hidden="true">
+              <div class="qr">
+                <svg class="qr__code" viewBox="0 0 21 21"><path d="M0 0h7v1h-7zM8 0h5v1h-5zM14 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM8 1h1v1h-1zM11 1h1v1h-1zM14 1h1v1h-1zM20 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM10 2h2v1h-2zM14 2h1v1h-1zM16 2h3v1h-3zM20 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM8 3h2v1h-2zM11 3h1v1h-1zM14 3h1v1h-1zM16 3h3v1h-3zM20 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM9 4h1v1h-1zM11 4h2v1h-2zM14 4h1v1h-1zM16 4h3v1h-3zM20 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM10 5h1v1h-1zM14 5h1v1h-1zM20 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h7v1h-7zM9 7h2v1h-2zM12 7h1v1h-1zM0 8h3v1h-3zM4 8h1v1h-1zM6 8h4v1h-4zM14 8h3v1h-3zM18 8h1v1h-1zM20 8h1v1h-1zM2 9h1v1h-1zM4 9h1v1h-1zM7 9h1v1h-1zM10 9h6v1h-6zM17 9h4v1h-4zM6 10h2v1h-2zM11 10h1v1h-1zM14 10h1v1h-1zM16 10h2v1h-2zM1 11h2v1h-2zM4 11h1v1h-1zM8 11h1v1h-1zM12 11h2v1h-2zM15 11h1v1h-1zM3 12h9v1h-9zM16 12h5v1h-5zM10 13h5v1h-5zM17 13h1v1h-1zM19 13h2v1h-2zM0 14h7v1h-7zM8 14h1v1h-1zM12 14h1v1h-1zM14 14h2v1h-2zM17 14h2v1h-2zM0 15h1v1h-1zM6 15h1v1h-1zM9 15h2v1h-2zM13 15h1v1h-1zM15 15h3v1h-3zM20 15h1v1h-1zM0 16h1v1h-1zM2 16h3v1h-3zM6 16h1v1h-1zM9 16h1v1h-1zM11 16h1v1h-1zM14 16h3v1h-3zM18 16h1v1h-1zM20 16h1v1h-1zM0 17h1v1h-1zM2 17h3v1h-3zM6 17h1v1h-1zM9 17h5v1h-5zM15 17h1v1h-1zM18 17h2v1h-2zM0 18h1v1h-1zM2 18h3v1h-3zM6 18h1v1h-1zM9 18h1v1h-1zM17 18h1v1h-1zM19 18h2v1h-2zM0 19h1v1h-1zM6 19h1v1h-1zM8 19h2v1h-2zM12 19h2v1h-2zM15 19h1v1h-1zM0 20h7v1h-7zM8 20h1v1h-1zM10 20h1v1h-1zM13 20h2v1h-2zM16 20h1v1h-1zM18 20h1v1h-1z"/></svg>
+                <span class="qr__scanrun"><span class="qr__scan"></span></span>
+                <span class="qr__ok"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span>
+              </div>
+              <div class="qr__meta">
+                <p class="qr__title qr__swap"><span class="qr__s qr__s--done">Checked in</span><span class="qr__s qr__s--wait">Scan to check in</span></p>
+                <p class="qr__sub">Weekly meeting · Thu 7:00 pm</p>
+                <p class="qr__count">Attendance <b class="qr__swap"><span class="qr__n qr__n--b">39</span><span class="qr__n qr__n--a">38</span></b></p>
+              </div>
+            </div>
+            <h3 class="tile__title">Events and forms</h3>
+            <p class="tile__text">registration, payment and QR check-in for meetings, PETS, SETS and the district conference, plus unlimited forms</p>
+          </li>
+
+          <!-- 4 · Dues and finance -->
+          <li class="tile tile--dues" tabindex="0" data-demo="dues" data-reveal>
+            <div class="tile__demo demo-dues" aria-hidden="true">
+              <div class="inv">
+                <p class="inv__head"><b>Invoice · Q3</b><i>Rohan Desai</i></p>
+                <ul class="inv__lines">
+                  <li data-amount="120"><span>Club dues</span><span>120.00</span></li>
+                  <li data-amount="36"><span>RI dues</span><span>36.00</span></li>
+                  <li data-amount="18"><span>District dues</span><span>18.00</span></li>
+                  <li data-amount="48"><span>Meals</span><span>48.00</span></li>
+                </ul>
+                <p class="inv__total"><span>Total</span><b class="inv__sum">222.00</b></p>
+              </div>
+              <p class="inv__export">Export · QuickBooks · Xero</p>
+            </div>
+            <h3 class="tile__title">Dues and finance</h3>
+            <p class="tile__text">multi-line invoices, quarterly or monthly billing, member statements and export to QuickBooks and Xero</p>
+          </li>
+
+          <!-- 5 · Communication -->
+          <li class="tile tile--chat" tabindex="0" data-demo="chat" data-reveal>
+            <div class="tile__demo demo-chat" aria-hidden="true">
+              <p class="ch__from">Club secretary · WhatsApp</p>
+              <div class="ch__bubble">
+                <p>Board meeting moved to 7:30 pm.</p>
+                <span class="ch__meta">18:02<svg class="ch__ticks" viewBox="0 0 22 12"><path class="ch__t1" d="M1 6.5l3 3 6-7.5"/><path class="ch__t2" d="M8.5 9.5l6-7.5"/></svg></span>
+              </div>
+              <p class="ch__state ch__swap"><span class="ch__s ch__s--read">Read</span><span class="ch__s ch__s--sent">Sent</span><span class="ch__s ch__s--deliv">Delivered</span></p>
+              <p class="ch__stats"><span>Opened <b>31</b></span><span>Clicked <b>12</b></span></p>
+            </div>
+            <h3 class="tile__title">Communication</h3>
+            <p class="tile__text">email, WhatsApp, push notifications and in-app chat, with open and click tracking</p>
+          </li>
+
+          <!-- 6 · Service projects -->
+          <li class="tile tile--show" tabindex="0" data-demo="show" data-reveal>
+            <div class="tile__demo demo-show" aria-hidden="true">
+              <div class="sp">
+                <p class="sp__avenue">Community Service</p>
+                <p class="sp__name">Tree plantation drive</p>
+                <p class="sp__meta">36 volunteers · 140 hours</p>
+                <div class="sp__action">
+                  <span class="sp__btn">Publish to Rotary Showcase</span>
+                  <span class="sp__done"><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>Published to Rotary Showcase</span>
+                </div>
+              </div>
+            </div>
+            <h3 class="tile__title">Service projects</h3>
+            <p class="tile__text">track projects by Avenue of Service and publish them to Rotary Showcase in one click</p>
+          </li>
+
+          <!-- 7 · District tools -->
+          <li class="tile tile--grant" tabindex="0" data-demo="grant" data-reveal>
+            <div class="tile__demo demo-grant" aria-hidden="true">
+              <div class="gr">
+                <p class="gr__kicker">District Grant · 2027–28</p>
+                <p class="gr__name">Water filters for three schools</p>
+                <p class="gr__club">RC Pune Central</p>
+                <dl class="gr__facts">
+                  <div><dt>Budget</dt><dd>4,800</dd></div>
+                  <div><dt>Partners</dt><dd>2</dd></div>
+                  <div><dt>Status</dt><dd class="gr__swap"><span class="gr__s gr__s--ok">Approved</span><span class="gr__s gr__s--review">In review</span></dd></div>
+                </dl>
+                <span class="gr__stamp">Approved</span>
+              </div>
+            </div>
+            <h3 class="tile__title">District tools</h3>
+            <p class="tile__text">Grants, assistant governor login, monthly reports, official visits, goals and awards</p>
+          </li>
+
+          <!-- 8 · Websites -->
+          <li class="tile tile--web" tabindex="0" data-demo="web" data-reveal>
+            <div class="tile__demo demo-web" aria-hidden="true">
+              <div class="wb">
+                <div class="wb__bar"><span class="wb__dots"><i></i><i></i><i></i></span><span class="wb__url">RC Valencia Mar</span><span class="wb__lang">English</span></div>
+                <div class="wb__page">
+                  <p class="wb__club">RC Valencia Mar</p>
+                  <p class="wb__date">Thursday, 11 March 2027</p>
+                  <span class="wb__lines"><i></i><i></i><i></i></span>
+                  <span class="wb__ad">Ad slot · local sponsor</span>
+                </div>
+              </div>
+            </div>
+            <h3 class="tile__title">Websites</h3>
+            <p class="tile__text">club and district websites in more than one language, with ad slots you sell to local sponsors</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================== Languages ============================== -->
+    <section class="langs" id="languages" aria-labelledby="langs-title">
+      <div class="wrap langs__layout">
+        <div class="langs__copy">
+          <p class="kicker" data-reveal>04 — Languages</p>
+          <h2 id="langs-title" data-split>Every Rotary language, included</h2>
+          <p class="body-copy" data-reveal>The app, the officer console, emails and your website work in English, Spanish, French, German, Italian, Japanese, Korean and Portuguese, with no charge per language.</p>
+        </div>
+        <div class="langs__show">
+          <div class="langs__stage" aria-hidden="true">
+            <span class="langs__word is-active" lang="en">English</span>
+            <span class="langs__word" lang="es">Español</span>
+            <span class="langs__word" lang="fr">Français</span>
+            <span class="langs__word" lang="de">Deutsch</span>
+            <span class="langs__word" lang="it">Italiano</span>
+            <span class="langs__word" lang="ja">日本語</span>
+            <span class="langs__word" lang="ko">한국어</span>
+            <span class="langs__word" lang="pt">Português</span>
+          </div>
+          <ul class="langs__list" aria-label="Languages included" data-reveal>
+            <li class="is-active"><span class="langs__code" aria-hidden="true">EN</span><span lang="en">English</span></li>
+            <li><span class="langs__code" aria-hidden="true">ES</span><span lang="es">Español</span></li>
+            <li><span class="langs__code" aria-hidden="true">FR</span><span lang="fr">Français</span></li>
+            <li><span class="langs__code" aria-hidden="true">DE</span><span lang="de">Deutsch</span></li>
+            <li><span class="langs__code" aria-hidden="true">IT</span><span lang="it">Italiano</span></li>
+            <li><span class="langs__code" aria-hidden="true">JA</span><span lang="ja">日本語</span></li>
+            <li><span class="langs__code" aria-hidden="true">KO</span><span lang="ko">한국어</span></li>
+            <li><span class="langs__code" aria-hidden="true">PT</span><span lang="pt">Português</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== Districts ============================== -->
+    <section class="districts" id="districts" aria-labelledby="districts-title">
+      <div class="wrap">
+        <div class="districts__panel">
+          <div class="districts__copy">
+            <p class="kicker" data-reveal>05 — For districts</p>
+            <h2 id="districts-title" data-split>Built for districts, free for their clubs</h2>
+            <p class="body-copy" data-reveal>When a district subscribes to ROW District, every club in that district gets ROW Club Basic at no charge, and every Rotaract club gets the full club product free.</p>
+            <ul class="districts__legend" data-reveal>
+              <li><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7"/></svg>Rotary club: ROW Club Basic at no charge</li>
+              <li><svg class="is-ract" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2.5 17.5 10 10 17.5 2.5 10z"/></svg>Rotaract club: the full club product, free</li>
+            </ul>
+          </div>
+          <figure class="districts__fig">
+            <svg class="fan" viewBox="0 0 640 440" aria-hidden="true" focusable="false">
+              <g class="fan__routes">
+                <path d="M96 230Q166 121.6 286 74"/>
+                <path d="M96 230Q240.8 232.2 360 150"/>
+                <path d="M96 230Q241.9 103.1 430 58"/>
+                <path d="M96 230Q303.2 225.6 488 132"/>
+                <path d="M96 230Q317.4 113.1 566 84"/>
+                <path d="M96 230Q207.5 277.8 326 252"/>
+                <path d="M96 230Q259.2 181 424 224"/>
+                <path d="M96 230Q311.6 263.9 522 206"/>
+                <path d="M96 230Q344.6 154.3 604 170"/>
+                <path d="M96 230Q223.8 327.1 384 338"/>
+                <path d="M96 230Q295 222.9 476 306"/>
+                <path d="M96 230Q325.2 305.6 566 290"/>
+                <path d="M96 230Q223.9 278.4 300 392"/>
+                <path d="M96 230Q293 352.1 522 388"/>
+                <path d="M96 230Q362 248.3 606 356"/>
+              </g>
+              <g class="fan__clubs">
+                <circle class="fan__club" cx="286" cy="74" r="9"/>
+                <circle class="fan__club" cx="360" cy="150" r="9"/>
+                <circle class="fan__club" cx="430" cy="58" r="9"/>
+                <path class="fan__club fan__club--ract" d="M488 120.5 499.5 132 488 143.5 476.5 132z"/>
+                <circle class="fan__club" cx="566" cy="84" r="9"/>
+                <circle class="fan__club" cx="326" cy="252" r="9"/>
+                <circle class="fan__club" cx="424" cy="224" r="9"/>
+                <circle class="fan__club" cx="522" cy="206" r="9"/>
+                <circle class="fan__club" cx="604" cy="170" r="9"/>
+                <path class="fan__club fan__club--ract" d="M384 326.5 395.5 338 384 349.5 372.5 338z"/>
+                <circle class="fan__club" cx="476" cy="306" r="9"/>
+                <circle class="fan__club" cx="566" cy="290" r="9"/>
+                <circle class="fan__club" cx="300" cy="392" r="9"/>
+                <path class="fan__club fan__club--ract" d="M522 376.5 533.5 388 522 399.5 510.5 388z"/>
+                <circle class="fan__club" cx="606" cy="356" r="9"/>
+              </g>
+              <g class="fan__tags">
+                <g class="fan__tag" transform="translate(216 20)"><rect width="140" height="24" rx="12"/><text x="70" y="16">Club Basic · free</text></g>
+                <g class="fan__tag" transform="translate(432 410)"><rect width="196" height="24" rx="12"/><text x="98" y="16">Rotaract · full product</text></g>
+              </g>
+              <g class="fan__district">
+                <circle class="fan__halo" cx="96" cy="230" r="44"/>
+                <circle class="fan__core" cx="96" cy="230" r="30"/>
+                <circle cx="96" cy="230" r="13" fill="none" stroke="#F7F4EE" stroke-width="3" stroke-dasharray="66 15.7" transform="rotate(-11 96 230)"/>
+                <circle cx="105.9" cy="221.6" r="3.4" fill="#F2B33D"/>
+                <text x="96" y="296">ROW District</text>
+              </g>
+            </svg>
+            <figcaption class="fig-cap"><span class="fig-cap__n">Fig. 4</span>One ROW District subscription switches on every club in the district.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== Migration ============================== -->
+    <section class="migration" id="migration" aria-labelledby="migration-title">
+      <div class="wrap">
+        <div class="migration__copy">
+          <p class="kicker" data-reveal>06 — Switching</p>
+          <h2 id="migration-title" data-split>Moving from ClubRunner or DACdb?</h2>
+          <p class="body-copy" data-reveal>Your member data lives at Rotary International, so your roster and officers come across through My Rotary. We import the rest: attendance history, balances, contacts, events and documents. Your secretary signs a reconciliation report before anything goes live, and your old system keeps running until then. Standard migration is free and takes ten working days.</p>
+        </div>
+
+        <figure class="almanac">
+          <div class="almanac__strip">
+            <span class="almanac__progress" aria-hidden="true"></span>
+            <ol class="almanac__days">
+              <li class="almanac__day"><span class="almanac__dow">Mon</span><span class="almanac__n"><span class="almanac__word">Day</span> 1</span><span class="almanac__note">Export files received</span><svg class="almanac__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg></li>
+              <li class="almanac__day"><span class="almanac__dow">Tue</span><span class="almanac__n"><span class="almanac__word">Day</span> 2</span><span class="almanac__note">Attendance history</span><svg class="almanac__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg></li>
+              <li class="almanac__day"><span class="almanac__dow">Wed</span><span class="almanac__n"><span class="almanac__word">Day</span> 3</span><span class="almanac__note">Balances</span><svg class="almanac__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg></li>
+              <li class="almanac__day"><span class="almanac__dow">Thu</span><span class="almanac__n"><span class="almanac__word">Day</span> 4</span><span class="almanac__note">Contacts</span><svg class="almanac__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg></li>
+              <li class="almanac__day"><span class="almanac__dow">Fri</span><span class="almanac__n"><span class="almanac__word">Day</span> 5</span><span class="almanac__note">Events</span><svg class="almanac__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg></li>
+              <li class="almanac__weekend" aria-hidden="true"><span>Sat</span><span>Sun</span></li>
+              <li class="almanac__day"><span class="almanac__dow">Mon</span><span class="almanac__n"><span class="almanac__word">Day</span> 6</span><span class="almanac__note">Documents</span><svg class="almanac__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg></li>
+              <li class="almanac__day"><span class="almanac__dow">Tue</span><span class="almanac__n"><span class="almanac__word">Day</span> 7</span><span class="almanac__note">Counts reconciled</span><svg class="almanac__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg></li>
+              <li class="almanac__day"><span class="almanac__dow">Wed</span><span class="almanac__n"><span class="almanac__word">Day</span> 8</span><span class="almanac__note">Report to your secretary</span><svg class="almanac__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg></li>
+              <li class="almanac__day"><span class="almanac__dow">Thu</span><span class="almanac__n"><span class="almanac__word">Day</span> 9</span><span class="almanac__note">Secretary checks</span><svg class="almanac__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg></li>
+              <li class="almanac__day almanac__day--last"><span class="almanac__dow">Fri</span><span class="almanac__n"><span class="almanac__word">Day</span> 10</span><span class="almanac__note">Signed, then live</span><svg class="almanac__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg></li>
+            </ol>
+          </div>
+
+          <div class="almanac__foot">
+            <div class="almanac__rails" aria-hidden="true">
+              <p class="rail rail--old"><span class="rail__label">Your current system</span><span class="rail__line"></span><span class="rail__end">Running until sign-off</span></p>
+              <p class="rail rail--row"><span class="rail__label">ROW</span><span class="rail__line"></span><span class="rail__end">Live after sign-off</span></p>
+              <p class="rail rail--ri"><span class="rail__label">Roster and officers</span><span class="rail__line"></span><span class="rail__end">Through My Rotary</span></p>
+            </div>
+
+            <div class="report" aria-hidden="true">
+              <p class="report__kicker">Reconciliation report</p>
+              <p class="report__club">RC Thane Hills · ClubRunner to ROW</p>
+              <dl class="report__rows">
+                <div><dt>Member count</dt><dd>42 = 42</dd><svg class="report__ok" viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg></div>
+                <div><dt>Officers</dt><dd>9 = 9</dd><svg class="report__ok" viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg></div>
+                <div><dt>Attendance totals</dt><dd>Match</dd><svg class="report__ok" viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg></div>
+                <div><dt>Balances</dt><dd>Match</dd><svg class="report__ok" viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg></div>
+              </dl>
+              <div class="report__sign">
+                <svg class="report__sig" viewBox="0 0 200 60"><path d="M8 42C20 14 34 8 36 22s-14 30-2 26 18-30 30-30-6 30 6 28 14-22 22-22-4 20 6 20 12-14 20-14 2 12 10 12 14-8 22-10M40 50c40-4 90-6 150-8"/></svg>
+                <p>Signed by the club secretary</p>
+              </div>
+              <span class="report__stamp">Signed</span>
+            </div>
+          </div>
+          <figcaption class="fig-cap"><span class="fig-cap__n">Fig. 5</span>An illustrative ten-working-day migration, ending in the reconciliation report your secretary signs.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ============================== FAQ ============================== -->
+    <section class="faq" id="faq" aria-labelledby="faq-title">
+      <div class="wrap faq__layout">
+        <div class="faq__head">
+          <p class="kicker" data-reveal>07 — Questions</p>
+          <h2 id="faq-title" data-split>Questions Rotarians ask us</h2>
+        </div>
+        <div class="faq__list" data-reveal>
+          <details class="faq__item" id="faq-my-rotary">
+            <summary><span class="faq__q">Is ROW connected to My Rotary?</span><span class="faq__icon" aria-hidden="true"></span></summary>
+            <div class="faq__a"><p>Yes. ROW syncs members, officers and club details with Rotary International once your club designates ROW in My Rotary.</p></div>
+          </details>
+          <details class="faq__item" id="faq-trial">
+            <summary><span class="faq__q">Can we try it first?</span><span class="faq__icon" aria-hidden="true"></span></summary>
+            <div class="faq__a"><p>Yes. Every plan starts with a 60-day trial with full access, and nothing you set up is lost when you subscribe.</p></div>
+          </details>
+          <details class="faq__item" id="faq-login">
+            <summary><span class="faq__q">Do members need to log in on a website?</span><span class="faq__icon" aria-hidden="true"></span></summary>
+            <div class="faq__a"><p>No. Members use the ROW app on iPhone or Android, and officers use the web console.</p></div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== Demo CTA ============================== -->
+    <section class="demo band-ink" id="demo" aria-labelledby="demo-title">
+      <div class="demo__wheel" aria-hidden="true">
+        <span class="demo__rim"></span>
+        <span class="demo__spoke" style="--i:0"></span><span class="demo__spoke" style="--i:1"></span><span class="demo__spoke" style="--i:2"></span><span class="demo__spoke" style="--i:3"></span>
+        <span class="demo__spoke" style="--i:4"></span><span class="demo__spoke" style="--i:5"></span><span class="demo__spoke" style="--i:6"></span><span class="demo__spoke" style="--i:7"></span>
+      </div>
+      <div class="wrap demo__inner">
+        <p class="kicker" data-reveal>08 — A demo</p>
+        <h2 class="demo__title" id="demo-title" data-split>See your district in ROW</h2>
+        <p class="demo__text" data-reveal>Book a 20-minute demo and we will show you your own clubs, your next-year plan and a live import from your current system.</p>
+        <div class="demo__ctas" data-reveal>
+          <a class="btn btn--primary btn--lg" href="#demo" data-magnetic><span>Book a demo</span><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5"/></svg></a>
+          <a class="btn btn--secondary btn--lg" href="#demo">Start 60-day trial</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================== Footer ============================== -->
+  <footer class="site-footer" id="contact">
+    <div class="wrap">
+      <div class="footer__grid">
+        <nav class="footer__nav" aria-label="Footer">
+          <div class="footer__col">
+            <h2 class="footer__h">Product</h2>
+            <ul>
+              <li><a class="footer__link" href="#districts">For Districts</a></li>
+              <li><a class="footer__link" href="#features">For Clubs</a></li>
+              <li><a class="footer__link" href="#plan">Plan Next Year</a></li>
+              <li><a class="footer__link" href="#what">My Rotary Integration</a></li>
+              <li><a class="footer__link" href="#languages">Languages</a></li>
+            </ul>
+          </div>
+          <div class="footer__col">
+            <h2 class="footer__h">Switch to ROW</h2>
+            <ul>
+              <li><a class="footer__link" href="#migration">ROW vs ClubRunner vs DACdb</a></li>
+              <li><a class="footer__link" href="#migration">Migration</a></li>
+            </ul>
+          </div>
+          <div class="footer__col">
+            <h2 class="footer__h">Company</h2>
+            <ul>
+              <li><a class="footer__link" href="#faq">FAQ</a></li>
+              <li><a class="footer__link" href="#contact">About</a></li>
+            </ul>
+          </div>
+        </nav>
+        <div class="footer__contact">
+          <h2 class="footer__h">Talk to us</h2>
+          <address>Kaizen Infotech Solutions Pvt. Ltd., A-406, Centrum Business Square, Plot D1, Road No. 16, Wagle Industrial Estate, Thane West 400604, India.</address>
+          <a class="btn btn--primary" href="#demo"><span>Book a demo</span><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5"/></svg></a>
+        </div>
+      </div>
+
+      <div class="footer__legal">
+        <p>© 2026 Kaizen Infotech Solutions Pvt. Ltd.</p>
+        <ul class="footer__legal-links">
+          <li><a class="footer__link" href="../../sample/assets/docs/privacy-policy.pdf">Privacy policy</a></li>
+          <li><a class="footer__link" href="../../sample/assets/docs/terms-conditions.pdf">Terms and conditions</a></li>
+        </ul>
+        <p class="footer__concept">Design sample · Concept 01 · Civic Editorial · <a class="footer__link" href="../">All concepts</a></p>
+      </div>
+
+      <p class="footer__nameplate" aria-hidden="true">Roster On Wheels</p>
+    </div>
+  </footer>
+</body>
+</html>

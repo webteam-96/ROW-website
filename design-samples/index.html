@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ROW Design Samples</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%2314161a'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23f4f3ef' stroke-width='3'/%3E%3C/svg%3E">
+  <meta name="description" content="Five homepage design concepts for the new Roster On Wheels website.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4f3ef;
+      --card: #ffffff;
+      --ink: #14161a;
+      --muted: #5b5f66;
+      --line: rgba(20, 22, 26, 0.12);
+      --focus: #2550f5;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 400 17px/1.55 "Inter Tight", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 6px; }
+    .wrap { max-width: 1280px; margin: 0 auto; padding-inline: 24px; }
+    header { padding-block: 72px 40px; }
+    .kicker {
+      font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted); margin: 0 0 16px;
+    }
+    h1 {
+      font-size: clamp(36px, 5.2vw, 64px); line-height: 1.02; letter-spacing: -0.03em;
+      font-weight: 600; margin: 0; max-width: 16ch; text-wrap: balance;
+    }
+    .lead { max-width: 62ch; color: var(--muted); margin: 20px 0 0; text-wrap: pretty; }
+    .grid {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px;
+      padding-bottom: 96px;
+    }
+    .card {
+      position: relative; display: flex; flex-direction: column;
+      background: var(--card); border: 1px solid var(--line); border-radius: 24px; overflow: hidden;
+      transition: translate 320ms var(--ease), box-shadow 320ms var(--ease);
+    }
+    .card:hover, .card:focus-within {
+      translate: 0 -4px; box-shadow: 0 24px 48px -24px rgba(20, 22, 26, 0.28);
+    }
+    .shot {
+      position: relative; aspect-ratio: 16 / 10; background: var(--swatch, #ddd); overflow: hidden;
+      border-bottom: 1px solid var(--line);
+    }
+    .shot::before {
+      content: attr(data-name); position: absolute; inset: 0; display: grid; place-items: center;
+      font-size: 28px; font-weight: 600; letter-spacing: -0.02em; color: var(--swatch-ink, #fff);
+    }
+    .shot img {
+      position: relative; display: block; width: 100%; height: 100%; object-fit: cover; object-position: top;
+      transition: scale 700ms var(--ease);
+    }
+    .card:hover .shot img { scale: 1.03; }
+    .body { padding: 24px 28px 28px; display: flex; flex-direction: column; gap: 14px; flex: 1; }
+    .num { font-size: 13px; font-weight: 600; letter-spacing: 0.08em; color: var(--muted); }
+    h2 { font-size: 28px; line-height: 1.1; letter-spacing: -0.02em; font-weight: 600; margin: 0; }
+    .body p { margin: 0; color: var(--muted); text-wrap: pretty; }
+    dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; font-size: 15px; }
+    dt { color: var(--muted); }
+    dd { margin: 0; }
+    .chips { display: flex; gap: 6px; align-items: center; }
+    .chips span { width: 18px; height: 18px; border-radius: 50%; border: 1px solid var(--line); }
+    .open {
+      margin-top: auto; align-self: flex-start; display: inline-flex; align-items: center; gap: 8px;
+      min-height: 44px; padding: 0 20px; border-radius: 999px; background: var(--ink); color: #fff;
+      font-weight: 600; font-size: 15px; text-decoration: none;
+    }
+    .card-link { text-decoration: none; }
+    .card-link::after { content: ""; position: absolute; inset: 0; border-radius: 24px; }
+    .card-link:focus-visible { outline: none; }
+    .card:has(.card-link:focus-visible) { outline: 2px solid var(--focus); outline-offset: 3px; }
+    .open span { transition: translate 160ms var(--ease); }
+    .card:hover .open span { translate: 4px 0; }
+    footer { border-top: 1px solid var(--line); padding-block: 24px 40px; color: var(--muted); font-size: 15px; }
+    footer a { display: inline-flex; align-items: center; min-height: 44px; }
+    @media (min-width: 861px) {
+      .card.wide { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+      .card.wide .shot { aspect-ratio: auto; border-bottom: 0; border-right: 1px solid var(--line); }
+    }
+    @media (max-width: 860px) {
+      .grid { grid-template-columns: 1fr; }
+      header { padding-block: 48px 32px; }
+      .body { padding: 20px 20px 24px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .card, .shot img, .open span { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header class="wrap">
+      <p class="kicker">Roster On Wheels · Website redesign</p>
+      <h1>Five homepage design concepts</h1>
+      <p class="lead">Each concept is a full Home page using the copy from ROW_Website_Content.docx. They share the same content but differ in art direction, type, colour and motion. Open one and scroll through it; the animations, feature sections and FAQ all work.</p>
+    </header>
+
+    <section class="wrap grid" aria-label="Design concepts">
+      <article class="card">
+        <div class="shot" data-name="Civic Editorial" style="--swatch:#F7F4EE;--swatch-ink:#0E1726">
+          <img src="01-editorial/preview.png" alt="Civic Editorial concept, hero section" onerror="this.remove()">
+        </div>
+        <div class="body">
+          <span class="num">CONCEPT 01 · THE PRD'S OWN DIRECTION</span>
+          <h2><a class="card-link" href="01-editorial/">Civic Editorial</a></h2>
+          <p>A beautifully set newspaper with one moving idea: the wheel. Calm, premium and easy to read for every age.</p>
+          <dl>
+            <dt>Signature</dt><dd>Roster Wheel of member cards that collapses into the member app</dd>
+            <dt>Type</dt><dd>Fraunces + Inter Tight</dd>
+            <dt>Colour</dt><dd class="chips"><span style="background:#0E1726"></span><span style="background:#F7F4EE"></span><span style="background:#2550F5"></span><span style="background:#F2B33D"></span><span style="background:#22B07D"></span></dd>
+          </dl>
+          <span class="open" aria-hidden="true">Open concept <span>→</span></span>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="shot" data-name="Console" style="--swatch:#070B14;--swatch-ink:#E8EDF6">
+          <img src="02-console/preview.png" alt="Console concept, hero section" onerror="this.remove()">
+        </div>
+        <div class="body">
+          <span class="num">CONCEPT 02</span>
+          <h2><a class="card-link" href="02-console/">Console</a></h2>
+          <p>Dark and product-led, in the Linear and Stripe mould. The product interface is the hero of every section.</p>
+          <dl>
+            <dt>Signature</dt><dd>Sync Orbit that settles into the officer console</dd>
+            <dt>Type</dt><dd>Geist + Geist Mono</dd>
+            <dt>Colour</dt><dd class="chips"><span style="background:#070B14"></span><span style="background:#4F7DFF"></span><span style="background:#38D3F2"></span><span style="background:#8C6CFF"></span><span style="background:#3DDC97"></span></dd>
+          </dl>
+          <span class="open" aria-hidden="true">Open concept <span>→</span></span>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="shot" data-name="Fellowship" style="--swatch:#FFB224;--swatch-ink:#1D1A2F">
+          <img src="03-fellowship/preview.png" alt="Fellowship concept, hero section" onerror="this.remove()">
+        </div>
+        <div class="body">
+          <span class="num">CONCEPT 03</span>
+          <h2><a class="card-link" href="03-fellowship/">Fellowship</a></h2>
+          <p>Warm, sociable and colourful, like a club meeting. Big friendly type and interaction that invites you to play.</p>
+          <dl>
+            <dt>Signature</dt><dd>Spin the Roster: drag a wheel of members to meet them</dd>
+            <dt>Type</dt><dd>Bricolage Grotesque + Figtree</dd>
+            <dt>Colour</dt><dd class="chips"><span style="background:#FFF7EA"></span><span style="background:#FFB224"></span><span style="background:#FF6A4D"></span><span style="background:#2D5BFF"></span><span style="background:#1FBF8F"></span></dd>
+          </dl>
+          <span class="open" aria-hidden="true">Open concept <span>→</span></span>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="shot" data-name="Kinetic" style="--swatch:#0A0A0A;--swatch-ink:#F2F1EC">
+          <img src="04-kinetic/preview.png" alt="Kinetic concept, hero section" onerror="this.remove()">
+        </div>
+        <div class="body">
+          <span class="num">CONCEPT 04</span>
+          <h2><a class="card-link" href="04-kinetic/">Kinetic</a></h2>
+          <p>A poster that moves: Swiss grid, huge type and one electric accent, with the wheel drawn as typography.</p>
+          <dl>
+            <dt>Signature</dt><dd>Velocity-reactive headline and a full-screen Year Dial</dd>
+            <dt>Type</dt><dd>Archivo (variable width) + mono labels</dd>
+            <dt>Colour</dt><dd class="chips"><span style="background:#F2F1EC"></span><span style="background:#0A0A0A"></span><span style="background:#1E40FF"></span><span style="background:#FFD400"></span></dd>
+          </dl>
+          <span class="open" aria-hidden="true">Open concept <span>→</span></span>
+        </div>
+      </article>
+
+      <article class="card wide">
+        <div class="shot" data-name="Heritage" style="--swatch:#0E1D61;--swatch-ink:#E8E0D2">
+          <img src="05-heritage/preview.png" alt="Heritage concept, hero section" onerror="this.remove()">
+        </div>
+        <div class="body">
+          <span class="num">CONCEPT 05</span>
+          <h2><a class="card-link" href="05-heritage/">Heritage</a></h2>
+          <p>Navy, ivory and antique gold. The page turns from navy to ivory and back as you scroll, under a tall poster headline.</p>
+          <dl>
+            <dt>Signature</dt><dd>Pinned Plan Next Year timeline from January to 1 July</dd>
+            <dt>Type</dt><dd>Bebas Neue + Instrument Serif + Hanken Grotesk</dd>
+            <dt>Colour</dt><dd class="chips"><span style="background:#0E1D61"></span><span style="background:#E8E0D2"></span><span style="background:#B89A5A"></span><span style="background:#08123F"></span></dd>
+          </dl>
+          <span class="open" aria-hidden="true">Open concept <span>→</span></span>
+        </div>
+      </article>
+    </section>
+  </main>
+  <footer class="wrap">
+    Design samples for Kaizen Infotech Solutions Pvt. Ltd. · October 2026 · The previous site is kept in <a href="../sample/">sample/</a>
+  </footer>
+</body>
+</html>
