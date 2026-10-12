@@ -1,6 +1,3 @@
 {
-  "trailingSlash": true,
-  "redirects": [
-    { "source": "/", "destination": "/design-samples/", "permanent": false }
-  ]
+  "framework": "nextjs"
 }
