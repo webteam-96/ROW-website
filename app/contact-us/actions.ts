@@ -27,8 +27,8 @@ export async function sendDemoRequest(_prev: SendState, form: FormData): Promise
   if (REQUIRED.some((f) => !values[f]) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { status: "error", values, at: Date.now() };
 
   const { SMTP_HOST, SMTP_PORT = "587", SMTP_USER, SMTP_PASS } = process.env;
-  const from = process.env.MAIL_FROM || "web@kaizeninfotech.com";
-  const to = process.env.MAIL_TO || "naren@kaizeninfotech.com";
+  const from = process.env.MAIL_FROM || "noreply@kaizeninfotech.com";
+  const to = process.env.MAIL_TO || "web@kaizeninfotech.com";
   if (!SMTP_HOST || !SMTP_PASS) {
     console.error("[contact] SMTP_HOST and SMTP_PASS are not set, so the demo request was not emailed");
     return { status: "error", values, at: Date.now() };
