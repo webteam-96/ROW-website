@@ -20,14 +20,39 @@ export function Card({ x, y, w, h, r = 13, children }: At & { w: number; h: numb
   );
 }
 
-/** Skeleton text: a dark line with a lighter one under it */
-export function Lines({ x, y, w, w2 = Math.round(w * 0.65), dark = C.ink }: At & { w: number; w2?: number; dark?: string }) {
+/** The one phone outline every drawn phone uses: 200 x 400 units, shown at 240 x 480px (the same as .phone). The
+    screen starts at x + 7.5, y + 7.5 and is 185 x 385. */
+export function PhoneFrame({ x, y, screen = "#F7F9FC" }: At & { screen?: string }) {
+  return (
+    <>
+      <rect x={x} y={y} width="200" height="400" rx="33" fill={C.ink} />
+      <rect x={x + 7.5} y={y + 7.5} width="185" height="385" rx="25.5" fill={screen} />
+      <rect x={x + 73} y={y + 13.5} width="54" height="14" rx="7" fill={C.ink} />
+    </>
+  );
+}
+
+/** Two lines of sample text (a name and a detail under it); without `t` it draws grey bars instead */
+export function Lines({ x, y, w, w2 = Math.round(w * 0.65), dark = C.ink, t, t2, size = 9 }: At & { w: number; w2?: number; dark?: string; t?: string; t2?: string; size?: number }) {
+  if (t !== undefined) {
+    return (
+      <>
+        <text x={x} y={y + 7} fill={dark} fontSize={size} fontWeight="700" fontFamily="var(--font-display)">{t}</text>
+        {t2 ? <text x={x} y={y + 7 + size * 1.25} fill={dark} fillOpacity=".6" fontSize={size * 0.82} fontWeight="500" fontFamily="var(--font-body)">{t2}</text> : null}
+      </>
+    );
+  }
   return (
     <>
       <rect x={x} y={y} width={w} height="7" rx="3.5" fill={dark} opacity=".75" />
       {w2 > 0 ? <rect x={x} y={y + 12} width={w2} height="5" rx="2.5" fill={dark} opacity=".2" /> : null}
     </>
   );
+}
+
+/** One word or short line of sample text in a picture */
+export function Txt({ x, y, t, size = 9, fill = C.ink, weight = 700, anchor, op }: At & { t: string; size?: number; fill?: string; weight?: number; anchor?: "middle" | "end"; op?: number }) {
+  return <text x={x} y={y} fill={fill} fillOpacity={op} fontSize={size} fontWeight={weight} fontFamily="var(--font-display)" textAnchor={anchor}>{t}</text>;
 }
 
 /** A round avatar with a person in it */

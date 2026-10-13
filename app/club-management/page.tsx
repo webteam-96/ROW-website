@@ -68,10 +68,10 @@ const directoryTile = (
     <div className="tile__demo demo-dir" aria-hidden="true">
       <div className="mini-card">
         <div className="mini-card__head">
-          <span className="mono" data-c="lilac" />
+          <span className="mono" data-c="lilac">PS</span>
           <span className="mini-card__who">
-            <span className="sk sk--t" style={{ width: "62%" }} />
-            <span className="sk sk--m" style={{ width: "44%" }} />
+            <span className="sample__name">Priya Sharma</span>
+            <span className="sample__meta">Secretary</span>
           </span>
         </div>
         <div className="mini-row">
@@ -92,7 +92,7 @@ const directoryTile = (
           </span>
         </div>
         <div className="mini-toggle">
-          <span className="sk sk--m" style={{ width: "56%" }} />
+          <span className="sample__meta">Show my phone number</span>
           <span className="switch" data-d="switch">
             <span className="switch__knob" data-d="knob" />
           </span>
@@ -100,18 +100,18 @@ const directoryTile = (
       </div>
       <div className="mini-list">
         <div className="mini-list__row">
-          <span className="mono" data-c="coral" />
-          <span className="sk sk--t" style={{ width: "34%" }} />
+          <span className="mono" data-c="coral">RD</span>
+          <span className="sample__name">Rahul Desai</span>
           <span className="mini-list__tag">Board of Directors</span>
         </div>
         <div className="mini-list__row">
-          <span className="mono" data-c="mint" />
-          <span className="sk sk--t" style={{ width: "28%" }} />
+          <span className="mono" data-c="mint">SK</span>
+          <span className="sample__name">Sneha Kulkarni</span>
           <span className="mini-list__tag">Past Presidents</span>
         </div>
         <div className="mini-list__row">
-          <span className="mono" data-c="azure" />
-          <span className="sk sk--t" style={{ width: "31%" }} />
+          <span className="mono" data-c="azure">VJ</span>
+          <span className="sample__name">Vikram Joshi</span>
           <span className="mini-list__tag mini-list__tag--off">
             <Lock />
           </span>
@@ -127,8 +127,7 @@ const messagesTile = (
       <div className="msg" data-d="msg">
         <span className="msg__from">WhatsApp</span>
         <span className="msg__text">
-          <span className="sk sk--t" style={{ width: "94%" }} />
-          <span className="sk sk--t" style={{ width: "58%" }} />
+          <span className="sample__msg">Weekly meeting this Thursday, 7 pm at Hotel Satkar. See you there!</span>
         </span>
         <span className="msg__meta">
           <span className="msg__ticks">
@@ -157,19 +156,19 @@ const duesTile = (
       <div className="inv">
         <div className="inv__head">
           <b>Club Dues Collection</b>
-          <span className="sk sk--m" style={{ width: "58%" }} />
+          <span className="sample__meta">Rotary Club of Thane Hills · 2026–27</span>
         </div>
         <ul className="inv__lines">
-          {["online", "offline"].map((way) => (
+          {[["online", "USD 400"], ["offline", "USD 200"]].map(([way, amt]) => (
             <li key={way} data-d="line">
               <span className={styles.label}>{way}</span>
-              <span className="sk sk--m inv__amt" />
+              <span className="sample__name">{amt}</span>
             </li>
           ))}
         </ul>
         <div className="inv__total">
-          <span className="sk sk--t" style={{ width: "20%" }} />
-          <span className="sk sk--t inv__sum" data-d="sum" />
+          <span className="sample__meta">Total</span>
+          <span className="sample__total inv__sum" data-d="sum">USD 600</span>
         </div>
         <span className="inv__chip" data-d="chip">
           <Check />
@@ -186,12 +185,12 @@ const reportTile = (
     <div className="tile__demo demo-grant" aria-hidden="true">
       <div className="grant" data-d="card">
         <span className="grant__kicker">Club Monthly Report</span>
-        <span className="sk sk--t grant__title" />
+        <span className="sample__name">RC Thane Hills · October 2026</span>
         <div className="grant__rows">
-          {[["activities", "38%"], ["projects", "46%"], ["contributions", "30%"]].map(([row, w]) => (
+          {[["activities", "4"], ["projects", "2"], ["contributions", "USD 1,500"]].map(([row, v]) => (
             <div key={row}>
               <span className={styles.label}>{row}</span>
-              <span className="sk sk--m" style={{ width: w }} />
+              <span className="sample__name" style={row === "contributions" ? { marginRight: 56 } : undefined}>{v}</span>
             </div>
           ))}
         </div>
@@ -216,8 +215,8 @@ const websiteTile = (
           </div>
           <div className="browser__page">
             <div className="browser__nav">
-              <span className="web-brand"><span className="web-brand__dot" /><span className="sk sk--t" /></span>
-              <span className="web-links"><span className="sk sk--m" /><span className="sk sk--m" /><span className="sk sk--m" /></span>
+              <span className="web-brand"><span className="web-brand__dot" /><span className="sample__tiny sample__tiny--b">RC Thane Hills</span></span>
+              <span className="web-links"><span className="sample__tiny">Home</span><span className="sample__tiny">Projects</span><span className="sample__tiny">Events</span></span>
               <span className="lang-pill">
                 <span className="lang-pill__track" data-d="track">
                   <span>banners</span>
@@ -229,17 +228,17 @@ const websiteTile = (
             </div>
             <div className="web-hero">
               <div className="browser__body">
-                <span className="sk sk--h" data-d="sk" />
-                <span className="sk" data-d="sk" />
-                <span className="sk sk--s" data-d="sk" />
+                <span className="sample__head" data-d="sk">Welcome to our club</span>
+                <span className="sample__tiny" data-d="sk">Rotary Club of Thane Hills</span>
+                <span className="sample__tiny" data-d="sk">District 3142</span>
                 <span className="web-cta" />
               </div>
               <span className="web-hero__art"><i /><i /><i /></span>
             </div>
             <div className="web-cards">
-              <span className="web-card"><i /><span className="sk sk--m" /><span className="sk sk--m" /></span>
-              <span className="web-card"><i /><span className="sk sk--m" /><span className="sk sk--m" /></span>
-              <span className="web-card"><i /><span className="sk sk--m" /><span className="sk sk--m" /></span>
+              <span className="web-card"><i /><span className="sample__tiny sample__tiny--b">Blood camp</span><span className="sample__tiny">12 Oct</span></span>
+              <span className="web-card"><i /><span className="sample__tiny sample__tiny--b">Tree drive</span><span className="sample__tiny">19 Oct</span></span>
+              <span className="web-card"><i /><span className="sample__tiny sample__tiny--b">Fellowship</span><span className="sample__tiny">26 Oct</span></span>
             </div>
             <div className="browser__ad" data-d="ad">
               <span>advertisements</span>
@@ -249,9 +248,9 @@ const websiteTile = (
         </div>
         <div className="web-phone">
           <span className="web-phone__notch" />
-          <span className="web-phone__hero"><span className="sk sk--t" /><span className="sk sk--m" /></span>
-          <span className="web-phone__row"><i /><span className="sk sk--m" /></span>
-          <span className="web-phone__row"><i /><span className="sk sk--m" /></span>
+          <span className="web-phone__hero"><span className="sample__tiny sample__tiny--b">RC Thane Hills</span><span className="sample__tiny">District 3142</span></span>
+          <span className="web-phone__row"><i /><span className="sample__tiny">Projects</span></span>
+          <span className="web-phone__row"><i /><span className="sample__tiny">Events</span></span>
           <span className="web-phone__ad" />
         </div>
       </div>

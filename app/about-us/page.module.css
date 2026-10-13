@@ -1,7 +1,7 @@
 /* About Us: only what the shared kit (components/kit.tsx) does not already cover. */
 
 /* ---------- Hero: the printed roster book turns into the ROW app ---------- */
-.art { width: min(100%, 520px); height: auto; overflow: visible; }
+.art { width: min(100%, 624px); height: auto; overflow: visible; }
 .disc { fill: var(--sky); }
 .dots { fill: none; stroke: rgba(27, 44, 66, .18); stroke-width: 3; stroke-linecap: round; stroke-dasharray: .01 12; }
 /* the book */
@@ -20,8 +20,6 @@
 .fold { fill: rgba(27, 44, 66, .14); }
 .arrow { fill: none; stroke: var(--marigold); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
 /* the phone */
-.frame, .ink { fill: var(--ink); }
-.screen { fill: var(--cream); }
 .signal { stroke: var(--ink); stroke-width: 3; stroke-linecap: round; }
 .field, .row { fill: var(--cream-2); }
 .faint { fill: rgba(27, 44, 66, .16); }
@@ -78,3 +76,8 @@
 .halo { fill: #fff; opacity: .12; }
 .heart { fill: var(--marigold); }
 .shine { fill: none; stroke: #fff; stroke-width: 4; stroke-linecap: round; opacity: .7; }
+
+/* the hero picture gets its full width, so its phone is the site's one phone size (240px wide, components/art.tsx) */
+@media (min-width: 1100px) {
+  :global(.phero--visual .phero__inner):has(.art) { grid-template-columns: minmax(0, 1fr) minmax(0, 624px); }
+}

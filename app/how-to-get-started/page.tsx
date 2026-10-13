@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import PageFx from "@/components/PageFx";
-import { Avatar, C, Card, ICON, IconTile, Lines } from "@/components/art";
+import { Avatar, C, Card, ICON, IconTile, Lines, Txt } from "@/components/art";
 import { DemoButton, Lead, PageHero, Scribble, Section, Steps } from "@/components/kit";
 import s from "./page.module.css";
 
@@ -25,16 +25,16 @@ const STEP_ICONS = [ICON.screen, ICON.card, ICON.sync, ICON.people, ICON.downloa
    (data-build; data-in = start in seconds). */
 
 // No typing in your member list: the list comes over from My Rotary; you only add extras such as family names or photos
-const MEMBERS = [[70, C.coral, 70], [116, C.sky, 56], [162, C.mint, 76], [208, C.lilac, 62]] as const; // row centres in a card
+const MEMBERS = [[70, C.coral, "Anil Mehta", "President"], [116, C.sky, "Priya Sharma", "Secretary"], [162, C.mint, "Rahul Desai", "Treasurer"], [208, C.lilac, "Sneha Kulkarni", "Member"]] as const; // row centres in a card
 const memberArt = (
   <svg className={s.art} viewBox="0 0 460 330" aria-hidden="true" data-build>
     <Card x={8} y={44} w={182} h={252} r={22}>
       <circle cx="26" cy="28" r="8" fill="none" stroke={C.marigold} strokeWidth="4" />
       <text className={s.word} x="42" y="33">My Rotary</text>
-      {MEMBERS.map(([y, , w]) => (
+      {MEMBERS.map(([y, , name, role]) => (
         <g key={y}>
           <Avatar x={30} y={y} r={13} fill="#D5DEE8" glyph="#fff" />
-          <Lines x={52} y={y - 9} w={w} w2={Math.round(w * 0.6)} />
+          <Lines x={52} y={y - 9} w={70} t={name} t2={role} size={9.5} />
         </g>
       ))}
     </Card>
@@ -50,10 +50,10 @@ const memberArt = (
     <Card x={254} y={20} w={202} h={300} r={22}>
       <circle cx="26" cy="28" r="8" fill={C.azure} />
       <text className={s.word} x="42" y="33">ROW</text>
-      {MEMBERS.map(([y, c, w], i) => (
+      {MEMBERS.map(([y, c, name, role], i) => (
         <g key={y} data-in={(0.55 + i * 0.16).toFixed(2)} data-in-move="-24 0">
           <Avatar x={30} y={y} r={13} fill={c} glyph={c === C.mint ? "#fff" : C.ink} />
-          <Lines x={52} y={y - 9} w={w} w2={Math.round(w * 0.6)} />
+          <Lines x={52} y={y - 9} w={70} t={name} t2={role} size={9.5} />
         </g>
       ))}
       <g data-in="1.35">
@@ -71,7 +71,7 @@ const memberArt = (
 );
 
 // Only the president or secretary needs to connect My Rotary: they choose ROW as the club's software, in a few minutes
-const OPTIONS = [[84, 74], [132, 60]]; // row tops in the card, skeleton widths
+const OPTIONS = [[84, "ClubRunner"], [132, "DACdb"]] as const; // row tops in the card, the other software choices
 const connectArt = (
   <svg className={s.art} viewBox="0 0 460 340" aria-hidden="true" data-build>
     <circle cx="250" cy="170" r="166" fill="#fff" opacity=".1" />
@@ -79,12 +79,12 @@ const connectArt = (
     <Card x={150} y={34} w={290} h={272} r={24}>
       <circle cx="28" cy="30" r="9" fill="none" stroke={C.marigold} strokeWidth="4.5" />
       <text className={s.word} x="46" y="35.5">My Rotary</text>
-      <Lines x={24} y={52} w={150} w2={96} />
+      <Lines x={24} y={52} w={150} t="Club software" t2="Rotary Club of Thane Hills" size={10} />
       {OPTIONS.map(([y, w]) => (
         <g key={y}>
           <rect x="18" y={y} width="254" height="40" rx="14" fill={C.cream2} />
           <circle cx="42" cy={y + 20} r="8" fill="#fff" stroke={C.ink} strokeOpacity=".3" strokeWidth="2.4" />
-          <rect x="62" y={y + 16} width={w} height="8" rx="4" fill={C.ink} opacity=".35" />
+          <Txt x={62} y={y + 24} t={w} size={11} weight={600} op={0.6} />
         </g>
       ))}
       <rect x="18" y="180" width="254" height="40" rx="14" fill="#fff" stroke={C.azure} strokeWidth="2.5" />
@@ -130,7 +130,7 @@ const helpArt = (
         <Card x={Number(x)} y={Number(y)} w={180} h={58} r={18}>
           <IconTile x={12} y={12} size={34} fill={String(c)} stroke={String(st)}>{icon}</IconTile>
           <text className={s.word} x="58" y="27">{word}</text>
-          <rect x="58" y="36" width="70" height="6" rx="3" fill={C.ink} opacity=".2" />
+          <Txt x={58} y={43} t={word === "email" ? "naren@kaizeninfotech.com" : "+91 84240 64369"} size={8} weight={500} op={0.6} />
         </Card>
       </g>
     ))}

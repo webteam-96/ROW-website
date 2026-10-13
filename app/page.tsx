@@ -5,6 +5,7 @@ import PageFx from "@/components/PageFx";
 import Logo from "@/components/Logo";
 import Arrow from "@/components/Arrow";
 import { DemoButton, Scribble, Section, Lead, Stats } from "@/components/kit";
+import { PhoneFrame } from "@/components/art";
 
 // Every visible word on this page is from "ROW Website Content V2 Updated.docx", Page 01 (Home), except the three
 // demo card lines the client supplied separately (AGENDA) and the made-up member names on the wheel (SEATS).
@@ -26,32 +27,31 @@ const AUDIENCES: { who: string; rest: string; c: string; art: ReactNode }[] = [
     c: "sky",
     art: (
       <svg viewBox="0 0 320 200">
-        <rect x="118" y="26" width="84" height="196" rx="18" fill="#fff" stroke="#1B2C42" strokeWidth="3" />
-        <rect x="146" y="35" width="28" height="6" rx="3" fill="#1B2C42" />
+        <g transform="translate(110 30) scale(.5)"><PhoneFrame x={0} y={0} screen="#fff" /></g>
         <circle cx="160" cy="78" r="19" fill="#F7A81B" />
         <circle cx="160" cy="72" r="6.5" fill="#fff" />
         <path d="M148.5 89c2.2-6 6.6-8.6 11.5-8.6s9.3 2.6 11.5 8.6" fill="#fff" />
-        <rect x="136" y="108" width="48" height="8" rx="4" fill="#1B2C42" opacity=".8" />
-        <rect x="144" y="122" width="32" height="6" rx="3" fill="#1B2C42" opacity=".2" />
+        <text x="160" y="115" fill="#1B2C42" fontSize="9" fontWeight="700" fontFamily="var(--font-display)" textAnchor="middle">Anil Mehta</text>
+        <text x="160" y="127" fill="#1B2C42" fillOpacity=".6" fontSize="7" fontWeight="500" fontFamily="var(--font-display)" textAnchor="middle">Treasurer</text>
         <rect x="130" y="142" width="60" height="22" rx="11" fill="#EDF4FB" />
         <circle cx="143" cy="152.5" r="4.5" fill="none" stroke="#17458F" strokeWidth="2.2" />
         <path d="M146.4 156l3.2 3.2" stroke="#17458F" strokeWidth="2.2" strokeLinecap="round" />
-        <rect x="155" y="150" width="26" height="5" rx="2.5" fill="#1B2C42" opacity=".18" />
+        <text x="155" y="155.5" fill="#1B2C42" fillOpacity=".55" fontSize="7" fontWeight="600" fontFamily="var(--font-display)">Find</text>
         <g transform="translate(28 58)">
           <rect y="4" width="76" height="46" rx="13" fill="#1B2C42" opacity=".1" />
           <rect width="76" height="46" rx="13" fill="#fff" />
           <circle cx="22" cy="23" r="11" fill="#17458F" />
           <circle cx="22" cy="23" r="4.8" fill="none" stroke="#F7A81B" strokeWidth="2.6" />
-          <rect x="40" y="16" width="26" height="5" rx="2.5" fill="#1B2C42" opacity=".6" />
-          <rect x="40" y="26" width="18" height="5" rx="2.5" fill="#1B2C42" opacity=".2" />
+          <text x="40" y="21" fill="#1B2C42" fontSize="7.5" fontWeight="700" fontFamily="var(--font-display)">My club</text>
+          <text x="40" y="31" fill="#1B2C42" fillOpacity=".6" fontSize="6" fontWeight="500" fontFamily="var(--font-display)">Thane Hills</text>
         </g>
         <g transform="translate(214 104)">
           <rect y="4" width="78" height="46" rx="13" fill="#1B2C42" opacity=".1" />
           <rect width="78" height="46" rx="13" fill="#fff" />
           <rect x="11" y="11" width="24" height="24" rx="8" fill="#0067C8" />
           <path d="M17.5 23.5l3.6 3.6 7-7.6" fill="none" stroke="#fff" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
-          <rect x="44" y="16" width="24" height="5" rx="2.5" fill="#1B2C42" opacity=".6" />
-          <rect x="44" y="26" width="16" height="5" rx="2.5" fill="#1B2C42" opacity=".2" />
+          <text x="44" y="21" fill="#1B2C42" fontSize="7.5" fontWeight="700" fontFamily="var(--font-display)">Saved</text>
+          <text x="44" y="31" fill="#1B2C42" fillOpacity=".6" fontSize="6" fontWeight="500" fontFamily="var(--font-display)">Profile</text>
         </g>
       </svg>
     ),
@@ -62,14 +62,13 @@ const AUDIENCES: { who: string; rest: string; c: string; art: ReactNode }[] = [
     c: "lilac",
     art: (
       <svg viewBox="0 0 320 200">
-        <rect x="102" y="36" width="116" height="186" rx="18" fill="#fff" stroke="#1B2C42" strokeWidth="3" />
-        <rect x="134" y="25" width="52" height="22" rx="11" fill="#17458F" />
-        {[54, 46, 58].map((w, i) => (
+        <g transform="translate(110 30) scale(.5)"><PhoneFrame x={0} y={0} screen="#fff" /></g>
+        {[["Monthly report", "Sent to district"], ["Dues collected", "28 of 30"], ["Attendance", "32 present"]].map(([a, b], i) => (
           <g key={i} transform={`translate(0 ${i * 38})`}>
-            <circle cx="128" cy="78" r="10" fill={i === 1 ? "#F7A81B" : "#17458F"} />
-            <path d="M123.4 78.2l3.2 3.2 6-6.4" fill="none" stroke="#fff" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
-            <rect x="146" y="70" width={w} height="7" rx="3.5" fill="#1B2C42" opacity=".75" />
-            <rect x="146" y="82" width={w - 18} height="5" rx="2.5" fill="#1B2C42" opacity=".2" />
+            <circle cx="125" cy="78" r="8" fill={i === 1 ? "#F7A81B" : "#17458F"} />
+            <path d="M121.4 78.2l2.6 2.6 4.8-5.2" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+            <text x="138" y="77" fill="#1B2C42" fontSize="7.5" fontWeight="700" fontFamily="var(--font-display)">{a}</text>
+            <text x="138" y="87.5" fill="#1B2C42" fillOpacity=".6" fontSize="6" fontWeight="500" fontFamily="var(--font-display)">{b}</text>
           </g>
         ))}
         <circle cx="232" cy="160" r="25" fill="#F7A81B" stroke="#fff" strokeWidth="6" />
@@ -252,7 +251,7 @@ export default function Home() {
           </div>
           <div className="field">
             <span className="field__input">
-              <span className="sk sk--m" style={{ "width": "46%" } as CSSProperties} />
+              <span className="sample__meta">Search members</span>
             </span>
             {" "}
             <svg className="field__icon" viewBox="0 0 24 24">
@@ -269,6 +268,7 @@ export default function Home() {
               <span className="pbtn" data-state="hidden" data-p-act-wa>WhatsApp</span>
             </div>
           </div>
+          <div className="phone__tabs"><i /><i /><i /><i /></div>
         </div>
       </div>
       <p className="vh" aria-live="polite" data-wheel-status />

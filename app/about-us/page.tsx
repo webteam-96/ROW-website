@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import PageFx from "@/components/PageFx";
 import Logo from "@/components/Logo";
+import { PhoneFrame, Txt } from "@/components/art";
 import { DemoButton, Lead, PageHero, Scribble, Section, Stats } from "@/components/kit";
 import s from "./page.module.css";
 
@@ -16,7 +17,10 @@ export const metadata: Metadata = {
 const TILT = -8; // the book's tilt, degrees
 const BOOK = [158, 314]; // the open book's centre
 const PAGE_ROWS = [-44, -14, 16, 46]; // row centres down a page
-const APP_ROWS = [["coral", 62, 44], ["mint", 74, 50], ["lilac", 56, 38], ["azure", 68, 46], ["marigold", 60, 42]] as const;
+const APP_ROWS = [["coral", "Anil Mehta", "President"], ["mint", "Priya Sharma", "Secretary"], ["lilac", "Rahul Desai", "Treasurer"], ["azure", "Sneha Kulkarni", "Member"], ["marigold", "Vikram Joshi", "Member"]] as const;
+// the printed roster: left page, then the right page (whose rows fly into the phone)
+const LEFT = [["Arjun Nair", "98200 41557"], ["Kavita Rao", "98192 30411"], ["Sanjay Gupta", "98213 77820"], ["Meera Iyer", "98677 15234"]];
+const RIGHT = [["Anil Mehta", "98200 11223"], ["Priya Sharma", "98199 40566"], ["Rahul Desai", "98201 77314"], ["Sneha Kulkarni", "98330 21908"]];
 
 /** Where a point on the open book's page lands in the picture: "x y" */
 function onBook(lx: number, ly: number) {
@@ -44,12 +48,12 @@ function BookToApp() {
           <rect className={s.board} x="-142" y="-96" width="146" height="192" rx="14" />
           <rect className={s.edge} x="-136" y="-88" width="136" height="178" rx="4" />
           <path className={s.page} d="M-2-84C-40-92-96-90-132-84V84C-96 78-40 80-2 88Z" />
-          <rect className={s.head} x="-116" y="-70" width="50" height="8" rx="4" />
-          {PAGE_ROWS.map((y) => (
+          <Txt x={-116} y={-63} t="Club Roster 2025" size={8.5} fill="#17458F" />
+          {PAGE_ROWS.map((y, i) => (
             <g key={y}>
               <circle className={s.photo} cx="-112" cy={y} r="8.5" />
-              <rect className={s.name} x="-98" y={y - 7} width="58" height="6" rx="3" />
-              <rect className={s.num} x="-98" y={y + 3} width="40" height="5" rx="2.5" />
+              <Txt x={-98} y={y - 1} t={LEFT[i][0]} size={7.5} />
+              <Txt x={-98} y={y + 8} t={LEFT[i][1]} size={6.5} weight={500} op={0.6} />
             </g>
           ))}
           {/* a number that changed after the book was printed */}
@@ -58,15 +62,15 @@ function BookToApp() {
             <rect className={s.board} x="-4" y="-96" width="146" height="192" rx="14" />
             <rect className={s.edge} x="0" y="-88" width="136" height="178" rx="4" />
             <path className={s.page} d="M2-84C40-92 96-90 132-84V84C96 78 40 80 2 88Z" />
-            <rect className={s.head} x="16" y="-70" width="40" height="8" rx="4" />
+            <Txt x={16} y={-63} t="Members" size={8.5} fill="#17458F" />
           </g>
           <path className={s.ribbon} d="M-17 70h10v54l-5-6.5-5 6.5z" />
           <g data-book-cover>
             <rect className={s.board} x="-142" y="-96" width="146" height="192" rx="14" />
             <path className={s.hinge} d="M-12-88V88" />
             <rect className={s.label} x="-114" y="-56" width="88" height="48" rx="9" />
-            <rect className={s.name} x="-102" y="-44" width="56" height="8" rx="4" />
-            <rect className={s.num} x="-102" y="-29" width="38" height="6" rx="3" />
+            <Txt x={-70} y={-34} t="Club Roster" size={11} anchor="middle" />
+            <Txt x={-70} y={-20} t="2025–26" size={8} anchor="middle" weight={600} op={0.6} />
             <circle className={s.emblem} cx="-70" cy="40" r="15" />
           </g>
         </g>
@@ -78,23 +82,21 @@ function BookToApp() {
 
       {/* The ROW app: the member directory */}
       <g filter="url(#book-app-shadow)" data-phone>
-        <rect className={s.frame} x="292" y="44" width="196" height="392" rx="36" />
-        <rect className={s.screen} x="300" y="52" width="180" height="376" rx="28" />
-        <rect className={s.ink} x="316" y="65" width="26" height="7" rx="3.5" />
-        <rect className={s.ink} x="362" y="60" width="56" height="16" rx="8" />
+        <PhoneFrame x={290} y={40} />
+        <Txt x={316} y={72} t="9:41" size={9} />
         <path className={s.signal} d="M446 72v-3M451 72v-6M456 72v-9" />
-        <rect className={s.ink} x="314" y="92" width="84" height="13" rx="6.5" />
+        <Txt x={314} y={105} t="Directory" size={15} />
         <rect className={s.field} x="312" y="116" width="156" height="30" rx="11" />
-        <rect className={s.faint} x="324" y="128" width="64" height="6" rx="3" />
+        <Txt x={324} y={134} t="Search members" size={8.5} weight={500} op={0.5} />
         <path className={s.lens} d="M453.4 133.4 458 138M455 129.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0Z" />
-        {APP_ROWS.map(([c, name, num], i) => {
+        {APP_ROWS.map(([c, name, role], i) => {
           const y = 158 + i * 54;
           return (
             <g key={c} data-app-row>
               <rect className={s.row} x="312" y={y} width="156" height="46" rx="13" />
               <circle className={s.avatar} data-c={c} cx="334" cy={y + 23} r="13" data-pop />
-              <rect className={s.ink} x="355" y={y + 14} width={name} height="8" rx="4" />
-              <rect className={s.faint} x="355" y={y + 27} width={num} height="6" rx="3" />
+              <Txt x={355} y={y + 21} t={name} size={9.5} />
+              <Txt x={355} y={y + 33} t={role} size={7.5} weight={500} op={0.6} />
               <g transform={`translate(450 ${y + 23})`}>
                 <g data-pop>
                   <circle className={s.call} r="11" />
@@ -111,12 +113,12 @@ function BookToApp() {
       </g>
 
       {/* The page rows and the note that fly into the phone: drawn round 0 0, placed and shown by lib/row-fx.js */}
-      {PAGE_ROWS.map((y) => (
+      {PAGE_ROWS.map((y, i) => (
         <g key={y} className={s.flyer} data-strip data-at={`${onBook(67.5, y)} ${TILT}`}>
           <rect className={s.paper} x="-56" y="-13" width="112" height="26" rx="7" />
           <circle className={s.photo} cx="-44" cy="0" r="8.5" />
-          <rect className={s.name} x="-30" y="-7" width="58" height="6" rx="3" />
-          <rect className={s.num} x="-30" y="3" width="40" height="5" rx="2.5" />
+          <Txt x={-30} y={-1} t={RIGHT[i][0]} size={7.5} />
+          <Txt x={-30} y={8} t={RIGHT[i][1]} size={6.5} weight={500} op={0.6} />
         </g>
       ))}
       <g className={s.flyer} data-note data-at="58 234 10">
@@ -175,8 +177,8 @@ function TeamArt() {
               <rect className={s.tile} x="12" y="12" width="32" height="32" rx="10" />
               <path className={s.tileIcon} d="M23.5 23 19 28l4.5 5M32.5 23 37 28l-4.5 5M29.8 21l-3.6 14" />
             </g>
-            <rect className={s.bar} x="54" y="20" width="48" height="7" rx="3.5" />
-            <rect className={s.barSoft} x="54" y="32" width="32" height="6" rx="3" />
+            <Txt x={54} y={27} t="Builds" size={10} />
+            <Txt x={54} y={40} t="the app" size={8} weight={500} op={0.6} />
           </g>
         </g>
         {/* supports the clubs */}
@@ -188,8 +190,8 @@ function TeamArt() {
               <rect className={s.tile} x="12" y="12" width="32" height="32" rx="10" />
               <path className={s.tileIcon} d="M20 30v-3a8 8 0 0 1 16 0v3M18.5 30H23v6h-2.5a2 2 0 0 1-2-2ZM37.5 30H33v6h2.5a2 2 0 0 0 2-2ZM36 36c0 2-1.6 3.5-3.6 3.5h-2.9" />
             </g>
-            <rect className={s.bar} x="54" y="20" width="48" height="7" rx="3.5" />
-            <rect className={s.barSoft} x="54" y="32" width="32" height="6" rx="3" />
+            <Txt x={54} y={27} t="Supports" size={10} />
+            <Txt x={54} y={40} t="every club" size={8} weight={500} op={0.6} />
           </g>
         </g>
       </svg>
@@ -200,7 +202,7 @@ function TeamArt() {
 
 /* What we believe: club work ticked off quickly (a short checklist and a stopwatch) leaves more time for service
    (the heart, with the people it serves). Built once in view like the team picture. Decorative, no text. */
-const CHECKS = [[168, 96, "mint"], [214, 80, "marigold"], [260, 104, "mint"]] as const;
+const CHECKS = [[168, "Attendance marked", "mint"], [214, "Dues reminder sent", "marigold"], [260, "Report submitted", "mint"]] as const;
 const SERVED = [[338, 278, "coral"], [368, 285, "sky"], [398, 278, "mint"]] as const;
 
 function BelieveArt() {
@@ -208,7 +210,7 @@ function BelieveArt() {
     <svg className={s.believe} viewBox="0 0 480 400" aria-hidden="true" data-build>
       <rect className={s.cardShadeDark} x="26" y="102" width="200" height="204" rx="24" />
       <rect className={s.card} x="26" y="94" width="200" height="204" rx="24" />
-      <rect className={s.bar} x="50" y="122" width="84" height="10" rx="5" />
+      <Txt x={50} y={132} t="Club work this week" size={12} />
       {CHECKS.map(([y, w, c], i) => (
         <g key={y}>
           <g transform={`translate(64 ${y})`}>
@@ -217,8 +219,8 @@ function BelieveArt() {
               <path className={s.checkMark} d="M-5.5.5l3.6 3.6 7-7.4" />
             </g>
           </g>
-          <rect className={s.bar} x="88" y={y - 8} width={w} height="8" rx="4" />
-          <rect className={s.barSoft} x="88" y={y + 4} width={w - 30} height="6" rx="3" />
+          <Txt x={88} y={y + 1} t={w} size={10} />
+          <Txt x={88} y={y + 13} t="2 minutes" size={8} weight={500} op={0.55} />
         </g>
       ))}
       <g transform="translate(216 100)">

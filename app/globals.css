@@ -326,14 +326,14 @@ html.menu-open .site-header { background: transparent; box-shadow: none; -webkit
   position: relative;
   display: flex; flex-direction: column; align-items: center; gap: 16px;
 }
-.phone { position: relative; z-index: 2; width: min(300px, 100%); }
+.phone { position: relative; z-index: 2; width: min(240px, 100%); }
 .wheel-ui { position: relative; z-index: 2; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; }
 .wheel-arc { position: relative; z-index: 1; width: 100%; height: clamp(200px, 36vw, 300px); pointer-events: none; }
 .wheel-stage { position: absolute; left: 50%; top: calc(var(--r) + var(--av) / 2 + 60px); width: 0; height: 0; }
 
 @media (min-width: 1180px) {
   .hero {
-    --phone-w: 272px;
+    --phone-w: 240px;
     --wheel-room: clamp(290px, 25vw, 380px);
     min-height: max(780px, min(100svh, 980px));
     display: flex; flex-direction: column; justify-content: center;
@@ -416,14 +416,14 @@ html.menu-open .site-header { background: transparent; box-shadow: none; -webkit
 
 /* Phone: ROW member app directory */
 .phone {
-  border-radius: 46px; padding: 10px;
+  display: flex; aspect-ratio: 1 / 2; border-radius: 40px; padding: 9px;
   background: var(--ink);
   box-shadow: 0 40px 80px -30px rgba(27, 44, 66, .55), 0 10px 22px -10px rgba(27, 44, 66, .3);
 }
-.phone__screen { border-radius: 36px; padding: 10px 16px 18px; background: var(--cream); overflow: hidden; }
+.phone__screen { flex: 1; display: flex; flex-direction: column; min-width: 0; border-radius: 31px; padding: 8px 12px 14px; background: var(--cream); overflow: hidden; }
 .phone__status { display: flex; justify-content: space-between; align-items: center; height: 24px; padding: 0 8px; }
 .phone__time { width: 30px; height: 8px; border-radius: 4px; background: var(--ink); }
-.phone__island { width: 74px; height: 20px; border-radius: 999px; background: var(--ink); }
+.phone__island { width: 65px; height: 17px; border-radius: 999px; background: var(--ink); }
 .phone__sig { display: flex; align-items: flex-end; gap: 2px; height: 10px; }
 .phone__sig i { width: 3px; border-radius: 1px; background: var(--ink); }
 .phone__sig i:nth-child(1) { height: 4px; } .phone__sig i:nth-child(2) { height: 7px; } .phone__sig i:nth-child(3) { height: 10px; }
@@ -1536,3 +1536,20 @@ html { font-optical-sizing: auto; }
 .profile__name.is-text { width: auto; max-width: 92%; height: auto; margin-top: 10px; border-radius: 0; background: none; font: 650 1rem/1.2 var(--font-display); color: var(--ink); text-wrap: balance; }
 .console__club { font: 650 .9375rem/1.2 var(--font-display); color: var(--ink); }
 .console__title { font: 650 1rem/1.2 var(--font-display); color: var(--ink); }
+
+/* ---------- Sample data in the mock-ups (made-up names and figures, in place of grey bars) ---------- */
+.sample__name { font: 650 .875rem/1.2 var(--font-display); color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sample__meta { font: 500 .75rem/1.25 var(--font-body); color: var(--ink-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sample__total { font: 700 1.0625rem/1 var(--font-display); color: var(--azure); white-space: nowrap; }
+.mono { font-size: .75rem; }
+.sample__total.inv__sum { width: auto; height: auto; }
+.sample__msg { font: 550 .8125rem/1.35 var(--font-body); color: var(--ink); }
+.sample__head { font: 700 .875rem/1.1 var(--font-display); color: var(--azure); white-space: nowrap; }
+.sample__tiny { font: 500 .625rem/1.2 var(--font-body); color: var(--ink-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.sample__tiny--b { font-weight: 700; color: var(--ink); }
+.browser__body [data-d="sk"] { justify-self: start; transform-origin: left center; }
+.phone .profile { padding-top: 28px; }
+/* the app's tab bar along the foot of the screen, as on the drawn phones (components/art.tsx PhoneFrame) */
+.phone__tabs { display: flex; justify-content: center; gap: 22px; margin: auto -12px -14px; padding: 18px 0 22px; background: #fff; }
+.phone__tabs i { width: 10px; height: 10px; border-radius: 50%; background: #D5DEE8; }
+.phone__tabs i:first-child { background: var(--azure); }

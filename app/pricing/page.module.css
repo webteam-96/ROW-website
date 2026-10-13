@@ -1,7 +1,7 @@
 /* /pricing: only what the shared kit (components/kit.tsx) does not cover. Global classes are reached with
    :global() under a local class, so these rules outrank globals.css by specificity, not by load order. */
 
-/* ---------- ROW Mobile Application: one price card, the fee on Royal Blue beside the checklist ---------- */
+/* ---------- What’s included: one price card, the fee on Royal Blue beside the checklist ---------- */
 .plan {
   display: grid;
   margin-top: clamp(24px, 3vw, 40px);

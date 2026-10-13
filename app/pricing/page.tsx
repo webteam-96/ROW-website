@@ -53,7 +53,7 @@ export default function Page() {
         intro="One easy price covers everything. Your club pays once a year, based on the number of members."
       />
 
-      <Section id="row-mobile-application" title="ROW Mobile Application" c="sky">
+      <Section id="whats-included" title="What’s included" c="sky">
         <div className={s.plan} data-reveal>
           <p className={s.fee}>
             <span className={s.feeLabel}>Annual subscription fee per member:</span>{" "}

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import PageFx from "@/components/PageFx";
 import Logo from "@/components/Logo";
 import { ArtCards, Lead, PageHero, Scribble, Section } from "@/components/kit";
-import { Avatar, C, Card, Club, ICON, IconTile, Lines, Tick } from "@/components/art";
+import { Avatar, C, Card, Club, ICON, IconTile, Lines, PhoneFrame, Tick, Txt } from "@/components/art";
 import { APP_STORE, GOOGLE_PLAY } from "@/lib/site";
 import s from "./page.module.css";
 
@@ -19,7 +19,7 @@ const TICK = "M5 12.5l4.5 4.5L19 7.5";
 /* Hero: Find a Rotarian on a Royal Blue wheel. The search filters are the doc's own words (name, classification,
    keyword) and the results arrive one by one (data-build, lib/row-fx.js). */
 const FILTERS = ["name", "classification", "keyword"];
-const RESULTS = [["coral", "62%", "40%"], ["sky", "54%", "46%"], ["mint", "70%", "36%"], ["lilac", "48%", "42%"]];
+const RESULTS = [["coral", "Anil Mehta", "Architect"], ["sky", "Priya Sharma", "Doctor"], ["mint", "Rahul Desai", "Lawyer"], ["lilac", "Sneha Kulkarni", "Teacher"]];
 const directory = (
   <div className={s.stage}>
     <div className={`phone ${s.app}`} aria-hidden="true" data-build>
@@ -38,7 +38,7 @@ const directory = (
         </div>
         <div className="field">
           <span className="field__input">
-            <span className="sk sk--m" style={{ width: "46%" }} />
+            <span className="sample__meta">Search by name, classification or keyword</span>
           </span>
           <svg className="field__icon" viewBox="0 0 24 24">
             <circle cx="11" cy="11" r="6.5" />
@@ -51,12 +51,12 @@ const directory = (
           ))}
         </ul>
         <ul className={s.results}>
-          {RESULTS.map(([c, w1, w2], i) => (
+          {RESULTS.map(([c, name, job], i) => (
             <li key={c} data-in={(0.55 + i * 0.14).toFixed(2)} data-in-move="0 16">
-              <span className="mono" data-c={c} />
+              <span className="mono" data-c={c}>{name.split(" ").map((w) => w[0]).join("")}</span>
               <span className={s.who}>
-                <span className="sk sk--t" style={{ width: w1 }} />
-                <span className="sk sk--m" style={{ width: w2 }} />
+                <span className="sample__name">{name}</span>
+                <span className="sample__meta">{job}</span>
               </span>
               <span className={s.call}><svg className="ico" viewBox="0 0 24 24">{ICON.phone}</svg></span>
             </li>
@@ -78,19 +78,19 @@ const profileArt = (
         <circle r="11" fill={C.mint} stroke="#fff" strokeWidth="3" />
         <g transform="translate(-6.5 -6.5) scale(.54)" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">{ICON.pencil}</g>
       </g>
-      <rect x="40" y="76" width="56" height="8" rx="4" fill={C.ink} opacity=".75" />
-      <rect x="50" y="90" width="36" height="6" rx="3" fill={C.ink} opacity=".2" />
-      {[106, 130].map((y, i) => (
-        <g key={y}>
-          <rect x="16" y={y} width="104" height="18" rx="7" fill={C.cream2} />
-          <rect x="26" y={y + 6} width={i ? 40 : 54} height="6" rx="3" fill={C.ink} opacity=".25" />
+      <Txt x={68} y={83} t="Neha Patil" size={10} anchor="middle" />
+      <Txt x={68} y={95} t="Chartered Accountant" size={7} anchor="middle" weight={500} op={0.6} />
+      {[[106, "neha@example.com"], [130, "+91 98201 55123"]].map(([y, t]) => (
+        <g key={String(y)}>
+          <rect x="16" y={Number(y)} width="104" height="18" rx="7" fill={C.cream2} />
+          <Txt x={24} y={Number(y) + 12} t={String(t)} size={7.5} weight={500} op={0.7} />
         </g>
       ))}
       <rect x="16" y="154" width="104" height="20" rx="10" fill={C.azure} />
     </Card>
     <Card x={236} y={60} w={62} h={38}>
       <Tick x={19} y={19} r={9} fill={C.mint} />
-      <rect x="34" y="16" width="18" height="6" rx="3" fill={C.ink} opacity=".5" />
+      <Txt x={32} y={22} t="Saved" size={8} />
     </Card>
   </svg>
 );
@@ -107,11 +107,11 @@ const finderArt = (
     ))}
     <Card x={60} y={20} w={200} h={36} r={18}>
       <g transform="translate(14 8) scale(.84)" fill="none" stroke={C.ink} strokeOpacity=".6" strokeWidth="2.4" strokeLinecap="round">{ICON.search}</g>
-      <rect x="42" y="15" width="90" height="6" rx="3" fill={C.ink} opacity=".2" />
+      <Txt x={42} y={21} t="Clubs near Thane" size={9} weight={500} op={0.6} />
     </Card>
     <Card x={146} y={140} w={156} h={46}>
       <Club x={24} y={23} r={12} />
-      <Lines x={44} y={14} w={58} w2={40} />
+      <Lines x={44} y={14} w={58} t="RC Thane Hills" t2="2.1 km away" size={9} />
       <g transform="translate(132 23)">
         <circle r="12" fill={C.mint} />
         <g transform="translate(-7 -7) scale(.58)" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">{ICON.arrow}</g>
@@ -137,13 +137,13 @@ const findArt = (
 // Search Projects: other clubs' projects, each with a way to take part
 const projectsArt = (
   <svg viewBox="0 0 320 200">
-    {[[44, 40, -5, ICON.heart], [180, 32, 5, ICON.plus]].map(([x, y, rot, icon], i) => (
+    {[[44, 40, -5, ICON.heart, "Blood camp", "RC Kalyan"], [180, 32, 5, ICON.plus, "Clean water", "RC Thane Uptown"]].map(([x, y, rot, icon, t, t2], i) => (
       <g key={i} transform={`rotate(${rot} ${Number(x) + 48} ${Number(y) + 64})`}>
         <Card x={Number(x)} y={Number(y)} w={96} h={128} r={14}>
           <rect x="8" y="8" width="80" height="52" rx="9" fill={C.sky} />
           <path d="M14 56 34 34 48 48 60 38 82 56Z" fill={C.azure} opacity=".5" />
           <circle cx="68" cy="22" r="6" fill={C.marigold} />
-          <Lines x={10} y={72} w={62} w2={42} />
+          <Lines x={10} y={72} w={62} t={String(t)} t2={String(t2)} size={9} />
           <g transform="translate(74 106)">
             <circle r="13" fill={C.marigold} />
             <g transform="translate(-7.5 -7.5) scale(.62)" fill="none" stroke={C.ink} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">{icon}</g>
@@ -167,36 +167,35 @@ const LINES = [
 const TILE_AT = [[72, 112, 156], [72, 188, 74], [154, 188, 74], [72, 270, 74], [154, 270, 74]]; // x, y, width
 const ON_C: Record<string, string> = { azure: C.white, mint: C.white };
 const homeArt = (
-  <svg className={s.home} viewBox="0 0 300 440" aria-hidden="true" data-build>
-    <circle cx="150" cy="220" r="150" fill="#fff" opacity=".45" />
-    <rect x="50" y="10" width="200" height="420" rx="36" fill={C.ink} />
-    <rect x="58" y="18" width="184" height="404" rx="29" fill="#F7F9FC" />
-    <rect x="122" y="28" width="56" height="15" rx="7.5" fill={C.ink} />
+  <svg className={s.home} viewBox="0 0 300 420" aria-hidden="true" data-build>
+    <circle cx="150" cy="210" r="150" fill="#fff" opacity=".45" />
+    <PhoneFrame x={50} y={10} />
     <Avatar x={88} y={74} r={16} fill={C.coral} glyph={C.ink} />
-    <Lines x={112} y={66} w={60} w2={38} />
+    <Lines x={112} y={66} w={60} t="Hello, Anil" t2="RC Thane Hills" size={10} />
     <Club x={212} y={74} r={12} />
     {LINES.map(([, c, icon], i) => {
+      const label = ["Directory", "Meetings", "News", "Greetings", "Dues"][i];
       const [x, y, w] = TILE_AT[i];
       return (
         <g key={c} data-in={(0.25 + i * 0.14).toFixed(2)}>
           <rect x={x} y={y + 3} width={w} height="74" rx="18" fill={C.ink} opacity=".08" />
           <rect x={x} y={y} width={w} height="74" rx="18" fill="#fff" />
           <IconTile x={x + 12} y={y + 12} size={30} fill={C[c]} stroke={ON_C[c] ?? C.ink}>{icon}</IconTile>
-          <rect x={x + 12} y={y + 54} width={w > 100 ? 72 : 44} height="7" rx="3.5" fill={C.ink} opacity=".7" />
-          {w > 100 ? <Lines x={x + 54} y={y + 16} w={60} w2={44} /> : null}
+          <Txt x={x + 12} y={y + 62} t={label} size={10} />
+          {w > 100 ? <Lines x={x + 54} y={y + 16} w={60} t="42 members" t2="Call or message" size={9} /> : null}
         </g>
       );
     })}
-    <path d="M58 372h184v21a29 29 0 0 1-29 29H87a29 29 0 0 1-29-29Z" fill="#fff" />
-    {[100, 133, 167, 200].map((x, i) => <circle key={x} cx={x} cy="394" r="6" fill={i ? "#D5DEE8" : C.azure} />)}
+    <path d="M57.5 352h185v25a25.5 25.5 0 0 1-25.5 25.5H83a25.5 25.5 0 0 1-25.5-25.5Z" fill="#fff" />
+    {[100, 133, 167, 200].map((x, i) => <circle key={x} cx={x} cy="377" r="6" fill={i ? "#D5DEE8" : C.azure} />)}
   </svg>
 );
 
 /* Simple for every age: three big, plain menu rows. Text-free. */
 const MENU = [
-  { c: "azure", w: "54%", icon: <><circle cx="12" cy="8.5" r="3.5" /><path d="M5 19.5a7 7 0 0 1 14 0" /></> },
-  { c: "marigold", w: "64%", icon: <><circle cx="11" cy="11" r="6.5" /><path d="M16 16l4.5 4.5" /></> },
-  { c: "mint", w: "44%", icon: <><rect x="4" y="5.5" width="16" height="14" rx="3" /><path d="M4 10.5h16M8.5 3.5v4M15.5 3.5v4" /></> },
+  { c: "azure", w: "My profile", icon: <><circle cx="12" cy="8.5" r="3.5" /><path d="M5 19.5a7 7 0 0 1 14 0" /></> },
+  { c: "marigold", w: "Find a Rotarian", icon: <><circle cx="11" cy="11" r="6.5" /><path d="M16 16l4.5 4.5" /></> },
+  { c: "mint", w: "Events", icon: <><rect x="4" y="5.5" width="16" height="14" rx="3" /><path d="M4 10.5h16M8.5 3.5v4M15.5 3.5v4" /></> },
 ];
 const menu = (
   <div className={s.menu}>
@@ -205,7 +204,7 @@ const menu = (
         <span className={s.menuIcon} data-c={c}>
           <svg className="ico" viewBox="0 0 24 24">{icon}</svg>
         </span>
-        <span className="sk sk--t" style={{ width: w }} />
+        <span className="sample__name">{w}</span>
         <svg className={s.chev} viewBox="0 0 24 24">
           <path d="M9.5 6l6 6-6 6" />
         </svg>
@@ -222,10 +221,10 @@ const code = (
         <rect x="3.5" y="5.5" width="17" height="13" rx="2.5" />
         <path d="M4.5 7l7.5 6 7.5-6" />
       </svg>
-      <span className="sk sk--m" style={{ width: "64%" }} />
+      <span className="sample__meta">neha@example.com</span>
     </span>
     <span className={s.otp}>
-      {[0, 1, 2, 3, 4, 5].map((i) => <i key={i} />)}
+      {["4", "8", "2", "7", "1", "9"].map((d, i) => <i key={i}>{d}</i>)}
     </span>
     <span className={s.ok}>
       <svg className="ico" viewBox="0 0 24 24"><path d={TICK} /></svg>
@@ -237,10 +236,10 @@ const code = (
 const privacy = (
   <div className={`mini-card ${s.dir}`}>
     <div className="mini-card__head">
-      <span className="mono" data-c="lilac" />
+      <span className="mono" data-c="lilac">NP</span>
       <span className="mini-card__who">
-        <span className="sk sk--t" style={{ width: "62%" }} />
-        <span className="sk sk--m" style={{ width: "44%" }} />
+        <span className="sample__name">Neha Patil</span>
+        <span className="sample__meta">RC Thane Downtown</span>
       </span>
     </div>
     <div className="mini-row">
@@ -264,7 +263,7 @@ const privacy = (
       </span>
     </div>
     <div className="mini-toggle">
-      <span className="sk sk--m" style={{ width: "56%" }} />
+      <span className="sample__meta">Show my phone number</span>
       <span className="switch" data-d="switch">
         <span className="switch__knob" data-d="knob" />
       </span>
@@ -293,8 +292,8 @@ const bothArt = (
         <rect x="238" y="48" width="164" height="324" rx="29" fill="#F7F9FC" />
         <rect x="290" y="58" width="60" height="16" rx="8" fill={C.ink} />
         <Avatar x={320} y={124} r={22} />
-        <rect x="290" y="156" width="60" height="8" rx="4" fill={C.ink} opacity=".75" />
-        <rect x="300" y="170" width="40" height="6" rx="3" fill={C.ink} opacity=".2" />
+        <Txt x={320} y={164} t="Welcome back" size={9} anchor="middle" />
+        <Txt x={320} y={176} t="Enter your code" size={7} anchor="middle" weight={500} op={0.6} />
         {Array.from({ length: 6 }, (_, i) => (
           <g key={i}>
             <rect x={245 + i * 25} y="196" width="20" height="26" rx="6" fill="#fff" stroke={C.ink} strokeOpacity=".15" strokeWidth="1.5" />

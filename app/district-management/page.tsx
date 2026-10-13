@@ -2,7 +2,7 @@ import type { CSSProperties, ReactNode } from "react";
 import type { Metadata } from "next";
 import PageFx from "@/components/PageFx";
 import { ArtCards, CardGrid, DemoButton, PageHero, Scribble, Section } from "@/components/kit";
-import { Avatar, C, Card, Club, ICON, IconTile, Lines, Tick } from "@/components/art";
+import { Avatar, C, Card, Club, ICON, IconTile, Lines, PhoneFrame, Tick, Txt } from "@/components/art";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -28,14 +28,14 @@ const SPOKES: [string, string, string, ReactNode][] = [
 const reportsArt = (
   <svg viewBox="0 0 320 200">
     <path d="M94 72c10 0 12 8 18 12M100 130c8 0 8-10 12-14" fill="none" stroke={C.ink} strokeWidth="2.2" strokeDasharray="2 6" strokeLinecap="round" opacity=".5" />
-    <Card x={22} y={52} w={72} h={40}><Club x={20} y={20} r={10} /><Lines x={36} y={13} w={26} w2={16} /></Card>
-    <Card x={28} y={110} w={72} h={40}><Club x={20} y={20} r={10} /><Lines x={36} y={13} w={24} w2={14} /></Card>
+    <Card x={14} y={52} w={84} h={40}><Club x={18} y={20} r={10} /><Lines x={32} y={11} w={26} t="Ambarnath" t2="East" size={8} /></Card>
+    <Card x={20} y={110} w={84} h={40}><Club x={18} y={20} r={10} /><Lines x={32} y={11} w={24} t="Dombivli" t2="East" size={8} /></Card>
     <Card x={112} y={26} w={128} h={200} r={16}>
-      <rect x="16" y="18" width="46" height="8" rx="4" fill={C.azure} />
-      {[[56, C.azure, 60], [90, C.marigold, 50], [124, C.mint, 66]].map(([y, c, w]) => (
-        <g key={y}>
+      <Txt x={16} y={26} t="October report" size={10} fill={C.azure} />
+      {[[56, C.azure, "Meetings", "4 held"], [90, C.marigold, "Projects", "2 running"], [124, C.mint, "TRF giving", "USD 1,000"]].map(([y, c, a, b]) => (
+        <g key={String(y)}>
           <Tick x={26} y={Number(y)} r={9} fill={String(c)} />
-          <Lines x={42} y={Number(y) - 7} w={Number(w)} />
+          <Lines x={42} y={Number(y) - 7} w={60} t={String(a)} t2={String(b)} />
         </g>
       ))}
     </Card>
@@ -53,10 +53,10 @@ const citationArt = (
     <circle cx="100" cy="94" r="27" fill="none" stroke="#fff" strokeWidth="3" opacity=".8" />
     <path d="M100 76 104.4 86.9 116.2 87.7 107.1 95.3 110 106.8 100 100.5 90 106.8 92.9 95.3 83.8 87.7 95.6 86.9Z" fill="#fff" />
     <Card x={164} y={42} w={130} h={120}>
-      {[[24, C.mint, 66], [50, C.mint, 54], [76, C.lilac, 72]].map(([y, c, w]) => (
-        <g key={y}>
+      {[[24, C.mint, "Membership growth"], [50, C.mint, "Service projects"], [76, C.lilac, "Foundation giving"]].map(([y, c, t]) => (
+        <g key={String(y)}>
           <Tick x={20} y={Number(y)} r={8} fill={String(c)} />
-          <Lines x={34} y={Number(y) - 4} w={Number(w)} w2={0} />
+          <Lines x={34} y={Number(y) - 4} w={60} t={String(t)} size={8.5} />
         </g>
       ))}
       <rect x="14" y="98" width="102" height="10" rx="5" fill={C.cream2} />
@@ -69,7 +69,7 @@ const citationArt = (
 const statsArt = (
   <svg viewBox="0 0 320 200">
     <Card x={40} y={28} w={240} h={200} r={16}>
-      <Lines x={18} y={18} w={72} w2={46} />
+      <Lines x={18} y={18} w={72} t="Club activity" t2="July – December" size={10} />
       {[[22, 64, C.azure], [48, 92, C.mint], [74, 52, C.marigold], [100, 100, C.azure], [126, 78, C.mint]].map(([x, h, c]) => (
         <rect key={x} x={Number(x)} y={162 - Number(h)} width="18" height={Number(h)} rx="5" fill={String(c)} />
       ))}
@@ -78,7 +78,7 @@ const statsArt = (
       <circle cx="196" cy="98" r="26" fill="none" stroke={C.cream2} strokeWidth="12" />
       <circle cx="196" cy="98" r="26" fill="none" stroke={C.azure} strokeWidth="12" strokeDasharray="98 66" transform="rotate(-90 196 98)" />
       <circle cx="196" cy="98" r="26" fill="none" stroke={C.marigold} strokeWidth="12" strokeDasharray="40 124" strokeDashoffset="-98" transform="rotate(-90 196 98)" />
-      <rect x="170" y="140" width="52" height="6" rx="3" fill={C.ink} opacity=".2" />
+      <Txt x={196} y={146} t="60% projects" size={8} anchor="middle" weight={600} op={0.6} />
     </Card>
   </svg>
 );
@@ -87,11 +87,11 @@ const statsArt = (
 const projectsArt = (
   <svg viewBox="0 0 320 200">
     <Card x={58} y={28} w={204} h={200} r={16}>
-      <rect x="18" y="18" width="80" height="8" rx="4" fill={C.ink} opacity=".75" />
-      {[[42, C.coral, ICON.heart, 116, 0.7], [86, C.sky, ICON.drop, 104, 0.45], [130, C.marigold, ICON.tree, 124, 0.85]].map(([y, c, icon, w, p], i) => (
+      <Txt x={18} y={26} t="District projects" size={10} />
+      {[[42, C.coral, ICON.heart, 116, 0.7, "Blood donation camp"], [86, C.sky, ICON.drop, 104, 0.45, "Clean water for schools"], [130, C.marigold, ICON.tree, 124, 0.85, "Tree plantation"]].map(([y, c, icon, w, p, name], i) => (
         <g key={i}>
           <IconTile x={16} y={Number(y)} size={32} fill={String(c)} stroke={C.ink}>{icon}</IconTile>
-          <rect x="58" y={Number(y) + 4} width={Number(w) - 34} height="7" rx="3.5" fill={C.ink} opacity=".75" />
+          <Txt x={58} y={Number(y) + 12} t={String(name)} size={9} />
           <rect x="58" y={Number(y) + 19} width={Number(w)} height="7" rx="3.5" fill={C.cream2} />
           <rect x="58" y={Number(y) + 19} width={Number(w) * Number(p)} height="7" rx="3.5" fill={C.azure} />
         </g>
@@ -120,9 +120,13 @@ const eventsArt = (
             <path d={`M${x + 5.5} ${y + 10.5}l3 3 6-6.5`} fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
           </g>
         ) : (
-          <rect key={i} x={x} y={y} width="20" height="20" rx="6" fill={C.cream2} />
+          <g key={i}>
+            <rect x={x} y={y} width="20" height="20" rx="6" fill={C.cream2} />
+            <Txt x={x + 10} y={y + 13.5} t={String(i + 6)} size={8} anchor="middle" weight={600} op={0.7} />
+          </g>
         );
       })}
+      <Txt x={82} y={23} t="November 2026" size={10} fill="#fff" anchor="middle" />
     </Card>
     <Avatar x={238} y={170} r={16} fill={C.coral} glyph={C.ink} ring="#fff" />
     <Avatar x={262} y={176} r={16} fill={C.mint} ring="#fff" />
@@ -133,23 +137,22 @@ const eventsArt = (
 /* Keeping the district informed: the three messages land on a phone, one after another (data-build, lib/row-fx.js).
    Text-free. */
 const NOTES = [
-  { y: 112, c: C.marigold, icon: ICON.calendar, w: 92 },
-  { y: 182, c: C.coral, icon: ICON.megaphone, w: 80 },
-  { y: 252, c: C.mint, icon: ICON.gift, w: 100 },
+  { y: 112, c: C.marigold, icon: ICON.calendar, w: 92, t: "District Assembly", t2: "Saturday, 14 Nov · 10 am" },
+  { y: 182, c: C.coral, icon: ICON.megaphone, w: 80, t: "Message from the DG", t2: "New district projects" },
+  { y: 252, c: C.mint, icon: ICON.gift, w: 100, t: "Happy birthday, Neha!", t2: "RC Thane Downtown" },
 ];
 const informedArt = (
-  <svg className={styles.informed} viewBox="0 0 340 380" aria-hidden="true" data-build>
-    <circle cx="170" cy="190" r="170" fill="#fff" opacity=".1" />
-    <rect x="80" y="14" width="180" height="352" rx="34" fill={C.ink} />
-    <rect x="88" y="22" width="164" height="336" rx="27" fill={C.sky} />
-    <rect x="140" y="32" width="60" height="14" rx="7" fill={C.ink} />
+  <svg className={styles.informed} viewBox="0 0 340 420" aria-hidden="true" data-build>
+    <circle cx="170" cy="210" r="170" fill="#fff" opacity=".1" />
+    <PhoneFrame x={70} y={10} screen={C.sky} />
     <rect x="130" y="64" width="80" height="18" rx="9" fill="#fff" opacity=".9" />
-    <rect x="148" y="88" width="44" height="6" rx="3" fill={C.ink} opacity=".25" />
+    <Txt x={170} y={77} t="9:41" size={13} anchor="middle" />
+    <Txt x={170} y={95} t="Tuesday, 10 November" size={7.5} anchor="middle" weight={600} op={0.6} />
     {NOTES.map((n, i) => (
       <g key={n.y} data-in={(0.3 + i * 0.35).toFixed(2)} data-in-move="40 0">
         <Card x={56} y={n.y} w={228} h={56} r={16}>
           <IconTile x={12} y={12} size={32} fill={n.c} stroke={n.c === C.mint ? "#fff" : C.ink}>{n.icon}</IconTile>
-          <Lines x={56} y={16} w={n.w} w2={Math.round(n.w * 0.6)} />
+          <Lines x={56} y={17} w={n.w} t={n.t} t2={n.t2} size={10} />
           <path d="M196 28.5l3.5 3.5 7-7.5M203 32l7-7.5" fill="none" stroke={C.mint} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
         </Card>
       </g>
@@ -161,9 +164,9 @@ const informedArt = (
    (data-build, lib/row-fx.js). The only words are the doc's own: "online" and "offline". */
 const TEETH = "l-10 8-10-8-10 8-10-8-10 8-10-8-10 8-10-8-10 8-10-8-10 8-10-8";
 const RECEIPTS = [
-  { x: 40, way: "online", w: 72 },
-  { x: 160, way: "offline", w: 60 },
-  { x: 280, way: "online", w: 80 },
+  { x: 40, way: "online", club: "Thane Hills", amt: "USD 500" },
+  { x: 160, way: "offline", club: "Ambarnath E.", amt: "USD 750" },
+  { x: 280, way: "online", club: "Thane Uptown", amt: "USD 400" },
 ];
 const duesArt = (
   <div className={styles.dues}>
@@ -177,12 +180,12 @@ const duesArt = (
             <g data-in={(0.2 + i * 0.3).toFixed(2)} data-in-move="0 -190">
               <path d={`M0 0h120v170${TEETH}V0Z`} fill="#fff" />
               <Club x={22} y={28} r={10} />
-              <Lines x={38} y={21} w={62} w2={40} />
+              <Lines x={38} y={21} w={62} t={r.club} t2="District dues" size={9} />
               <path d="M12 56h96" stroke={C.ink} strokeOpacity=".2" strokeWidth="2" strokeDasharray="3 4" />
-              <rect x="14" y="70" width={r.w} height="12" rx="6" fill={C.ink} opacity=".8" />
+              <Txt x={14} y={82} t={r.amt} size={14} />
               <rect x="14" y="94" width="64" height="22" rx="11" fill={r.way === "online" ? C.sky : "#FDE7B8"} />
               <text className={styles.way} x="46" y="109">{r.way}</text>
-              <rect x="14" y="130" width="44" height="6" rx="3" fill={C.ink} opacity=".2" />
+              <Txt x={14} y={136} t="12 Oct 2026" size={8} weight={500} op={0.55} />
             </g>
           </g>
         ))}
@@ -198,10 +201,10 @@ const duesArt = (
       <rect x="20" y="28" width="400" height="52" rx="22" fill="#2A3F5C" />
       <rect x="36" y="64" width="368" height="9" rx="4.5" fill="#0B1626" />
       <circle cx="396" cy="46" r="6" fill={C.marigold} />
-      <rect x="40" y="40" width="70" height="10" rx="5" fill="#fff" opacity=".25" />
+      <Txt x={40} y={50} t="Receipts" size={11} fill="#fff" op={0.75} />
       <Card x={108} y={286} w={224} h={104} r={18}>
         <IconTile x={16} y={16} size={30} fill={C.marigold} stroke={C.ink}>{ICON.chart}</IconTile>
-        <Lines x={56} y={20} w={70} w2={0} />
+        <Lines x={56} y={20} w={70} t="Dues collected" size={10} />
         {[18, 30, 24, 40, 34, 48].map((h, i) => (
           <g key={i} transform={`translate(${60 + i * 24} 92)`}>
             <rect data-in={(1.75 + i * 0.08).toFixed(2)} data-in-grow="" y={-h} width="14" height={h} rx="4" fill={i % 2 ? C.mint : C.azure} />
