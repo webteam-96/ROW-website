@@ -1553,3 +1553,16 @@ html { font-optical-sizing: auto; }
 .phone__tabs { display: flex; justify-content: center; gap: 22px; margin: auto -12px -14px; padding: 18px 0 22px; background: #fff; }
 .phone__tabs i { width: 10px; height: 10px; border-radius: 50%; background: #D5DEE8; }
 .phone__tabs i:first-child { background: var(--azure); }
+
+/* ---------- Policy pages (components/Legal.tsx): one readable column ---------- */
+.legal { padding-bottom: var(--section-pad); }
+.legal__body { max-width: 72ch; }
+.legal__body h2 { margin: 48px 0 14px; font: 600 clamp(1.375rem, 1.2rem + .6vw, 1.75rem)/1.2 var(--font-display); letter-spacing: -.02em; }
+.legal__body h2:first-child { margin-top: 0; }
+.legal__body p, .legal__body li { line-height: 1.7; }
+.legal__body p { margin: 0 0 16px; }
+.legal__body ul { margin: 0 0 16px; padding-left: 1.25em; }
+.legal__body a { color: var(--azure); text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere; }
+.legal__more { display: flex; flex-wrap: wrap; gap: 12px 28px; max-width: 72ch; margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--line); }
+.footer__legal { display: flex; flex-wrap: wrap; gap: 4px 20px; }
+.phero:has(+ .legal) .phero__title { margin-bottom: 0; } /* policy pages: nothing under the title */

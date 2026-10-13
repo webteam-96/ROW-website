@@ -37,3 +37,11 @@ export const SOCIAL = [
 ] as const;
 
 export const KAIZEN_HREF = "https://www.kaizeninfotech.com/";
+
+// Policy pages (adapted from Kaizen Infotech's own policies), linked in the footer
+export const LEGAL = [
+  { href: "/privacy-policy", label: "Privacy Policy" },
+  { href: "/terms-of-service", label: "Terms of Service" },
+  { href: "/refund-policy", label: "Refund Policy" },
+] as const;
+export const ACCOUNTS_EMAIL = "accounts@kaizeninfotech.com";

@@ -156,15 +156,16 @@ const projectsArt = (
   </svg>
 );
 
-/* Your club on your phone: each line's icon, and the same five on the app's home screen (data-build) */
+/* Your club on your phone: each line's icon, and the same six on the app’s home screen (data-build) */
 const LINES = [
-  ["The club directory, with one tap to call or message a member", "azure", ICON.people],
+  ["The club directory, with one tap to call, message or email a member", "azure", ICON.people],
   ["Upcoming meetings and events", "marigold", ICON.calendar],
   ["Announcements and newsletters", "mint", ICON.megaphone],
   ["Birthday and anniversary greetings", "coral", ICON.gift],
   ["Dues payment", "lilac", ICON.receipt],
+  ["Event registration", "sky", ICON.clipboard],
 ] as const;
-const TILE_AT = [[72, 112, 156], [72, 188, 74], [154, 188, 74], [72, 270, 74], [154, 270, 74]]; // x, y, width
+const TILE_AT = [[72, 108, 74], [154, 108, 74], [72, 188, 74], [154, 188, 74], [72, 268, 74], [154, 268, 74]]; // x, y, width
 const ON_C: Record<string, string> = { azure: C.white, mint: C.white };
 const homeArt = (
   <svg className={s.home} viewBox="0 0 300 420" aria-hidden="true" data-build>
@@ -174,7 +175,7 @@ const homeArt = (
     <Lines x={112} y={66} w={60} t="Hello, Anil" t2="RC Thane Hills" size={10} />
     <Club x={212} y={74} r={12} />
     {LINES.map(([, c, icon], i) => {
-      const label = ["Directory", "Meetings", "News", "Greetings", "Dues"][i];
+      const label = ["Directory", "Meetings", "News", "Greetings", "Dues", "Register"][i];
       const [x, y, w] = TILE_AT[i];
       return (
         <g key={c} data-in={(0.25 + i * 0.14).toFixed(2)}>

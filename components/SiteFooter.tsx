@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Logo from "./Logo";
-import { NAV, SOCIAL, KAIZEN_HREF, PHONES, EMAIL } from "@/lib/site";
+import { NAV, SOCIAL, KAIZEN_HREF, PHONES, EMAIL, LEGAL } from "@/lib/site";
 
 const ICONS: Record<string, React.ReactNode> = {
   Facebook: <path d="M14 8.5V6.8c0-.8.5-1 .9-1H17V2.3L14.2 2.3C11 2.3 10.3 4.7 10.3 6.2v2.3H8.4V12h1.9v9.7H14V12h2.6l.4-3.5H14z" />,
@@ -61,6 +61,11 @@ export default function SiteFooter() {
       </div>
       <div className="container footer__base">
         <p>© Copyright {new Date().getFullYear()}. All Rights Reserved.</p>
+        <nav className="footer__legal" aria-label="Policies">
+          {LEGAL.map((l) => (
+            <Link key={l.href} className="link" href={l.href}>{l.label}</Link>
+          ))}
+        </nav>
         <p>
           Developed by{" "}
           <a className="link" href={KAIZEN_HREF} target="_blank" rel="noopener noreferrer">Kaizen Infotech Solutions Pvt. Ltd</a>
